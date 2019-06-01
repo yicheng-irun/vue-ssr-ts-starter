@@ -10,3 +10,6 @@ async function start () {
         console.log('server is lisening in port 8800');
     });
 }
+
+
+start();
