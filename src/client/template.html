@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <title>{% block title %}{% raw %}{{ params.title }}{% endraw %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}
+    {% if htmlWebpackPlugin.options.isServer %}
+    <!--vue-ssr-outlet-->
+    {% else %}
+    <div id="app"></div>
+    {% endif %}
+    {% endblock %}
+    <script>var _SSR_PAGE_="{{ htmlWebpackPlugin.options.page }}" || "{% if htmlWebpackPlugin.options.isServer %}{% raw %}{{ page }}{% endraw %}{% endif %}";</script>
+</body>
+</html>

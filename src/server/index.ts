@@ -1,15 +1,18 @@
-import express from 'express';
-import logger from 'morgan';
+import createApp from './app';
+import getPort from './service/get-port';
 
-async function start () {
-    const app = express();
-    
-    app.use(logger('dev'));
+async function start (): Promise<void> {
+    const app = await createApp();
+    const port = getPort();
 
-    app.listen(8800, '0.0.0.0', () => {
-        console.log('server is lisening in port 8800');
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`server is lisning in ${port}`);
     });
 }
 
-
-start();
+start().then(() => {
+    //
+}).catch((e) => {
+    console.error('！！！！！！！！！服务发生了错误，没启起来！！！！！！！！！！');
+    console.error(e);
+});

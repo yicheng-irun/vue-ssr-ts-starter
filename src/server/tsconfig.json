@@ -8,7 +8,7 @@
         // "sourceMap": true,     // 用于debug   
         "inlineSourceMap": true, // 行内sourceMap
         "rootDir":"./",      // 仅用来控制输出的目录结构--outDir。
-        "outDir":"../../dest/server/",     // 重定向输出目录。   
+        "outDir":"../../dist/server/",     // 重定向输出目录。   
         "watch":true            // 在监视模式下运行编译器。会监视输出文件，在它们改变时重新编译。
     },
     "include":[
