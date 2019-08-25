@@ -1,17 +1,20 @@
 <template>
-    <div id="app">
-        <h1 class="title">Page1</h1>
-        <p class="content">ajax result: {{ state.data }}</p>
+    <div>
+        <h1 class="title">demo</h1>
+        <router-link to="/">Go to Index</router-link>
     </div>
 </template>
 
 <script>
+import createStore from './store';
 
 export default {
     name: 'App',
 
     components: {
     },
+
+    createStore,
 
     data () {
         return {
@@ -20,7 +23,6 @@ export default {
 
     computed: {
         state () {
-            return this.$store.state;
         },
     },
 

@@ -1,17 +1,21 @@
 <template>
-    <div id="app">
-        <h1 class="title">VUE SSR TS STARTER</h1>
-        <p class="content">ajax result: {{ state.data }}</p>
+    <div>
+        <h1 class="title">index</h1>
+        <router-link to="/demo">Go to Demo</router-link>
     </div>
 </template>
 
 <script>
+
+import createStore from './store';
 
 export default {
     name: 'App',
 
     components: {
     },
+
+    createStore,
 
     data () {
         return {
@@ -20,7 +24,6 @@ export default {
 
     computed: {
         state () {
-            return this.$store.state;
         },
     },
 

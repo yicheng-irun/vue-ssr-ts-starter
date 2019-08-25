@@ -9,12 +9,9 @@
 </head>
 <body>
     {% block body %}
-    {% if htmlWebpackPlugin.options.isServer %}
-    <!--vue-ssr-outlet-->
-    {% else %}
-    <div id="app"></div>
-    {% endif %}
+    <div id="app">
+        <!--vue-ssr-outlet-->
+    </div>
     {% endblock %}
-    <script>var _SSR_PAGE_="{{ htmlWebpackPlugin.options.page }}" || "{% if htmlWebpackPlugin.options.isServer %}{% raw %}{{ page }}{% endraw %}{% endif %}";</script>
 </body>
 </html>

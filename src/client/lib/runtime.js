@@ -24,7 +24,6 @@ const runtime = {
             res,
             next,
             serverOrigin,
-            page,
             params,
         } = context;
 
@@ -43,7 +42,6 @@ const runtime = {
         if (params) {
             runtime.action.params = params;
         }
-        runtime.page = page;
     },
 
     clientInit () {
@@ -51,12 +49,6 @@ const runtime = {
         runtime.serverOrigin = location.origin;
         
         runtime.query = loc.query;
-
-        if (window._SSR_PAGE_) {
-            runtime.page = window._SSR_PAGE_;
-        } else {
-            runtime.page = runtime.query._page;
-        }
     },
 };
 

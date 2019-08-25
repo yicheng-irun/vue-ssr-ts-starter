@@ -44,11 +44,11 @@ export default async function createApp (): Promise<Express> {
                     data: null,
                 });
             },
-            html () {
-                res.ssrRender('site/404', {
-                    title: 'Not Found',
-                });
-            },
+            // html () {
+            //     res.ssrRender('site/404', {
+            //         title: 'Not Found',
+            //     });
+            // },
             default () {
                 res.sendStatus(404);
             },
@@ -69,11 +69,19 @@ export default async function createApp (): Promise<Express> {
                 });
             },
             html () {
-                res.ssrRender('site/500', {
-                    title: '500 server error',
-                    message: error.message,
-                    stack: error.stack,
-                });
+                res.send(`
+<h1>
+${error.message}
+</h1>
+<pre>
+${error.stack}
+</pre>
+                `)
+                // res.ssrRender('site/500', {
+                //     title: '500 server error',
+                //     message: error.message,
+                //     stack: error.stack,
+                // });
             },
             default () {
                 res.sendStatus(500);

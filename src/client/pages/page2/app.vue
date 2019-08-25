@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <h1 class="title">Page2</h1>
-        <p class="content">ajax result: {{ state.data }}</p>
+        <p class="content"></p>
     </div>
 </template>
 
@@ -19,9 +19,9 @@ export default {
     },
 
     computed: {
-        state () {
-            return this.$store.state;
-        },
+        // state () {
+            // return this.$store.state;
+        // },
     },
 
     methods: {

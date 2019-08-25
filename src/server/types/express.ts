@@ -6,6 +6,7 @@ export interface Request extends Request {
 
 export interface Response extends Response {
     ssrRender: (pagePath: string, params: {}) => void;
+    ssrHandler: (params: {}) => void;
 }
 
 export interface NextFunction extends NextFunction {}

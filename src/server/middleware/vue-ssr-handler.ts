@@ -68,7 +68,7 @@ function getSSRHandler (options: {
         const template = fs.readFileSync(templatePath).toString();
         
         const renderer = vueServerRender.createBundleRenderer(serverBundle, {
-            runInNewContext: false, // 推荐
+            runInNewContext: true, // 推荐
             template, // （可选）页面模板
             // clientManifest // （可选）客户端构建 manifest
         });
@@ -86,6 +86,33 @@ function getSSRHandler (options: {
          * 绑定一个ssrRender的函数到response对象上
          */
         const serverOrigin = `http://127.0.0.1:${getPort()}`;
+
+        res.ssrHandler = function (params = {}) {
+            function render () {
+                const renderer = getRenderer('');
+                let ignoreByNext = false;
+                const context = {
+                    req,
+                    res,
+                    next (error: Error) {
+                        ignoreByNext = true;
+                        req.next(error);
+                    },
+                    params,
+                    serverOrigin,
+                };
+                renderer.renderToString(context, (err: Error, html: string) => {
+                    if (ignoreByNext) {
+                        return;
+                    }
+                    if (err) {
+                        return req.next(err);
+                    }
+                    res.end(html);
+                });
+            }
+            render();
+        }
 
         res.ssrRender = function (pagePath, params = {}) {
             function render () {

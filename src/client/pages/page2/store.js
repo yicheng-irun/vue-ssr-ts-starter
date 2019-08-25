@@ -34,17 +34,9 @@ export default function () {
 
 
     return {
-        async serverFetch () { // 服务端 拉取数据
-            // runtime.action.next();
-            return await store.dispatch('fetchItem');
+        async fetchData () { // 拉取数据
+            return store.dispatch('fetchItem');
         },
-        async clientFetch () { // 客户端 拉取数据
-            if (window.__INITIAL_STATE__) {
-                store.replaceState(window.__INITIAL_STATE__);
-                return;
-            }
-            return await store.dispatch('fetchItem'); // 拉取数据
-        },
-        instance: store,
+        store,
     };
 }
