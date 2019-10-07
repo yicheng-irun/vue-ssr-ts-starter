@@ -1,11 +1,20 @@
 <template>
-    <div id="app">
-        <h1 class="title">Page2</h1>
-        <p class="content"></p>
+    <div id="demo2">
+        <h1 class="title">DEMO2</h1>
+        <p class="content">
+            多层路由的demo2
+        </p>
+        <div>msg: {{ $store.state.msg }}</div>
+        <div class="links">
+            <router-link to="/">Go to Index</router-link>
+        </div>
+
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
+import store from './store'
 
 export default {
     name: 'App',
@@ -17,6 +26,8 @@ export default {
         return {
         };
     },
+
+    store,
 
     computed: {
         // state () {
@@ -30,7 +41,6 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './app.styl';
 
 h1.title {
     margin 100px 0 50px 0;
@@ -42,6 +52,13 @@ h1.title {
 
 p.content {
     margin 20px;
+}
+
+.links {
+    margin 0.5em 1em
+    >a{
+        margin 0 1em
+    }
 }
 
 </style>

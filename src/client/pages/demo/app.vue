@@ -1,7 +1,9 @@
 <template>
     <div>
         <h1 class="title">demo</h1>
-        <router-link to="/">Go to Index</router-link>
+        <div class="links">
+            <router-link to="/">Go to Index</router-link>
+        </div>
     </div>
 </template>
 
@@ -45,5 +47,13 @@ h1.title {
 p.content {
     margin 20px;
 }
+
+.links {
+    margin 0.5em 1em
+    >a{
+        margin 0 1em
+    }
+}
+
 
 </style>

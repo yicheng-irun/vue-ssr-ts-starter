@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
-Vue.use(Vuex);
 import runtime from './../../../lib/runtime';
 
 export default function () {

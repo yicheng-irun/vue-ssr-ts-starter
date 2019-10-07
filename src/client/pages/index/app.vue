@@ -1,7 +1,14 @@
 <template>
     <div>
         <h1 class="title">index</h1>
-        <router-link to="/demo">Go to Demo</router-link>
+        <div class="links">
+            <router-link to="/demo">Go to Demo</router-link>
+        </div>
+        <div class="links">
+            <router-link to="/demo2">Go to Demo2</router-link>
+            <router-link to="/demo2/child1">Go to Demo2的child1</router-link>
+            <router-link to="/demo2/child2">Go to Demo2的child2</router-link>
+        </div>
     </div>
 </template>
 
@@ -45,6 +52,13 @@ h1.title {
 
 p.content {
     margin 20px;
+}
+
+.links {
+    margin 0.5em 1em
+    >a{
+        margin 0 1em
+    }
 }
 
 </style>

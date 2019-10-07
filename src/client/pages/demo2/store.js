@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
-Vue.use(Vuex);
 
 import { get } from '@/lib/ajax.js';
 // import runtime from '@/lib/runtime.js';
@@ -13,7 +11,7 @@ export default function () {
 
                 time: '',
             },
-            msg: '',
+            msg: 'demo2',
         },
 
         mutations: {
@@ -33,10 +31,5 @@ export default function () {
     });
 
 
-    return {
-        async fetchData () { // 拉取数据
-            return store.dispatch('fetchItem');
-        },
-        store,
-    };
+    return store;
 }

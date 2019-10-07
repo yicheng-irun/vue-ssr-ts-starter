@@ -1,4 +1,7 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
 import App from './app.vue';
 import createRouter from './create-router';
 import '../comps/layout.styl';

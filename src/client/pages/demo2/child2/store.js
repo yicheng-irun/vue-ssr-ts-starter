@@ -11,7 +11,7 @@ export default function () {
 
                 time: '',
             },
-            msg: '',
+            msg: 'child2',
         },
 
         mutations: {
@@ -31,10 +31,5 @@ export default function () {
     });
 
 
-    return {
-        async fetchData () { // 拉取数据
-            return store.dispatch('fetchItem');
-        },
-        store,
-    };
+    return store;
 }

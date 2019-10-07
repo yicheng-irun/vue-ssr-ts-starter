@@ -3,6 +3,11 @@
  */
 import createApp from './entry/create-app';
 
-const { app } = createApp();
+const { app, router } = createApp();
 window.aapp = app;
-app.$mount('body>div#app');
+window.arouter = router;
+router.onReady(() => {
+    console.log(router.getMatchedComponents());
+    window.ttt = router.getMatchedComponents();
+    app.$mount('body>div#app');
+});

@@ -9,7 +9,20 @@ export default function createRouter () {
         routes: [
             { path: '/', component: () => import(/* webpackChunkName: "index" */'../pages/index/app') },
             { path: '/demo', component: () => import(/* webpackChunkName: "demo" */'../pages/demo/app') },
-            { path: '/demo2', component: () => import(/* webpackChunkName: "page2" */'../pages/page2/app') },
+            {
+                path: '/demo2',
+                component: () => import(/* webpackChunkName: "page2" */'../pages/demo2/app'),
+                children: [
+                    {
+                        path: 'child1',
+                        component: () => import('../pages/demo2/child1/app')
+                    },
+                    {
+                        path: 'child2',
+                        component: () => import('../pages/demo2/child2/app')
+                    },
+                ]
+            },
         ]
     });
 }

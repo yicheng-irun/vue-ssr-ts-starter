@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
-Vue.use(Vuex);
 
 import { get } from '@/lib/ajax.js';
 // import runtime from '@/lib/runtime.js';
