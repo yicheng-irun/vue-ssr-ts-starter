@@ -33,6 +33,7 @@ export default async (context) => {
             await comps.fetchData({
                 router,
                 app,
+                route: app.$route,
                 req: context.req,
                 res: context.res,
             });

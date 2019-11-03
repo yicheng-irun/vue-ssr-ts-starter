@@ -7,7 +7,7 @@ import { get } from '@/lib/ajax.js';
 export default function () {
     const store = new Vuex.Store({
         state: {
-            indexData: '5'
+            indexData: ''
         },
 
         mutations: {

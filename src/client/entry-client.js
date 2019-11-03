@@ -25,6 +25,7 @@ function registHooks () {
                 await comps.fetchData({
                     router,
                     app,
+                    route: to,
                 });
             }
             return comps.$store;
@@ -67,6 +68,7 @@ async function start () {
                 await comps.fetchData({
                     router,
                     app,
+                    route: app.$route,
                 });
             }
         });
