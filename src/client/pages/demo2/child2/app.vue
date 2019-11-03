@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div>msg: {{ $store.state.msg }}</div>
         <h1 class="title">子路由2</h1>
+        <div>msg: {{ $store.state.msg }}</div>
     </div>
 </template>
 
@@ -21,6 +21,9 @@ export default {
     },
 
     store,
+
+    asyncData () {
+    },
 
     computed: {
     },

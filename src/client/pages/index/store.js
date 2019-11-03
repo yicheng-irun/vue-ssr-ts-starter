@@ -7,23 +7,19 @@ import { get } from '@/lib/ajax.js';
 export default function () {
     const store = new Vuex.Store({
         state: {
-            data: {
-
-                time: '',
-            },
-            msg: '',
+            indexData: '5'
         },
 
         mutations: {
             setData (state, data) {
-                state.data = data;
+                state.indexData = data;
             },
         },
 
         actions: {
-            async fetchItem ({ commit }) {
+            async fetchData ({ commit }) {
                 // 这里可以请求 后台cgi 数据
-                const rsp = await get('/api/demo', { sayhi: 'hi server!' });
+                const rsp = await get('/api/demo', { sayhi: 'hi server! -from index page' });
                 const result = rsp.data;
                 commit('setData', result.data);
             },
@@ -31,10 +27,5 @@ export default function () {
     });
 
 
-    return {
-        async fetchData () { // 拉取数据
-            return store.dispatch('fetchItem');
-        },
-        store,
-    };
+    return store;
 }

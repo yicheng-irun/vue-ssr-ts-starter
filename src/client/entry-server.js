@@ -11,19 +11,45 @@ export default async (context) => {
 
     router.push(context.req.originalUrl);
 
-    await new Promise((resolve, reject) => {
+    const theMatchedComponents = await new Promise((resolve, reject) => {
         router.onReady(() => {
             const matchedComponents = router.getMatchedComponents();
-            // 匹配不到的路由，执行 reject 函数，并返回 404
             if (!matchedComponents.length) {
                 context.next();
                 return reject(new Error('404'));
             }
-            console.log(matchedComponents);
-            resolve();
+            resolve(matchedComponents);
         }, reject);
     });
+
+    const stores = await Promise.all(theMatchedComponents.map(async (comps) => {
+        if (comps.store) {
+            if (typeof comps.store === 'function') {
+                comps.store = comps.store();
+            }
+            comps.$store = comps.store;
+        }
+        if (typeof comps.fetchData === 'function' && app.$route.query._static !== '1') {
+            await comps.fetchData({
+                router,
+                app,
+                req: context.req,
+                res: context.res,
+            });
+        }
+        return comps.$store;
+    }));
+
+    const states = [];
+    stores.forEach((item) => {
+        if (item) {
+            states.push(item.state);
+        } else {
+            states.push(null);
+        }
+    });
+
+    context.state = states; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
+    
     return app;
-    // await store.serverFetch();
-    // context.state = store.instance.state; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
 };

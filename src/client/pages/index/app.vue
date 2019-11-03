@@ -1,6 +1,9 @@
 <template>
     <div>
         <h1 class="title">index</h1>
+        <div>
+            {{ state }}
+        </div>
         <div class="links">
             <router-link to="/demo">Go to Demo</router-link>
         </div>
@@ -14,7 +17,7 @@
 
 <script>
 
-import createStore from './store';
+import store from './store';
 
 export default {
     name: 'App',
@@ -22,7 +25,11 @@ export default {
     components: {
     },
 
-    createStore,
+    store: store(),
+
+    async fetchData () {
+        await this.$store.dispatch('fetchData');
+    },
 
     data () {
         return {
@@ -31,9 +38,12 @@ export default {
 
     computed: {
         state () {
+            return this.$store.state;
         },
     },
 
+    mounted () {
+    },
     methods: {
     },
 };
