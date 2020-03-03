@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import express, { Express, ErrorRequestHandler } from 'express';
 import cookieParser from 'cookie-parser';
@@ -24,7 +23,7 @@ export default async function createApp (): Promise<Express> {
     // 加上ssr的中间件
     app.use(getSSRHandler({
         bundlePath: path.resolve(__dirname, '../client-bundle'),
-        cacheRenderer: process.env.NODE_ENV == 'development' ? false : true,
+        cacheRenderer: process.env.NODE_ENV != 'development',
     }));
 
     app.use(router);
@@ -33,13 +32,13 @@ export default async function createApp (): Promise<Express> {
     app.use((req, res: Response) => {
         res.status(404);
         res.format({
-            'image/*' () {
+            'image/*': function () {
                 res.sendStatus(404);
             },
             json () {
                 res.json({
                     errors: [{
-                        message: '404 not found'
+                        message: '404 not found',
                     }],
                     data: null,
                 });
@@ -76,7 +75,7 @@ ${error.message}
 <pre>
 ${error.stack}
 </pre>
-                `)
+                `);
                 // res.ssrRender('site/500', {
                 //     title: '500 server error',
                 //     message: error.message,

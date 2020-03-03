@@ -1,8 +1,12 @@
 <template>
     <div>
-        <h1 class="title">demo</h1>
+        <h1 class="title">
+            demo
+        </h1>
         <div class="links">
-            <router-link to="/">Go to Index</router-link>
+            <router-link to="/">
+                Go to Index
+            </router-link>
         </div>
     </div>
 </template>
@@ -18,14 +22,13 @@ export default {
 
     createStore,
 
-    data () {
+    data() {
         return {
         };
     },
 
     computed: {
-        state () {
-        },
+
     },
 
     methods: {

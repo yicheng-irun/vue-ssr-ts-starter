@@ -1,4 +1,5 @@
 module.exports = {
+    root: true,
     env: {
         "browser": true,
         "commonjs": true,
@@ -6,9 +7,8 @@ module.exports = {
         "node": true
     },
     extends: [
-        "eslint:recommended",
+        "airbnb",
         "plugin:vue/recommended",
-        // "plugin:import",
     ],
     parserOptions: {
         parser: "babel-eslint",
@@ -18,14 +18,37 @@ module.exports = {
         'vue'
     ],
     rules: {
-        "indent": [
-            "error",
-            4
+        'linebreak-style':0,
+        'camelcase': [2, {
+            "properties": "never",
+            "ignoreDestructuring": true,
+        }],
+        // 4格缩进
+        'indent': ['error', 4, {
+            "SwitchCase": 1
+        }],
+        // 声明函数时，函数名和括号间要有空格
+        'space-before-function-paren': ['error', 'always'],
+        // 声明函数时，函数名和括号间要有空格
+        'space-before-function-paren': ['error', 'always'],
+        'import/no-unresolved': 'off',
+
+        // 允许对参数的属性进行修改
+        'no-param-reassign': [
+            'error',
+            {
+                'props': false,
+            }
         ],
-        // "linebreak-style": [
-        //     "error",
-        //     "unix"
-        // ],
+        'max-len': ['error', {
+            code: 200,
+            tabWidth: 4,
+            ignoreUrls: true,
+            ignoreComments: false,
+            ignoreRegExpLiterals: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
+        }],
         "quotes": [
             "error",
             "single"

@@ -6,7 +6,7 @@ import createApp from './entry/create-app';
 const { app, router } = createApp();
 
 let isFirst = true;
-function registHooks () {
+function registHooks() {
     // 注册钩子，client端跳转时 发起fetchData的请求
     router.afterEach(async (to) => {
         if (isFirst) { // 第一次的时候，不需要执行afterEach的回调
@@ -33,7 +33,7 @@ function registHooks () {
     });
 }
 
-async function start () {
+async function start() {
     registHooks();
     const theMatchedComponents = await new Promise((resolve, reject) => {
         router.onReady(() => {
@@ -60,7 +60,7 @@ async function start () {
         }
     });
 
-    const { query: { _static } = {}} = app.$route;
+    const { query: { _static } = {} } = app.$route;
 
     if (_static === '1') {
         theMatchedComponents.map(async (comps) => {

@@ -1,16 +1,26 @@
 <template>
     <div>
-        <h1 class="title">index</h1>
+        <h1 class="title">
+            index
+        </h1>
         <div>
             {{ state }}
         </div>
         <div class="links">
-            <router-link to="/demo">Go to Demo</router-link>
+            <router-link to="/demo">
+                Go to Demo
+            </router-link>
         </div>
         <div class="links">
-            <router-link to="/demo2">Go to Demo2</router-link>
-            <router-link to="/demo2/child1">Go to Demo2的child1</router-link>
-            <router-link to="/demo2/child2">Go to Demo2的child2</router-link>
+            <router-link to="/demo2">
+                Go to Demo2
+            </router-link>
+            <router-link to="/demo2/child1">
+                Go to Demo2的child1
+            </router-link>
+            <router-link to="/demo2/child2">
+                Go to Demo2的child2
+            </router-link>
         </div>
     </div>
 </template>
@@ -27,22 +37,22 @@ export default {
 
     store: store(),
 
-    async fetchData () {
+    async fetchData() {
         await this.$store.dispatch('fetchData');
     },
 
-    data () {
+    data() {
         return {
         };
     },
 
     computed: {
-        state () {
+        state() {
             return this.$store.state;
         },
     },
 
-    mounted () {
+    mounted() {
     },
     methods: {
     },
