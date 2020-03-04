@@ -9,16 +9,16 @@ nodemon({
         NODE_SERVER_PORT: process.env.NODE_SERVER_PORT,
     },
     watch: [
-        'dist/server'
+        'dist/server',
     ],
     // delay: 2000,
 });
 
-nodemon.on('start', function () {
+nodemon.on('start', () => {
     console.log('App has started');
-}).on('quit', function () {
+}).on('quit', () => {
     console.log('App has quit');
     process.exit();
-}).on('restart', function (files) {
+}).on('restart', (files) => {
     console.log('App restarted due to: ', files);
 });
