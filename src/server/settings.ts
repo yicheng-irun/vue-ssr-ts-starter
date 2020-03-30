@@ -12,7 +12,13 @@ export function getEnv(name: string, defaultValue: string = ''): string {
     return defaultValue;
 }
 
+const isDev = getEnv('NODE_ENV', 'production') === 'development';
+
 const settings = {
+    /**
+     * 是否是开发环境
+     */
+    isDev,
 
     /**
      * http服务监听的host
