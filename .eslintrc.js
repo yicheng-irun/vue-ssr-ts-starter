@@ -1,22 +1,15 @@
+
 module.exports = {
     root: true,
-    env: {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "node": true
-    },
-    extends: [
-        "airbnb",
-        "plugin:vue/recommended",
+    parser: '@typescript-eslint/parser',
+    extends:  [
+        'airbnb-base',
+        'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     ],
-    parserOptions: {
-        parser: "babel-eslint",
-        sourceType: "module"
+    parserOptions:  {
+        ecmaVersion: 2017,  // Allows for the parsing of modern ECMAScript features
+        sourceType: 'module',  // Allows for the use of imports
     },
-    plugins: [
-        'vue'
-    ],
     rules: {
         'linebreak-style':0,
         'camelcase': [2, {
@@ -29,8 +22,7 @@ module.exports = {
         }],
         // 声明函数时，函数名和括号间要有空格
         'space-before-function-paren': ['error', 'always'],
-        // 声明函数时，函数名和括号间要有空格
-        'space-before-function-paren': ['error', 'always'],
+        
         'import/no-unresolved': 'off',
 
         // 允许对参数的属性进行修改
@@ -58,9 +50,5 @@ module.exports = {
             "always"
         ],
         "no-console": [0],
-        "vue/html-indent": [
-            'error',
-            4
-        ]
     }
 };

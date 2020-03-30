@@ -4,7 +4,7 @@
  * @param name 环境变量名
  * @param defaultValue 默认值
  */
-export function getEnv(name: string, defaultValue: string = ''): string {
+export function getEnv (name: string, defaultValue = ''): string {
     const { env = {} } = process;
     if (Object.prototype.hasOwnProperty.call(env, name)) {
         return env[name];
@@ -13,6 +13,10 @@ export function getEnv(name: string, defaultValue: string = ''): string {
 }
 
 const isDev = getEnv('NODE_ENV', 'production') === 'development';
+const host = getEnv('HTTP_HOST', '0.0.0.0');
+const port = Number.parseInt(getEnv('HTTP_PORT', '0'), 10);
+
+if (port === 0) throw new Error('请在.env环境变量中设置HTTP_PORT');
 
 const settings = {
     /**
@@ -23,13 +27,13 @@ const settings = {
     /**
      * http服务监听的host
      */
-    host: getEnv('HTTP_HOST', '0.0.0.0'),
-    
+    host,
+
     /**
      * http服务监听的端口
      */
-    port: Number.parseInt(getEnv('HTTP_PORT', '80'), 10),
+    port,
 
-}
+};
 
 export default settings;

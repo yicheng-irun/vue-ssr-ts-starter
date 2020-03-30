@@ -1,14 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import * as vueServerRender from 'vue-server-renderer';
-import getPort from "../service/get-port";
-import { Request, Response, NextFunction, Handler } from '../types/express';
+import { Middleware, Context, Next } from 'koa';
+import settings from '../settings';
 
 /**
  * 获取中间件
  * @param options 参数
  */
-function getSSRHandler (options: {
+function ssrHandler ({
+    bundlePath,
+    isCacheRenderer
+}: {
     /**
      * bundlePath  vue ssr bundle 的路径
      */
@@ -16,11 +19,10 @@ function getSSRHandler (options: {
     /**
      * 是否缓存renderer，在正式环境下开启，在开发测试环境下关闭
      */
-    cacheRenderer: boolean;
-}): Handler {
-    const bundlePath = options.bundlePath;
+    isCacheRenderer: boolean;
+}): Middleware {
     if (!bundlePath) {
-        throw new Error('options.bundlePath "' + bundlePath + '" is not available');
+        throw new Error('bundlePath "' + bundlePath + '" is not available');
     }
 
     const cachedRenderers: {
@@ -42,7 +44,7 @@ function getSSRHandler (options: {
             throw new Error(`file: '${jsonPath}' is not exists`);
         }
         const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
-        if (options.cacheRenderer) {
+        if (isCacheRenderer) {
             cachedBundle = serverBundle;
         }
         return serverBundle;
@@ -73,7 +75,7 @@ function getSSRHandler (options: {
             // clientManifest // （可选）客户端构建 manifest
         });
 
-        if (options.cacheRenderer) {
+        if (isCacheRenderer) {
             cachedRenderers[pagePath] = renderer;
         }
         
@@ -81,70 +83,38 @@ function getSSRHandler (options: {
     }
 
 
-    function middleWare (req: Request, res: Response, next: NextFunction) {
-        /**
-         * 绑定一个ssrRender的函数到response对象上
-         */
-        const serverOrigin = `http://127.0.0.1:${getPort()}`;
-
-        res.ssrHandler = function (params = {}) {
-            function render () {
-                const renderer = getRenderer('');
-                let ignoreByNext = false;
-                const context = {
-                    req,
-                    res,
-                    next (error: Error) {
-                        ignoreByNext = true;
-                        req.next(error);
-                    },
-                    params,
-                    serverOrigin,
-                };
-                renderer.renderToString(context, (err: Error, html: string) => {
-                    if (ignoreByNext) {
-                        return;
-                    }
-                    if (err) {
-                        return req.next(err);
-                    }
-                    res.end(html);
-                });
-            }
-            render();
-        }
-
-        res.ssrRender = function (pagePath, params = {}) {
-            function render () {
+    async function middleWare (ctx: Context, next: Next) {
+        const serverOrigin = `http://127.0.0.1:${settings.port}`;
+        ctx.render = async function (pagePath: string, ssrParams: any = {}) {
+            async function render (): Promise<void> {
                 const renderer = getRenderer(pagePath || '');
-                let ignoreByNext = false;
                 const context = {
-                    req,
-                    res,
-                    next (error: Error) {
-                        ignoreByNext = true;
-                        req.next(error);
-                    },
-                    params,
+                    ssrParams: ssrParams,
                     serverOrigin,
-                    page: pagePath
+                    pagePath,
+                    req: ctx.req,
+                    request: ctx.request,
+                    res: ctx.res,
+                    response: ctx.response,
                 };
-                renderer.renderToString(context, (err: Error, html: string) => {
-                    if (ignoreByNext) {
-                        return;
-                    }
-                    if (err) {
-                        return req.next(err);
-                    }
-                    res.end(html);
-                });
+                await new Promise((resolve, reject) => {
+                    renderer.renderToString(context, (err: Error, html: string) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        ctx.body = html;
+                        resolve();
+                    });
+                })
+                return;
             }
-            render();
+            await render();
         };
-        next();
+        await next();
     }
 
     return middleWare;
 }
 
-export default getSSRHandler;
+export default ssrHandler;

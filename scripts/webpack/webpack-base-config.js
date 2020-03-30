@@ -11,7 +11,6 @@ const { srcRoot } = utils.configs;
 const isProd = process.env.NODE_ENV == 'production';
 
 
-
 // const StyleLoader = () => {
 //     return {
 //         loader: 'style-loader',
@@ -19,54 +18,44 @@ const isProd = process.env.NODE_ENV == 'production';
 //     };
 // };
 
-const PostCSSLoader = () => {
-    return {
-        loader: 'postcss-loader',
-        options: {
-            plugins: [
-                require('autoprefixer'),
-                require('cssnano'),
-            ],
-            sourceMap: !isProd,
-        },
-    };
-};
+const PostCSSLoader = () => ({
+    loader: 'postcss-loader',
+    options: {
+        plugins: [
+            require('autoprefixer'),
+            require('cssnano'),
+        ],
+        sourceMap: !isProd,
+    },
+});
 
-const StylusLoader = () => {
-    return {
-        loader: 'stylus-loader',
-        options: {
-            sourceMap: !isProd,
-        },
-    };
-};
+const StylusLoader = () => ({
+    loader: 'stylus-loader',
+    options: {
+        sourceMap: !isProd,
+    },
+});
 
-const CSSLoader = () => {
-    return {
-        // prerender 时需要用css-loader/locals，SSR 时不需要
-        loader: 'css-loader',
-        options: {
-            // css中的 @import 只需要通过postcss-loader
-            importLoaders: 1,
-            localIdentName: '[local]_[hash:base64:8]',
-            sourceMap: !isProd,
-        },
-    };
-};
+const CSSLoader = () => ({
+    // prerender 时需要用css-loader/locals，SSR 时不需要
+    loader: 'css-loader',
+    options: {
+        // css中的 @import 只需要通过postcss-loader
+        importLoaders: 1,
+        localIdentName: '[local]_[hash:base64:8]',
+        sourceMap: !isProd,
+    },
+});
 
-const VueStyleLoader = () => {
-    return {
-        loader: 'vue-style-loader',
-        options: {
-            sourceMap: !isProd,
-        },
-    };
-};
-
+const VueStyleLoader = () => ({
+    loader: 'vue-style-loader',
+    options: {
+        sourceMap: !isProd,
+    },
+});
 
 
 function getConfig (chunks) {
-
     function getBaseCssLoaders () {
         const baseCssLoader = [VueStyleLoader(), CSSLoader(), PostCSSLoader()];
         if (!isProd) {
@@ -74,7 +63,7 @@ function getConfig (chunks) {
         }
         return baseCssLoader;
     }
-    
+
     const config = {
         mode: isProd ? 'production' : 'development',
         devtool: isProd ? false : 'cheap-module-eval-source-map', // nosources-source-map
@@ -101,7 +90,7 @@ function getConfig (chunks) {
                     test: /\.(js|vue)$/,
                     loader: path.resolve(__dirname, './loaders/condition-comment-loader.js'),
                     options: {
-                        isProd: isProd
+                        isProd,
                     },
                     exclude: /node_modules/,
                 },
@@ -109,7 +98,7 @@ function getConfig (chunks) {
                     test: /\.html$/,
                     loader: 'twig-loader',
                     options: {
-                    }
+                    },
                 },
                 {
                     test: /\.js$/,
@@ -142,7 +131,7 @@ function getConfig (chunks) {
             splitChunks: {
                 chunks: 'async',
                 name: 'vendor',
-            }
+            },
         },
         plugins: [
             new VueLoaderPlugin(),
@@ -182,12 +171,12 @@ function getChildPluginInstances (options = {}) {
             filename: `templates/${chunk}.html`,
             template: `${srcRoot}/pages/${chunk}/template.html`,
             // chunks: ['main'],
-            
+
             // inject: false,
             minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
 
             page: chunk,
-            isProd: isProd,
+            isProd,
             isDev: !isProd,
             isServer: false,
             isClient: true,
@@ -199,7 +188,7 @@ function getChildPluginInstances (options = {}) {
 
 
 module.exports = {
-    getConfig,  
+    getConfig,
     getSSRConfig,
     getChildPluginInstances,
 };

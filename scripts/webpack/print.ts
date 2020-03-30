@@ -1,4 +1,5 @@
-function printInfo (err, stats, isProd) {
+
+export default function printInfo (err, stats, isProd): void {
     if (err) throw err;
     // production 模式下显示详细构建结果
     if (isProd) {
@@ -27,5 +28,3 @@ function printInfo (err, stats, isProd) {
         });
     }
 }
-
-module.exports = printInfo;

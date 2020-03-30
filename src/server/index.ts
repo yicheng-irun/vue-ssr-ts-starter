@@ -6,10 +6,10 @@ import settings from './settings';
 
 export default async function createApp (): Promise<Koa> {
     const app = new Koa();
-    
+
     app.use(Morgan(settings.isDev ? 'dev' : 'combined'));
 
-    app.use(router.routes())
+    app.use(router.routes());
 
     return app;
 }
