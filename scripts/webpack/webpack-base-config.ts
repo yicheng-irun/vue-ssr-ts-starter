@@ -1,76 +1,73 @@
 
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const utils = require('../utils');
-
-const { srcRoot } = utils.configs;
-
-const isProd = process.env.NODE_ENV == 'production';
+import path from 'path';
+import { VueLoaderPlugin } from 'vue-loader';
+import webpack from 'webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import { BuildConfig } from '../build-config';
 
 
-// const StyleLoader = () => {
-//     return {
-//         loader: 'style-loader',
-//         options: { sourceMap: !isProd }
-//     };
-// };
+/**
+ * 获取基础webpack配置
+ * @param chunks
+ * @param buildConfig
+ */
+function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configuration {
+    const isProd = buildConfig.isProduction;
 
-const PostCSSLoader = () => ({
-    loader: 'postcss-loader',
-    options: {
-        plugins: [
-            require('autoprefixer'),
-            require('cssnano'),
-        ],
-        sourceMap: !isProd,
-    },
-});
+    const PostCSSLoader = (): webpack.RuleSetUseItem => ({
+        loader: 'postcss-loader',
+        options: {
+            plugins: [
+                autoprefixer,
+                cssnano,
+            ],
+            sourceMap: !isProd,
+        },
+    });
 
-const StylusLoader = () => ({
-    loader: 'stylus-loader',
-    options: {
-        sourceMap: !isProd,
-    },
-});
+    const StylusLoader = (): webpack.RuleSetUseItem => ({
+        loader: 'stylus-loader',
+        options: {
+            sourceMap: !isProd,
+        },
+    });
 
-const CSSLoader = () => ({
-    // prerender 时需要用css-loader/locals，SSR 时不需要
-    loader: 'css-loader',
-    options: {
-        // css中的 @import 只需要通过postcss-loader
-        importLoaders: 1,
-        localIdentName: '[local]_[hash:base64:8]',
-        sourceMap: !isProd,
-    },
-});
+    const CSSLoader = (): webpack.RuleSetUseItem => ({
+        // pre render 时需要用css-loader/locals，SSR 时不需要
+        loader: 'css-loader',
+        options: {
+            // css中的 @import 只需要通过postcss-loader
+            importLoaders: 1,
+            localIdentName: '[local]_[hash:base64:8]',
+            sourceMap: !isProd,
+        },
+    });
 
-const VueStyleLoader = () => ({
-    loader: 'vue-style-loader',
-    options: {
-        sourceMap: !isProd,
-    },
-});
+    const VueStyleLoader = (): webpack.RuleSetUseItem => ({
+        loader: 'vue-style-loader',
+        options: {
+            sourceMap: !isProd,
+        },
+    });
 
-
-function getConfig (chunks) {
-    function getBaseCssLoaders () {
-        const baseCssLoader = [VueStyleLoader(), CSSLoader(), PostCSSLoader()];
+    function getBaseCssLoaders (): webpack.RuleSetUseItem[] {
+        const baseCssLoader: webpack.RuleSetUseItem[] = [VueStyleLoader(), CSSLoader(), PostCSSLoader()];
         if (!isProd) {
             baseCssLoader.unshift('css-hot-loader');
         }
         return baseCssLoader;
     }
 
-    const config = {
+    const config: webpack.Configuration = {
         mode: isProd ? 'production' : 'development',
         devtool: isProd ? false : 'cheap-module-eval-source-map', // nosources-source-map
         resolve: {
             extensions: ['.js', '.vue', '.json'],
             alias: {
-                '@': srcRoot,
+                '@': buildConfig.srcPath,
             },
         },
         externals: {
@@ -139,7 +136,7 @@ function getConfig (chunks) {
                 // console.info(percentage, message, ...args);
                 // const percent = Math.floor(percentage * 1000) / 10;
                 // console.info(`${chunks} ${percent}% ${message}`);
-                if (percentage == 1) {
+                if (percentage === 1) {
                     console.info(`${chunks} 构建就绪`);
                 }
             }),
@@ -150,8 +147,8 @@ function getConfig (chunks) {
 }
 
 
-function getSSRConfig (chunks) {
-    const config = getConfig(chunks);
+export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack.Configuration {
+    const config = getConfig(chunks, buildConfig);
 
     // 使页面的顶部有vue ssr预渲染的style标签
     config.plugins.push(new MiniCssExtractPlugin({
@@ -163,21 +160,21 @@ function getSSRConfig (chunks) {
 }
 
 
-function getChildPluginInstances (options = {}) {
-    const plugins = [];
-    const templatesChunks = utils.getAllPageTemplates();
+export function getChildPluginInstances (options = {}, buildConfig: BuildConfig): HtmlWebpackPlugin[] {
+    const plugins: HtmlWebpackPlugin[] = [];
+    const templatesChunks = buildConfig.getAllPageTemplates();
     templatesChunks.forEach((chunk) => {
         plugins.push(new HtmlWebpackPlugin({
             filename: `templates/${chunk}.html`,
-            template: `${srcRoot}/pages/${chunk}/template.html`,
+            template: `${buildConfig.srcPath}/pages/${chunk}/template.html`,
             // chunks: ['main'],
 
             // inject: false,
-            minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
+            minify: { collapseWhitespace: true, minifyJS: true },
 
             page: chunk,
-            isProd,
-            isDev: !isProd,
+            isProd: buildConfig.isProduction,
+            isDev: !buildConfig.isProduction,
             isServer: false,
             isClient: true,
             ...options,
@@ -185,10 +182,3 @@ function getChildPluginInstances (options = {}) {
     });
     return plugins;
 }
-
-
-module.exports = {
-    getConfig,
-    getSSRConfig,
-    getChildPluginInstances,
-};

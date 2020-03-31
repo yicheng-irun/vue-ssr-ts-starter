@@ -1,11 +1,11 @@
 /**
  * 条件注释loader
- * 
+ *
  * // #only dev start
- * 
+ *
  * // #only dev end
- * 
- * 
+ *
+ *
  * <!-- #only dev start --> xxxxx <!-- #only dev end -->
  */
 
@@ -17,7 +17,7 @@ module.exports = function ConditionCommentLoader (source, map) {
     const options = loaderUtils.getOptions(this) || {
         isProd: true,
     };
-    const isProd = options.isProd;
+    const { isProd } = options;
     let result = source;
 
     if (isProd) {
@@ -29,9 +29,7 @@ module.exports = function ConditionCommentLoader (source, map) {
             return newLine;
         });
 
-        result = result.replace(/<!--\s+#only dev start\s+-->([\S\s]*?)<!--\s+#only dev end\s+-->/g, () => {
-            return '';
-        });
+        result = result.replace(/<!--\s+#only dev start\s+-->([\S\s]*?)<!--\s+#only dev end\s+-->/g, () => '');
     }
 
     this.callback(null, result, map);

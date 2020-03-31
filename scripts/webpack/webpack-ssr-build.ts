@@ -8,8 +8,8 @@ import { BuildConfig } from '../build-config';
 import printInfo from './print';
 
 function build (config: BuildConfig): void {
-    const clientConfig = createClientConfig();
-    const serverConfig = createServerConfig();
+    const clientConfig = createClientConfig(config);
+    const serverConfig = createServerConfig(config);
 
     const clientConfig2 = webpackMerge(clientConfig, {
         devServer: {
@@ -40,7 +40,7 @@ function build (config: BuildConfig): void {
             open: false,
             openPage: 'index.html',
             before (app): void {
-                app.use(morgan('dev'));
+                // app.use(morgan('dev'));
             },
             proxy: { // 全局代理到后端
                 '/': `http://localhost:${config.devNodeServerPort}`,
