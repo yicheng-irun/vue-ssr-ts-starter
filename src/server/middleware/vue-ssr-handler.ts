@@ -4,13 +4,19 @@ import * as vueServerRender from 'vue-server-renderer';
 import { Middleware, Context, Next } from 'koa';
 import settings from '../settings';
 
+declare module 'koa' {
+    interface Context {
+        render?: (pagePath: string, ssrParams?: any) => Promise<void>;
+    }
+}
+
 /**
  * 获取中间件
  * @param options 参数
  */
 function ssrHandler ({
     bundlePath,
-    isCacheRenderer
+    isCacheRenderer,
 }: {
     /**
      * bundlePath  vue ssr bundle 的路径
@@ -22,7 +28,7 @@ function ssrHandler ({
     isCacheRenderer: boolean;
 }): Middleware {
     if (!bundlePath) {
-        throw new Error('bundlePath "' + bundlePath + '" is not available');
+        throw new Error(`bundlePath "${bundlePath}" is not available`);
     }
 
     const cachedRenderers: {
@@ -34,7 +40,7 @@ function ssrHandler ({
     /**
      * 获取bundle
      */
-    function getBundle () {
+    function getBundle (): Record<string, any> {
         if (cachedBundle) {
             return cachedBundle;
         }
@@ -50,7 +56,7 @@ function ssrHandler ({
         return serverBundle;
     }
 
-    function getRenderer (pagePathArg: string) {
+    function getRenderer (pagePathArg: string): vueServerRender.BundleRenderer {
         const pagePath = pagePathArg.replace(/^\/+/, '');
 
         if (cachedRenderers[pagePath]) {
@@ -68,7 +74,7 @@ function ssrHandler ({
 
         const serverBundle = getBundle();
         const template = fs.readFileSync(templatePath).toString();
-        
+
         const renderer = vueServerRender.createBundleRenderer(serverBundle, {
             runInNewContext: true, // 推荐
             template, // （可选）页面模板
@@ -78,18 +84,18 @@ function ssrHandler ({
         if (isCacheRenderer) {
             cachedRenderers[pagePath] = renderer;
         }
-        
+
         return renderer;
     }
 
 
-    async function middleWare (ctx: Context, next: Next) {
+    async function middleWare (ctx: Context, next: Next): Promise<void> {
         const serverOrigin = `http://127.0.0.1:${settings.port}`;
-        ctx.render = async function (pagePath: string, ssrParams: any = {}) {
+        ctx.render = async (pagePath: string, ssrParams: any = {}): Promise<void> => {
             async function render (): Promise<void> {
                 const renderer = getRenderer(pagePath || '');
                 const context = {
-                    ssrParams: ssrParams,
+                    ssrParams,
                     serverOrigin,
                     pagePath,
                     req: ctx.req,
@@ -106,8 +112,7 @@ function ssrHandler ({
                         ctx.body = html;
                         resolve();
                     });
-                })
-                return;
+                });
             }
             await render();
         };

@@ -1,19 +1,20 @@
 import KoaRouter from '@koa/router';
 import { resolve } from 'path';
+import { Context } from 'koa';
+
 import ssrHandler from '../middleware/vue-ssr-handler';
 import settings from '../settings';
 
 const router = new KoaRouter();
 
-const bundlePath = settings.isDev
-    ? resolve(__dirname, '../../../dist/client-bundle') : resolve(__dirname, '../../client-bundle');
-
 router.use(ssrHandler({
-    bundlePath,
+    bundlePath: settings.isDev
+        ? resolve(__dirname, '../../../dist/client-bundle') : resolve(__dirname, '../../client-bundle'),
     isCacheRenderer: !settings.isDev,
 }));
 
-router.get('/', (ctx) => {
+
+router.get('/', (ctx: Context) => {
     ctx.body = 'hello';
 });
 
