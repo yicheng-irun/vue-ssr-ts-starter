@@ -1,8 +1,6 @@
 import { Middleware, Context, Next } from 'koa';
 import settings from '../settings';
 
-console.log(settings.isDev);
-
 const ErrorMiddleware: Middleware = async (ctx: Context, next: Next) => {
     try {
         await next();

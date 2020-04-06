@@ -11,8 +11,7 @@ const router = new KoaRouter();
 router.all(/.*/); // 使app中的use不再按需进入此路由
 
 router.use(ssrHandler({
-    bundlePath: settings.isDev
-        ? resolve(__dirname, '../../../dist/client-bundle') : resolve(__dirname, '../../client-bundle'),
+    bundlePath: resolve(__dirname, '../../../dist/client-bundle'),
     isCacheRenderer: !settings.isDev,
 }));
 
