@@ -9,56 +9,48 @@ const runtime = {
     serverOrigin: '',
 
     action: {
-        req: {},
-        res: {},
-        next: () => {},
-        params: {},
+        ctx: null, // koa的ctx
+        ssrParams: null,
     },
-    page: '',
+    pagePath: '',
     query: {},
 
     // 仅在服务端运行
     setServerContext (context) {
         const {
-            req,
-            res,
-            next,
+            ssrParams,
             serverOrigin,
-            params,
+            pagePath,
+            ctx,
+            query,
         } = context;
 
         runtime.serverOrigin = serverOrigin;
-
-        if (req) {
-            runtime.action.req = req;
-            runtime.query = req.query;
-        }
-        if (res) {
-            runtime.action.res = res;
-        }
-        if (next) {
-            runtime.action.next = next;
-        }
-        if (params) {
-            runtime.action.params = params;
-        }
+        runtime.action.ctx = ctx;
+        runtime.query = query;
+        runtime.action.ssrParams = ssrParams;
+        runtime.pagePath = pagePath;
     },
 
     clientInit () {
+        const { location } = window;
         const loc = Url.parse(location.href, true);
         runtime.serverOrigin = location.origin;
-        
+
         runtime.query = loc.query;
+        // eslint-disable-next-line no-underscore-dangle
+        runtime.pagePath = window._SSR_PAGE_ || runtime.query._pagePath;
     },
 };
 
-if (global.process && global.process.env && global.process.env.VUE_ENV == 'server') {
+if (global.process?.env?.VUE_ENV === 'server') {
     runtime.isServer = true;
     runtime.isClient = false;
 } else {
     runtime.clientInit();
 }
-if (global.process && process.env && process.env.NODE_ENV == 'development') {
+
+if (global.process?.env?.NODE_ENV === 'development') {
     runtime.isDev = true;
     runtime.isProd = false;
 }

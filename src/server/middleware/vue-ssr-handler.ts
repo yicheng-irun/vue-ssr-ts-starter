@@ -91,30 +91,17 @@ function ssrHandler ({
 
     async function middleWare (ctx: Context, next: Next): Promise<void> {
         const serverOrigin = `http://127.0.0.1:${settings.port}`;
-        ctx.render = async (pagePath: string, ssrParams: any = {}): Promise<void> => {
-            async function render (): Promise<void> {
-                const renderer = getRenderer(pagePath || '');
-                const context = {
-                    ssrParams,
-                    serverOrigin,
-                    pagePath,
-                    req: ctx.req,
-                    request: ctx.request,
-                    res: ctx.res,
-                    response: ctx.response,
-                };
-                await new Promise((resolve, reject) => {
-                    renderer.renderToString(context, (err: Error, html: string) => {
-                        if (err) {
-                            reject(err);
-                            return;
-                        }
-                        ctx.body = html;
-                        resolve();
-                    });
-                });
-            }
-            await render();
+        ctx.render = async (pagePath: string, ssrParams: Record<string, any> = {}): Promise<void> => {
+            const renderer = getRenderer(pagePath || '');
+            const context = {
+                ssrParams,
+                serverOrigin,
+                pagePath,
+                query: ctx.query,
+                ctx,
+            };
+            const html = await renderer.renderToString(context);
+            ctx.body = html;
         };
         await next();
     }

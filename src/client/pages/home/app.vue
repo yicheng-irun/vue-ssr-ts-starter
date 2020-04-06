@@ -3,15 +3,28 @@
         <h1 class="title">
             index
         </h1>
+        <div>
+            {{ state.sayHi }}
+        </div>
     </div>
 </template>
 
 <script>
 
+import createStore from './store';
 
 export default {
     name: 'App',
     components: {
+    },
+    createStore,
+    async fetchData (context) {
+        await context.store.dispatch('fetchData');
+    },
+    computed: {
+        state () {
+            return this.$store.state;
+        },
     },
 };
 </script>

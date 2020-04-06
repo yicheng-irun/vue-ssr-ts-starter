@@ -30,7 +30,7 @@ export default async function createApp (): Promise<Koa> {
     };
     router.use(session(sessionConfig, app));
 
-    app.use(router.routes());
+    app.use(router.routes()).use(router.allowedMethods());
 
     return app;
 }

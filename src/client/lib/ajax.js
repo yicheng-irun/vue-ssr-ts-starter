@@ -7,28 +7,26 @@ export function createAxios () {
         const instance = axios.create({
             // add headers to server side requests
             headers: {
-                ...runtime.action.req.headers,
+                ...runtime.action.ctx.request.header,
                 accept: '*/*',
             },
 
             baseURL: runtime.serverOrigin,
         });
-        instance.interceptors.response.use(function (response) {
+        instance.interceptors.response.use((response) => {
             /**
              * throw the 'set-cookie' of the ajax response header to action response header
              */
             let newSetCookie = response.headers && response.headers['set-cookie'];
             if (newSetCookie) {
-                const oldSetCookie = runtime.action.res.getHeader('set-cookie') || [];
+                const oldSetCookie = runtime.action.ctx.response.header['set-cookie'] || [];
                 if (!Array.isArray(newSetCookie)) {
                     newSetCookie = [newSetCookie];
                 }
-                runtime.action.res.setHeader('set-cookie', newSetCookie.concat(oldSetCookie));
+                runtime.action.ctx.response.set('set-cookie', newSetCookie.concat(oldSetCookie));
             }
             return response;
-        }, function (error) {
-            return Promise.reject(error);
-        });
+        }, (error) => Promise.reject(error));
         return instance;
     }
     return axios.create();
