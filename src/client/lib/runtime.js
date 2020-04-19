@@ -1,58 +1,58 @@
 import Url from 'url';
 
 const runtime = {
-    isServer: false,
-    isClient: true,
-    isProd: true,
-    isDev: false,
+   isServer: false,
+   isClient: true,
+   isProd: true,
+   isDev: false,
 
-    serverOrigin: '',
+   serverOrigin: '',
 
-    action: {
-        ctx: null, // koa的ctx
-        ssrParams: null,
-    },
-    pagePath: '',
-    query: {},
+   action: {
+      ctx: null, // koa的ctx
+      ssrParams: null,
+   },
+   pagePath: '',
+   query: {},
 
-    // 仅在服务端运行
-    setServerContext (context) {
-        const {
-            ssrParams,
-            serverOrigin,
-            pagePath,
-            ctx,
-            query,
-        } = context;
+   // 仅在服务端运行
+   setServerContext (context) {
+      const {
+         ssrParams,
+         serverOrigin,
+         pagePath,
+         ctx,
+         query,
+      } = context;
 
-        runtime.serverOrigin = serverOrigin;
-        runtime.action.ctx = ctx;
-        runtime.query = query;
-        runtime.action.ssrParams = ssrParams;
-        runtime.pagePath = pagePath;
-    },
+      runtime.serverOrigin = serverOrigin;
+      runtime.action.ctx = ctx;
+      runtime.query = query;
+      runtime.action.ssrParams = ssrParams;
+      runtime.pagePath = pagePath;
+   },
 
-    clientInit () {
-        const { location } = window;
-        const loc = Url.parse(location.href, true);
-        runtime.serverOrigin = location.origin;
+   clientInit () {
+      const { location } = window;
+      const loc = Url.parse(location.href, true);
+      runtime.serverOrigin = location.origin;
 
-        runtime.query = loc.query;
-        // eslint-disable-next-line no-underscore-dangle
-        runtime.pagePath = window._SSR_PAGE_ || runtime.query._pagePath;
-    },
+      runtime.query = loc.query;
+      // eslint-disable-next-line no-underscore-dangle
+      runtime.pagePath = window._SSR_PAGE_ || runtime.query._pagePath;
+   },
 };
 
 if (global.process?.env?.VUE_ENV === 'server') {
-    runtime.isServer = true;
-    runtime.isClient = false;
+   runtime.isServer = true;
+   runtime.isClient = false;
 } else {
-    runtime.clientInit();
+   runtime.clientInit();
 }
 
 if (global.process?.env?.NODE_ENV === 'development') {
-    runtime.isDev = true;
-    runtime.isProd = false;
+   runtime.isDev = true;
+   runtime.isProd = false;
 }
 
 

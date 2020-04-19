@@ -26,7 +26,7 @@ module.exports = {
         ...parentRules,
         "vue/html-indent": [
             'error',
-            4
+            3
         ]
     },
 };

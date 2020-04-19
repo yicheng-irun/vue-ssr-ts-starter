@@ -1,18 +1,18 @@
 <template>
-    <div id="app">
-        <h1 class="title">
-            index
-        </h1>
-    </div>
+   <div id="app">
+      <h1 class="title">
+         index
+      </h1>
+   </div>
 </template>
 
 <script>
 
 
 export default {
-    name: 'App',
-    components: {
-    },
+   name: 'App',
+   components: {
+   },
 };
 </script>
 

@@ -1,28 +1,28 @@
 <template>
-    <div id="app">
-        <h1 class="title">
-            500
-        </h1>
-        <p>A Server Error Occurred!</p>
-        <p>服务器上产生了一个错误</p>
-        <p>错误信息: {{ state.message }}</p>
-        <div class="stack">
-            <pre>{{ state.stack }}</pre>
-        </div>
-    </div>
+   <div id="app">
+      <h1 class="title">
+         500
+      </h1>
+      <p>A Server Error Occurred!</p>
+      <p>服务器上产生了一个错误</p>
+      <p>错误信息: {{ state.message }}</p>
+      <div class="stack">
+         <pre>{{ state.stack }}</pre>
+      </div>
+   </div>
 </template>
 
 <script>
 import createStore from './store';
 
 export default {
-    name: 'App',
-    createStore,
-    computed: {
-        state () {
-            return this.$store.state;
-        },
-    },
+   name: 'App',
+   createStore,
+   computed: {
+      state () {
+         return this.$store.state;
+      },
+   },
 };
 </script>
 

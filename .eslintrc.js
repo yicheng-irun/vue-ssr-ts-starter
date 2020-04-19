@@ -6,7 +6,7 @@ module.exports = {
         'airbnb-base',
         'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     ],
-    parserOptions:  {
+    parserOptions: {
         ecmaVersion: 2017,  // Allows for the parsing of modern ECMAScript features
         sourceType: 'module',  // Allows for the use of imports
     },
@@ -17,7 +17,7 @@ module.exports = {
             "ignoreDestructuring": true,
         }],
         // 4格缩进
-        'indent': ['error', 4, {
+        'indent': ['error', 3, {
             "SwitchCase": 1
         }],
         // 声明函数时，函数名和括号间要有空格
@@ -50,5 +50,5 @@ module.exports = {
             "always"
         ],
         "no-console": [0],
-    }
+    },
 };

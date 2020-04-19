@@ -8,10 +8,10 @@ import './comps/layout.styl';
 Vue.use(Vuex);
 
 export default async function getApp () {
-    const { pagePath } = runtime;
-    if (!Object.prototype.hasOwnProperty.call(pages, pagePath)) {
-        throw new Error(`未找到该页面:${pagePath}`);
-    }
-    const { default: App } = await pages[pagePath]();
-    return App;
+   const { pagePath } = runtime;
+   if (!Object.prototype.hasOwnProperty.call(pages, pagePath)) {
+      throw new Error(`未找到该页面:${pagePath}`);
+   }
+   const { default: App } = await pages[pagePath]();
+   return App;
 }
