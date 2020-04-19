@@ -14,6 +14,15 @@ export class YiAdminDemo {
    public strField?: string;
 
    @prop({
+      type: String,
+      required: true,
+   })
+   public strField2?: string;
+
+   @prop()
+   public strField3?: string;
+
+   @prop({
       type: Number,
       min: 0,
       max: 100,
