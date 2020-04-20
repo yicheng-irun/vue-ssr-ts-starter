@@ -5,7 +5,7 @@ import MongooseModelAdmin from '../yi-admin/lib/mongoose-model-admin';
 const myadmin = new YiAdmin({});
 
 myadmin.addModelAdmin(new MongooseModelAdmin({
-   name: 'YiAdminDemo',
+   name: 'yi-admin-demo',
    model: YiAdminDemoModel,
 }));
 

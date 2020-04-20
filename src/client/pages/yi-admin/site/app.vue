@@ -7,6 +7,10 @@
       </div>
       <div class="ya-main">
          <div class="ya-left-block">
+            <a
+               href="/myadmin/model-admin/yi-admin-demo/edit"
+               target="_blank"
+            >editTest</a>
             <el-menu
                default-active="1-4-1"
                :collapse="isCollapse"
@@ -60,7 +64,7 @@
             </el-menu>
          </div>
          <div class="ya-right-block">
-            right
+            <iframe name="main" />
          </div>
       </div>
    </div>
@@ -80,6 +84,14 @@ export default {
             },
          ],
       };
+   },
+   methods: {
+      handleOpen (v) {
+         console.log(v);
+      },
+      handleClose (v) {
+         console.log(v);
+      },
    },
 };
 </script>
@@ -141,6 +153,11 @@ body {
             position relative
             height 100%;
             margin 0 0 0 leftWidth;
+            >iframe {
+               width 100%
+               height 100%
+               border none
+            }
         }
     }
 }

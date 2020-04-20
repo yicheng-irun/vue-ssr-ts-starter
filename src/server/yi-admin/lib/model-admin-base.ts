@@ -61,10 +61,10 @@ export default class ModelAdminBase {
          this.permission = permission;
       }
       // 因为要在url的路径中，所以要做这个限制
-      if (/^[0-9a-zA-Z_-]+$/.test(name)) {
+      if (/^[0-9a-z_-]+$/.test(name)) {
          this.$name = name;
       } else {
-         throw new Error('name的规则必须满足/^[0-9a-zA-Z_-]+$/');
+         throw new Error('name的规则必须满足/^[0-9a-z_-]+$/');
       }
    }
 

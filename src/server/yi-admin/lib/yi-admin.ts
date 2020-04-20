@@ -58,9 +58,16 @@ export default class YiAdmin {
    } = {};
 
    private appendModelAdminRouter (): void {
-      this.koaRouter.get('/model-admin/:modelName/', async (ctx: Context, next) => {
+      const isFailModelName = (ctx: Context): boolean => {
          const { modelName } = ctx.params;
          if (!Object.prototype.hasOwnProperty.call(this.modelAdminsMap, modelName)) {
+            return true;
+         }
+         return false;
+      };
+
+      this.koaRouter.get('/model-admin/:modelName/', async (ctx: Context, next) => {
+         if (isFailModelName(ctx)) {
             await next();
             return;
          }
@@ -68,12 +75,24 @@ export default class YiAdmin {
       });
 
       this.koaRouter.get('/model-admin/:modelName/edit', async (ctx: Context, next) => {
-         const { modelName } = ctx.params;
-         if (!Object.prototype.hasOwnProperty.call(this.modelAdminsMap, modelName)) {
+         if (isFailModelName(ctx)) {
             await next();
             return;
          }
          await ctx.render('yi-admin/model-admin-edit', {});
+      });
+
+      this.koaRouter.get('/model-admin/:modelName/edit/fields', async (ctx: Context, next) => {
+         if (isFailModelName(ctx)) {
+            await next();
+            return;
+         }
+         const { modelName } = ctx.params;
+         const fields = this.modelAdminsMap[modelName].getEditFormFields();
+         ctx.body = {
+            success: true,
+            data: fields,
+         };
       });
    }
 
