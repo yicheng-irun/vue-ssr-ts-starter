@@ -1,6 +1,6 @@
 import axios from 'axios';
+import Url from 'url';
 import runtime from './runtime';
-// import urlLib from 'url';
 
 export function createAxios () {
    if (runtime.isServer) {
@@ -11,12 +11,17 @@ export function createAxios () {
             accept: '*/*',
          },
 
-         baseURL: runtime.serverOrigin,
+         baseURL: runtime.baseUrl,
+      });
+      instance.interceptors.request.use((reqConfig) => {
+         // 使服务端也能像在前端一样使用相对路径
+         reqConfig.url = Url.resolve(`${reqConfig.baseURL}`, reqConfig.url);
+         return reqConfig;
       });
       instance.interceptors.response.use((response) => {
          /**
-             * throw the 'set-cookie' of the ajax response header to action response header
-             */
+          * throw the 'set-cookie' of the ajax response header to action response header
+          */
          let newSetCookie = response.headers && response.headers['set-cookie'];
          if (newSetCookie) {
             const oldSetCookie = runtime.action.ctx.response.header['set-cookie'] || [];

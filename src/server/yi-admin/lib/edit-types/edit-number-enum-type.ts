@@ -1,4 +1,4 @@
-import EditBaseType from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
 
 export default class EditNumberEnumType extends EditBaseType {
    /**
@@ -29,12 +29,11 @@ export default class EditNumberEnumType extends EditBaseType {
       enum: [],
    }
 
-   constructor (config: {
+   constructor (config: EditBaseTypeConfig & {
       enum: (number | {
          value: number;
          label: string;
       })[];
-      required?: boolean;
    }) {
       super(config);
       if (config.enum && Array.isArray(config.enum)) {

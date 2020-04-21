@@ -7,6 +7,7 @@ const runtime = {
    isDev: false,
 
    serverOrigin: '',
+   baseUrl: '', // 用于屏蔽服务端和客户端的ajax请求的baseUrl
 
    action: {
       ctx: null, // koa的ctx
@@ -26,6 +27,7 @@ const runtime = {
       } = context;
 
       runtime.serverOrigin = serverOrigin;
+      runtime.baseUrl = `${serverOrigin}${ctx.originalUrl}`;
       runtime.action.ctx = ctx;
       runtime.query = query;
       runtime.action.ssrParams = ssrParams;
@@ -36,6 +38,7 @@ const runtime = {
       const { location } = window;
       const loc = Url.parse(location.href, true);
       runtime.serverOrigin = location.origin;
+      runtime.baseUrl = location.href;
 
       runtime.query = loc.query;
       // eslint-disable-next-line no-underscore-dangle

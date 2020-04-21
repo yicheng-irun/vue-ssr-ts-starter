@@ -14,9 +14,9 @@
             <el-menu
                default-active="1-4-1"
                :collapse="isCollapse"
-               background-color="#444c54"
-               text-color="#fff"
-               active-text-color="#108ee9"
+               abackground-color="#444c54"
+               atext-color="#fff"
+               aactive-text-color="#108ee9"
                @open="handleOpen"
                @close="handleClose"
             >
@@ -64,7 +64,10 @@
             </el-menu>
          </div>
          <div class="ya-right-block">
-            <iframe name="main" />
+            <iframe
+               name="main"
+               src="/myadmin/model-admin/yi-admin-demo/edit"
+            />
          </div>
       </div>
    </div>
@@ -97,68 +100,80 @@ export default {
 </script>
 
 <style lang="stylus">
-
 leftWidth = 13em;
 
 html, body {
-    position relative
-    width 100%
-    height 100%
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
-body {
-    margin: 0
-    font-size: 16px
-}
+
 #ya-site-page {
-    position relative
-    width 100%
-    height 100%
-    background #f5f6f7
-    color #000a
-    >.ya-header {
-        position relative
-        top 0
-        width 100%
-        height 3em
-        line-height 3em
-        z-index 10
-        background #fff
-        box-shadow 0 0 0.3em #0001
-        >.site-name {
-            display inline-block
-            vertical-align top
-            font-size 1.1em
-            padding 0 1em
-            margin 0 0.2em
-        }
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f5f6f7;
+  color: #000a;
+
+  >.ya-header {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 3em;
+    line-height: 3em;
+    z-index: 10;
+    background: #fff;
+    box-shadow: 0 0 0.4em #0001;
+
+    >.site-name {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 1.1em;
+      padding: 0 1em;
+      margin: 0 0.2em;
     }
-    >.ya-main {
-        position absolute
-        top 3em
-        bottom 0
-        width 100%
-        z-index 5
-        >.ya-left-block {
-            position absolute
-            width leftWidth
-            height 100%
-            overflow-y auto
-            background-color #444c54
-            color #fffb
-            >.el-menu {
-                border-right none
-            }
-        }
-        >.ya-right-block {
-            position relative
-            height 100%;
-            margin 0 0 0 leftWidth;
-            >iframe {
-               width 100%
-               height 100%
-               border none
-            }
-        }
+  }
+
+  >.ya-main {
+    position: absolute;
+    top: 3em;
+    bottom: 0;
+    width: 100%;
+    z-index: 5;
+
+    >.ya-left-block {
+      position: absolute;
+      width: leftWidth;
+      height: 100%;
+      overflow-y: auto;
+      background-color: #fffa;
+      box-shadow: 0 0 0.2em #0001;
+      // box-sizing border-box
+      // border-right 1px solid #fff
+      color: #fffb;
+
+      &::before {
+        display: block;
+        content: '';
+        border-top: 1px dotted #0004;
+      }
+
+      >.el-menu {
+        border-right: none;
+      }
     }
+
+    >.ya-right-block {
+      position: relative;
+      height: 100%;
+      margin: 0 0 0 leftWidth;
+
+      >iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    }
+  }
 }
 </style>

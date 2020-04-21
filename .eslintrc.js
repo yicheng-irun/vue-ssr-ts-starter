@@ -16,7 +16,7 @@ module.exports = {
             "properties": "never",
             "ignoreDestructuring": true,
         }],
-        // 4格缩进
+        // 3格缩进
         'indent': ['error', 3, {
             "SwitchCase": 1
         }],

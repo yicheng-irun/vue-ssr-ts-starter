@@ -1,4 +1,4 @@
-import EditBaseType from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
 
 export default class EditStringType extends EditBaseType {
    /**
@@ -27,10 +27,9 @@ export default class EditStringType extends EditBaseType {
    }
 
    constructor (
-      config: {
+      config: EditBaseTypeConfig & {
          minLength?: number;
          maxLength?: number;
-         required?: boolean;
       },
    ) {
       super(config);

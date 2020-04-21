@@ -13,42 +13,54 @@ import EditBooleanType from './edit-types/edit-boolean-type';
  * 映射mongoose的默认类型的图
  */
 const INSTANCE_EDIT_TYPE_MAP: {
-   [type: string]: (schemaTypeOpts: SchemaTypeOpts<{}>) => EditBaseType;
+   [type: string]: (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>) => EditBaseType;
 } = {
-   ObjectID (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   ObjectID (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       return new EditBaseType({
          required: schemaTypeOpts.required,
+         fieldName,
+         fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   String (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   String (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       if (schemaTypeOpts.enum) {
          return new EditStringEnumType({
             enum: schemaTypeOpts.enum,
             required: schemaTypeOpts.required,
+            fieldName,
+            fieldNameAlias: schemaTypeOpts.name,
          });
       }
       return new EditStringType({
          required: schemaTypeOpts.required,
          minLength: schemaTypeOpts.minlength,
          maxLength: schemaTypeOpts.maxlength,
+         fieldName,
+         fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   Number (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Number (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       if (schemaTypeOpts.enum) {
          return new EditNumberEnumType({
             enum: schemaTypeOpts.enum,
             required: schemaTypeOpts.required,
+            fieldName,
+            fieldNameAlias: schemaTypeOpts.name,
          });
       }
       return new EditNumberType({
          required: schemaTypeOpts.required,
          min: schemaTypeOpts.min,
          max: schemaTypeOpts.max,
+         fieldName,
+         fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Boolean (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       return new EditBooleanType({
          required: schemaTypeOpts.required,
+         fieldName,
+         fieldNameAlias: schemaTypeOpts.name,
       });
    },
 };
@@ -65,27 +77,26 @@ export default class MongooseModelAdmin extends ModelAdminBase {
       console.log(this.getEditFormFields());
    }
 
-   public getEditFormFields (): {
-      [key: string]: EditBaseType;
-      } {
-      const fields: {
-         [key: string]: EditBaseType;
-      } = {};
+   public getEditFormFields (): EditBaseType[] {
+      const fields: EditBaseType[] = [];
 
       const { schema } = this.model;
       const pathsKeys = Object.keys(schema.paths);
       pathsKeys.forEach((key) => {
+         // 卧槽，这个mongoose的这里的类型声明不正确
          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
          // @ts-ignore
          const schemaPath: SchemaType & {
             instance: string;
+            path: string;
             options: SchemaTypeOpts<{}>;
          } = schema.paths[key];
 
          if (key === '_id' || key === '__v') return;
          const { instance } = schemaPath;
+
          if (INSTANCE_EDIT_TYPE_MAP[instance]) {
-            fields[key] = INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.options);
+            fields.push(INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.path, schemaPath.options));
          }
       });
 

@@ -37,6 +37,11 @@ export default class YiAdmin {
    private appendPermissionCheckRouter (): void {
       // check permissionResult
       this.koaRouter.use(async (ctx, next) => {
+         if (!/\/$/.test(ctx.path)) { // 使强制加/
+            ctx.redirect(ctx.originalUrl.replace(ctx.path, () => `${ctx.path}/`));
+            return;
+         }
+
          const permissionResult = await this.permission(ctx);
          if (permissionResult === true) {
             await next();
@@ -74,7 +79,7 @@ export default class YiAdmin {
          await ctx.render('yi-admin/model-admin-list', {});
       });
 
-      this.koaRouter.get('/model-admin/:modelName/edit', async (ctx: Context, next) => {
+      this.koaRouter.get('/model-admin/:modelName/edit/', async (ctx: Context, next) => {
          if (isFailModelName(ctx)) {
             await next();
             return;
@@ -82,7 +87,7 @@ export default class YiAdmin {
          await ctx.render('yi-admin/model-admin-edit', {});
       });
 
-      this.koaRouter.get('/model-admin/:modelName/edit/fields', async (ctx: Context, next) => {
+      this.koaRouter.get('/model-admin/:modelName/edit/fields/', async (ctx: Context, next) => {
          if (isFailModelName(ctx)) {
             await next();
             return;

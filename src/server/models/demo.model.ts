@@ -10,6 +10,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       maxlength: 300,
+      name: '字符串strField',
    })
    public strField?: string;
 

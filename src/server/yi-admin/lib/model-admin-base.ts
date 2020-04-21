@@ -89,9 +89,7 @@ export default class ModelAdminBase {
     * 获取表单编辑页的字段列表
     */
    // eslint-disable-next-line class-methods-use-this
-   public getEditFormFields (): {
-      [key: string]: EditBaseType;
-      } {
+   public getEditFormFields (): EditBaseType[] {
       throw new Error('请在子类中实现getEditFormFields函数');
    }
 

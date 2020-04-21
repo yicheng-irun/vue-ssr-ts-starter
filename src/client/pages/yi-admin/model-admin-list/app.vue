@@ -1,5 +1,5 @@
 <template>
-  <div>yiadmin</div>
+   <div>yiadmin</div>
 </template>
 
 <script>
