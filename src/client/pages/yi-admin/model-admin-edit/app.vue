@@ -1,19 +1,28 @@
 <template>
-   <div>
+   <div id="app">
       <div>yiadmin</div>
-      <div>
-         {{ JSON.stringify(state) }}
-      </div>
+      <edit-form
+         :edit-id="state.editId"
+         :edit-form-fields="state.editFormFields"
+         :edit-form-data="state.editFormData"
+      />
+      <pre>
+         {{ JSON.stringify(state, null, '  ') }}
+      </pre>
    </div>
 </template>
 
 <script>
 import '../components/element-ui';
 import createStore from './store';
+import EditForm from './edit-form';
 
 export default {
-   createStore,
+   components: {
+      EditForm,
+   },
 
+   createStore,
    async fetchData (context) {
       await Promise.all([
          context.store.dispatch('fetchEditFormFields'),
@@ -31,5 +40,9 @@ export default {
 </script>
 
 <style lang="stylus">
-
+#app {
+   >pre {
+      font-size 12px;
+   }
+}
 </style>

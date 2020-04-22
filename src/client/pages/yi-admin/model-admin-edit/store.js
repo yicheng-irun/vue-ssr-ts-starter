@@ -6,7 +6,9 @@ export default function () {
    const store = new Vuex.Store({
       state: {
          sayHi: '',
+         editId: '',
          editFormFields: [],
+         editFormData: {},
       },
 
       mutations: {
