@@ -1,14 +1,11 @@
 <template>
    <div id="app">
-      <div>yiadmin</div>
       <edit-form
          :edit-id="state.editId"
          :edit-form-fields="state.editFormFields"
          :edit-form-data="state.editFormData"
       />
-      <pre>
-         {{ JSON.stringify(state, null, '  ') }}
-      </pre>
+      <pre v-text="JSON.stringify(state, null, '  ')" />
    </div>
 </template>
 

@@ -6,7 +6,7 @@
          status-icon
          size="small"
          :rules="formRules"
-         label-width="120px"
+         label-width="110px"
       >
          <el-form-item
             v-for="(item, index) in editFormFields"
@@ -83,6 +83,10 @@ export default {
    padding 2em 0em
    margin 0 1em
 
+   .el-form-item__label {
+      font-size 0.8em
+      opacity 0.9
+   }
    .el-button--small {
       padding 0.6em 1.5em
    }

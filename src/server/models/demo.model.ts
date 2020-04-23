@@ -9,7 +9,8 @@ import { RefFieldClass } from './demo.refclass.model';
 export class YiAdminDemo {
    @prop({
       type: String,
-      maxlength: 300,
+      maxlength: 20,
+      minlength: 3,
       name: '字符串strField',
    })
    public strField?: string;

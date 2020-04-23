@@ -14,9 +14,6 @@
             <el-menu
                default-active="1-4-1"
                :collapse="isCollapse"
-               abackground-color="#444c54"
-               atext-color="#fff"
-               aactive-text-color="#108ee9"
                @open="handleOpen"
                @close="handleClose"
             >
@@ -106,6 +103,7 @@ html, body {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow hidden
 }
 
 #ya-site-page {
@@ -114,6 +112,7 @@ html, body {
   height: 100%;
   background: #f5f6f7;
   color: #000a;
+  overflow hidden
 
   >.ya-header {
     position: relative;
@@ -145,21 +144,25 @@ html, body {
       position: absolute;
       width: leftWidth;
       height: 100%;
-      overflow-y: auto;
+      overflow-y auto;
+      overflow-x visible
       background-color: #fffa;
       box-shadow: 0 0 0.2em #0001;
       // box-sizing border-box
       // border-right 1px solid #fff
       color: #fffb;
 
-      &::before {
-        display: block;
-        content: '';
-        border-top: 1px dotted #0004;
-      }
+      // &::before {
+      //   display: block;
+      //   content: '';
+      //   border-top: 1px dotted #0004;
+      // }
 
       >.el-menu {
         border-right: none;
+        .el-submenu .el-menu-item {
+           min-width 13em
+        }
       }
     }
 

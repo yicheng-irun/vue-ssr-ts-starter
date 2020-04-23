@@ -2,6 +2,9 @@
    <el-input-number
       :value="value"
       :placeholder="config.placeholder || ''"
+      :min="config.min"
+      :max="config.max"
+      :step="config.step"
       @input="handleInput"
    />
 </template>
@@ -23,9 +26,6 @@ export default {
             return {};
          },
       },
-   },
-   computed: {
-
    },
    methods: {
       handleInput (value) {

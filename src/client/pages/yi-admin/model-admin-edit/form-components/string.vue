@@ -2,6 +2,9 @@
    <el-input
       :value="value"
       :placeholder="config.placeholder || ''"
+      :minlength="config.minLength"
+      :maxlength="config.maxLength"
+      class="component-el-input"
       @input="handleInput"
    />
 </template>
@@ -24,9 +27,6 @@ export default {
          },
       },
    },
-   computed: {
-
-   },
    methods: {
       handleInput (value) {
          const v = String(value);
@@ -35,3 +35,9 @@ export default {
    },
 };
 </script>
+
+<style lang="stylus">
+.component-el-input.el-input {
+   max-width 20em
+}
+</style>
