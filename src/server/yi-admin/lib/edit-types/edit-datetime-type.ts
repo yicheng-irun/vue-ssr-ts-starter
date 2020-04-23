@@ -10,8 +10,6 @@ export default class EditDateTimeType extends EditBaseType {
     * 前端组件的参数
     */
    public componentConfig: {
-
-
       required: boolean;
    } = {
       ...this.componentConfig,

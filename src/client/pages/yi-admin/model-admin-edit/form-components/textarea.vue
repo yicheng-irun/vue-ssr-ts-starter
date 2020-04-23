@@ -1,11 +1,12 @@
 <template>
-   <el-input-number
+   <el-input
+      type="textarea"
       :value="value"
       :placeholder="config.placeholder || ''"
-      :min="config.min"
-      :max="config.max"
-      :step="config.step"
-      class="ya-component-input-number"
+      :minlength="config.minLength"
+      :maxlength="config.maxLength"
+      :autosize="{ minRows: 2}"
+      class="component-el-input"
       @input="handleInput"
    />
 </template>
@@ -18,8 +19,8 @@ export default {
    },
    props: {
       value: {
-         type: Number,
-         default: 0,
+         type: String,
+         default: '',
       },
       config: {
          type: Object,
@@ -30,7 +31,7 @@ export default {
    },
    methods: {
       handleInput (value) {
-         const v = Number(value);
+         const v = String(value);
          this.$emit('input', v);
       },
    },
@@ -38,9 +39,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ya-component-input-number {
-   .el-input-number__decrease, .el-input-number__increase {
-      user-select none
-   }
+.component-el-input.el-textarea {
+   max-width 40em
 }
 </style>

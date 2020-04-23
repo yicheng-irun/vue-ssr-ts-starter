@@ -8,26 +8,25 @@ import EditStringEnumType from './edit-types/edit-string-enum-type';
 import EditNumberType from './edit-types/edit-number-type';
 import EditNumberEnumType from './edit-types/edit-number-enum-type';
 import EditBooleanType from './edit-types/edit-boolean-type';
+import EditDateTimeType from './edit-types/edit-datetime-type';
 
 /**
  * 映射mongoose的默认类型的图
  */
 const INSTANCE_EDIT_TYPE_MAP: {
-   [type: string]: (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>) => EditBaseType;
+   [type: string]: (schemaTypeOpts: SchemaTypeOpts<{}>) => EditBaseType;
 } = {
-   ObjectID (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   ObjectID (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       return new EditBaseType({
          required: schemaTypeOpts.required,
-         fieldName,
          fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   String (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   String (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       if (schemaTypeOpts.enum) {
          return new EditStringEnumType({
             enum: schemaTypeOpts.enum,
             required: schemaTypeOpts.required,
-            fieldName,
             fieldNameAlias: schemaTypeOpts.name,
          });
       }
@@ -35,16 +34,15 @@ const INSTANCE_EDIT_TYPE_MAP: {
          required: schemaTypeOpts.required,
          minLength: schemaTypeOpts.minlength,
          maxLength: schemaTypeOpts.maxlength,
-         fieldName,
          fieldNameAlias: schemaTypeOpts.name,
+         placeholder: schemaTypeOpts.placeholder || '',
       });
    },
-   Number (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Number (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       if (schemaTypeOpts.enum) {
          return new EditNumberEnumType({
             enum: schemaTypeOpts.enum,
             required: schemaTypeOpts.required,
-            fieldName,
             fieldNameAlias: schemaTypeOpts.name,
          });
       }
@@ -52,14 +50,19 @@ const INSTANCE_EDIT_TYPE_MAP: {
          required: schemaTypeOpts.required,
          min: schemaTypeOpts.min,
          max: schemaTypeOpts.max,
-         fieldName,
+         step: schemaTypeOpts.step || 1,
          fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   Boolean (fieldName: string, schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Date (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return new EditDateTimeType({
+         required: schemaTypeOpts.required,
+         fieldNameAlias: schemaTypeOpts.name,
+      });
+   },
+   Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       return new EditBooleanType({
          required: schemaTypeOpts.required,
-         fieldName,
          fieldNameAlias: schemaTypeOpts.name,
       });
    },
@@ -95,8 +98,20 @@ export default class MongooseModelAdmin extends ModelAdminBase {
          if (key === '_id' || key === '__v') return;
          const { instance } = schemaPath;
 
-         if (INSTANCE_EDIT_TYPE_MAP[instance]) {
-            fields.push(INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.path, schemaPath.options));
+         let typeInstance: EditBaseType = null;
+
+         if (schemaPath.options.editType && schemaPath.options.editType instanceof EditBaseType) {
+            typeInstance = schemaPath.options.editType;
+         } else if (INSTANCE_EDIT_TYPE_MAP[instance]) {
+            typeInstance = INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.options);
+         }
+
+         if (typeInstance) {
+            typeInstance.fieldName = schemaPath.path;
+            if (typeInstance.fieldNameAlias === null) {
+               typeInstance.fieldNameAlias = schemaPath.options.name || '';
+            }
+            fields.push(typeInstance);
          }
       });
 
