@@ -11,11 +11,6 @@ export default class EditStringColorType extends EditBaseType {
     */
    public componentConfig: EditBaseComponentConfig & {
       /**
-       * 颜色格式
-       */
-      colorFormat: 'hsl' | 'hsv' | 'hex' | 'rgb';
-
-      /**
        * 是否支持选择透明度
        */
       showAlpha: boolean;
@@ -26,7 +21,6 @@ export default class EditStringColorType extends EditBaseType {
       predefine: string[];
    } = {
       ...this.componentConfig,
-      colorFormat: 'rgb',
       showAlpha: true,
       predefine: [],
    }
@@ -50,9 +44,6 @@ export default class EditStringColorType extends EditBaseType {
       },
    ) {
       super(config);
-      if ('colorFormat' in config) {
-         this.componentConfig.colorFormat = config.colorFormat;
-      }
       if ('showAlpha' in config) {
          this.componentConfig.showAlpha = config.showAlpha;
       }

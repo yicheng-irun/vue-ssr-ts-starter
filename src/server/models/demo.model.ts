@@ -8,6 +8,7 @@ import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type
 import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
 import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
 import EditStringTextareaType from '../yi-admin/lib/edit-types/edit-string-textarea-type';
+import EditStringColorType from '../yi-admin/lib/edit-types/edit-string-color-type';
 
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
@@ -94,6 +95,15 @@ export class YiAdminDemo {
       }),
    })
    public textField3?: string;
+
+   @prop({
+      type: String,
+      name: '颜色',
+      editType: new EditStringColorType({
+         required: false,
+      }),
+   })
+   public stringColor: string;
 
    @prop({
       type: Number,
