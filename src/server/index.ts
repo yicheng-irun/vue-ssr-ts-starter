@@ -14,7 +14,7 @@ export default async function createApp (): Promise<Koa> {
 
    app.use(Morgan(settings.isDev ? 'dev' : 'combined'));
 
-   router.use(bodyParser({
+   app.use(bodyParser({
       jsonLimit: '1000kb',
    }));
 
@@ -31,7 +31,7 @@ export default async function createApp (): Promise<Koa> {
          resetting the expiration countdown. (default is false) */
       renew: false, /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false) */
    };
-   router.use(session(sessionConfig, app));
+   app.use(session(sessionConfig, app));
 
    app.use(router.routes()).use(router.allowedMethods());
 

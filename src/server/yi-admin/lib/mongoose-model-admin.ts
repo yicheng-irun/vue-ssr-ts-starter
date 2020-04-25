@@ -76,8 +76,6 @@ export default class MongooseModelAdmin extends ModelAdminBase {
    }) {
       super(options);
       this.model = options.model;
-
-      console.log(this.getEditFormFields());
    }
 
    public getEditFormFields (): EditBaseType[] {

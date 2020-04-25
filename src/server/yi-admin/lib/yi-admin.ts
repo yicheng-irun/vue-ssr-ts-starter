@@ -1,6 +1,7 @@
 import Router from '@koa/router';
-import { Context } from 'koa';
+import { Context, Next } from 'koa';
 import ModelAdminBase from './model-admin-base';
+import EditBaseType from './edit-types/edit-base-type';
 
 /**
  * admin站点
@@ -28,7 +29,6 @@ export default class YiAdmin {
          this.permission = permission;
       }
 
-
       this.appendPermissionCheckRouter();
       this.appendSiteHomeRouter();
       this.appendModelAdminRouter();
@@ -52,7 +52,7 @@ export default class YiAdmin {
    }
 
    private appendSiteHomeRouter (): void {
-      this.koaRouter.get('/', async (ctx: Context, next) => {
+      this.koaRouter.get('/', async (ctx: Context) => {
          await ctx.render('yi-admin/site', {});
       });
    }
@@ -63,35 +63,17 @@ export default class YiAdmin {
    } = {};
 
    private appendModelAdminRouter (): void {
-      const isFailModelName = (ctx: Context): boolean => {
-         const { modelName } = ctx.params;
-         if (!Object.prototype.hasOwnProperty.call(this.modelAdminsMap, modelName)) {
-            return true;
-         }
-         return false;
-      };
+      const modelRouter = new Router();
 
-      this.koaRouter.get('/model-admin/:modelName/', async (ctx: Context, next) => {
-         if (isFailModelName(ctx)) {
-            await next();
-            return;
-         }
+      modelRouter.get('/', async (ctx: Context) => {
          await ctx.render('yi-admin/model-admin-list', {});
       });
 
-      this.koaRouter.get('/model-admin/:modelName/edit/', async (ctx: Context, next) => {
-         if (isFailModelName(ctx)) {
-            await next();
-            return;
-         }
+      modelRouter.get('/edit/', async (ctx: Context) => {
          await ctx.render('yi-admin/model-admin-edit', {});
       });
 
-      this.koaRouter.get('/model-admin/:modelName/edit/fields/', async (ctx: Context, next) => {
-         if (isFailModelName(ctx)) {
-            await next();
-            return;
-         }
+      modelRouter.get('/edit/fields/', async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
          ctx.body = {
@@ -99,6 +81,41 @@ export default class YiAdmin {
             data: fields,
          };
       });
+
+      modelRouter.post('/edit/component-action/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const fields = this.modelAdminsMap[modelName].getEditFormFields();
+
+         const { fieldName, actionName, actionData } = ctx.request.body;
+         let editField: EditBaseType = null;
+
+         fields.forEach((fitem) => {
+            if (fitem.fieldName === fieldName) {
+               editField = fitem;
+            }
+         });
+
+         if (editField) {
+            const result = await editField.action(actionName, actionData);
+            ctx.body = {
+               success: true,
+               data: result,
+            };
+            return;
+         }
+
+         ctx.body = {
+            success: false,
+            message: '未找到该字段对应的组件',
+         };
+      });
+
+      this.koaRouter.use('/model-admin/:modelName', async (ctx: Context, next: Next) => {
+         const { modelName } = ctx.params;
+         if (Object.prototype.hasOwnProperty.call(this.modelAdminsMap, modelName)) {
+            await next();
+         }
+      }, modelRouter.middleware());
    }
 
    /**

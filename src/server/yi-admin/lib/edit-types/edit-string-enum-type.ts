@@ -10,6 +10,7 @@ export default class EditStringEnumType extends EditBaseType {
     * 前端组件的参数
     */
    public componentConfig: {
+      required: boolean;
       /**
        * 枚举值列表, 当require设置为true时，用户必须选择一个enum，require设置为false时，用户可以不选择
        */
@@ -23,7 +24,6 @@ export default class EditStringEnumType extends EditBaseType {
           */
          label: string;
       })[];
-      required: boolean;
    } = {
       ...this.componentConfig,
       enum: [],

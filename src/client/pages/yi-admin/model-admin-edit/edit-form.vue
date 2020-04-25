@@ -19,6 +19,7 @@
                v-model="editFormData[item.fieldName]"
                :name="item.fieldName"
                :config="item.componentConfig"
+               :field-name="item.fieldName"
             />
          </el-form-item>
          <el-form-item>

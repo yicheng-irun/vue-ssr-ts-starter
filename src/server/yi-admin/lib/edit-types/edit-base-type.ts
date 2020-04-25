@@ -42,4 +42,9 @@ export default class EditBaseType {
       this.componentConfig.required = config.required || false;
       this.fieldNameAlias = config.fieldNameAlias;
    }
+
+   // eslint-disable-next-line class-methods-use-this
+   public async action (actionName: string, actionData: any): Promise<any> {
+      //
+   }
 }

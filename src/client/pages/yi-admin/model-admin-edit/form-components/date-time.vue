@@ -1,10 +1,10 @@
 <template>
    <el-date-picker
       v-model="time"
+      :placeholder="config.placeholder == null ? '请选择' : config.placeholder"
+      :format="config.format || 'yyyy-MM-dd HH:mm:ss'"
       type="datetime"
-      :placeholder="config.placeholder || ''"
       class="component-el-date-time"
-      :format="config.format || undefined"
       @change="handleChange"
    />
 </template>
@@ -18,7 +18,7 @@ export default {
    props: {
       value: {
          type: String,
-         default: '2020-04-22',
+         default: '',
       },
       config: {
          type: Object,
@@ -29,7 +29,7 @@ export default {
    },
    data () {
       return {
-         time: this.value ? null : new Date(this.value),
+         time: this.value ? new Date(this.value) : '',
       };
    },
    methods: {
