@@ -7,6 +7,7 @@ import EditTextareaType from '../yi-admin/lib/edit-types/edit-textarea-type';
 import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
 import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type';
 import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
+import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
 
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
@@ -57,6 +58,7 @@ export class YiAdminDemo {
 
    @prop({
       type: String,
+      helpText: '字符串远程选择类型示例',
       editType: new EditStringRemoteSelectType({
          required: false,
          async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
@@ -81,7 +83,7 @@ export class YiAdminDemo {
          },
       }),
    })
-   public strRemoteEnumField3?: string;
+   public strRemoteSelectField3?: string;
 
    @prop({
       type: String,
@@ -124,6 +126,34 @@ export class YiAdminDemo {
       }),
    })
    public numEnumField?: number;
+
+   @prop({
+      type: Number,
+      name: '数字远程选择',
+      editType: new EditNumberRemoteSelectType({
+         async getOptions (): Promise<(number | { label: string; value: number})[]> {
+            return [
+               1,
+               2,
+               3,
+               {
+                  label: '十',
+                  value: 10,
+               },
+               {
+                  label: '百',
+                  value: 100,
+               },
+               {
+                  label: '千',
+                  value: 1000,
+               },
+            ];
+         },
+         helpText: '数字远程选择组件示例',
+      }),
+   })
+   public numRemoteSelectField?: number;
 
    @prop({
       type: Boolean,

@@ -1,4 +1,4 @@
-import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
 export default class EditStringType extends EditBaseType {
    /**
@@ -9,7 +9,7 @@ export default class EditStringType extends EditBaseType {
    /**
     * 前端组件的参数
     */
-   public componentConfig: {
+   public componentConfig: EditBaseComponentConfig & {
       /**
        * 最小长度
        */
@@ -18,8 +18,6 @@ export default class EditStringType extends EditBaseType {
        * 最大长度
        */
       maxLength: number;
-
-      required: boolean;
 
       placeholder: string;
    } = {

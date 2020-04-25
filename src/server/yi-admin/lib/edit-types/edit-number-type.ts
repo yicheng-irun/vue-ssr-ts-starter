@@ -1,4 +1,4 @@
-import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
 export default class EditNumberType extends EditBaseType {
    /**
@@ -9,11 +9,10 @@ export default class EditNumberType extends EditBaseType {
    /**
     * 前端组件的参数
     */
-   public componentConfig: {
+   public componentConfig: EditBaseComponentConfig & {
       min: number;
       max: number;
       step: number;
-      required: boolean;
    } = {
       ...this.componentConfig,
       min: null,

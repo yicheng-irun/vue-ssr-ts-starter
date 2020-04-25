@@ -1,17 +1,17 @@
-import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
-export default class EditStringRemoteSelectType extends EditBaseType {
+export default class EditNumberRemoteSelectType extends EditBaseType {
    /**
     * 前端的组件名称
     */
-   public componentName = 'string-remote-select'
+   public componentName = 'number-remote-select'
 
    constructor (config: EditBaseTypeConfig & {
-         getOptions?: (search: string) => Promise<(string | {
+         getOptions?: (search: string) => Promise<(number | {
             /**
              * 值
              */
-            value: string;
+            value: number;
             /**
              * 显示的标签
              */
@@ -26,19 +26,19 @@ export default class EditStringRemoteSelectType extends EditBaseType {
       this.getOptions = config.getOptions;
    }
 
-   public getOptions: (search: string) => Promise<(string | {
+   public getOptions: (search: string) => Promise<(number | {
       /**
        * 值
        */
-      value: string;
+      value: number;
       /**
        * 显示的标签
        */
       label: string;
    })[]> = null;
 
-   public async action (actionName: string, actionData: any): Promise<(string | {
-      value: string;
+   public async action (actionName: string, actionData: any): Promise<(number | {
+      value: number;
       label: string;
    })[]> {
       return this.getOptions(actionData);

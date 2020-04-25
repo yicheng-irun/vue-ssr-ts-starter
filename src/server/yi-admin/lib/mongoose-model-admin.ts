@@ -109,6 +109,9 @@ export default class MongooseModelAdmin extends ModelAdminBase {
             if (typeInstance.fieldNameAlias === null) {
                typeInstance.fieldNameAlias = schemaPath.options.name || '';
             }
+            if (typeInstance.componentConfig.helpText === null && schemaPath.options.helpText) {
+               typeInstance.componentConfig.helpText = `${schemaPath.options.helpText}`;
+            }
             fields.push(typeInstance);
          }
       });

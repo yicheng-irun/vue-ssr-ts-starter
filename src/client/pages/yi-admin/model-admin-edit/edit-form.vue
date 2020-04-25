@@ -21,6 +21,11 @@
                :config="item.componentConfig"
                :field-name="item.fieldName"
             />
+            <p
+               v-if="item.componentConfig.helpText"
+               class="ya-help-text"
+               v-text="item.componentConfig.helpText"
+            />
          </el-form-item>
          <el-form-item>
             <el-button
@@ -90,6 +95,14 @@ export default {
    }
    .el-button--small {
       padding 0.6em 1.5em
+   }
+   .el-form-item__content {
+      >.ya-help-text {
+         margin 0.5em 0 0;
+         color #0007
+         font-size 0.8em
+         line-height 1.5
+      }
    }
 }
 </style>

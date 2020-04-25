@@ -1,4 +1,4 @@
-import EditBaseType from './edit-base-type';
+import EditBaseType, { EditBaseComponentConfig } from './edit-base-type';
 
 export default class EditDateTimeType extends EditBaseType {
    /**
@@ -9,9 +9,7 @@ export default class EditDateTimeType extends EditBaseType {
    /**
     * 前端组件的参数
     */
-   public componentConfig: {
-      required: boolean;
-   } = {
+   public componentConfig: EditBaseComponentConfig = {
       ...this.componentConfig,
    }
 }

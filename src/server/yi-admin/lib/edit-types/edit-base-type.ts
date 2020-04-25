@@ -6,6 +6,20 @@ export interface EditBaseTypeConfig {
     * 字段显示名称，对应表单中的label中的名称
     */
    fieldNameAlias?: string;
+
+   /**
+    * 编辑组件的下方的帮助提示文本
+    */
+   helpText?: string;
+}
+
+export interface EditBaseComponentConfig {
+   /**
+    * 是否必填
+    */
+   required: boolean;
+
+   helpText: string;
 }
 
 export default class EditBaseType {
@@ -27,19 +41,17 @@ export default class EditBaseType {
    /**
     * 前端组件的参数
     */
-   public componentConfig: {
-      /**
-       * 是否必填
-       */
-      required: boolean;
-   } = {
+   public componentConfig: EditBaseComponentConfig = {
       required: false,
+
+      helpText: null,
    }
 
    constructor (
       config: EditBaseTypeConfig,
    ) {
       this.componentConfig.required = config.required || false;
+      this.componentConfig.helpText = config.helpText || null;
       this.fieldNameAlias = config.fieldNameAlias;
    }
 
