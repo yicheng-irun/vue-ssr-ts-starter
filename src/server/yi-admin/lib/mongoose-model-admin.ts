@@ -8,7 +8,7 @@ import EditStringEnumType from './edit-types/edit-string-enum-type';
 import EditNumberType from './edit-types/edit-number-type';
 import EditNumberEnumType from './edit-types/edit-number-enum-type';
 import EditBooleanType from './edit-types/edit-boolean-type';
-import EditDateTimeType from './edit-types/edit-datetime-type';
+import EditDateTimeType from './edit-types/edit-date-time-type';
 
 /**
  * 映射mongoose的默认类型的图

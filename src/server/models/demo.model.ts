@@ -3,11 +3,11 @@ import {
 } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
 import { RefFieldClass } from './demo.refclass.model';
-import EditTextareaType from '../yi-admin/lib/edit-types/edit-textarea-type';
 import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
 import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type';
 import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
 import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
+import EditStringTextareaType from '../yi-admin/lib/edit-types/edit-string-textarea-type';
 
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
@@ -87,7 +87,7 @@ export class YiAdminDemo {
 
    @prop({
       type: String,
-      editType: new EditTextareaType({
+      editType: new EditStringTextareaType({
          required: false,
          maxLength: 100,
          placeholder: '请输入XXX',

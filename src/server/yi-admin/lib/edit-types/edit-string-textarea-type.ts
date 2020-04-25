@@ -1,10 +1,10 @@
 import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
-export default class EditTextareaType extends EditBaseType {
+export default class EditStringTextareaType extends EditBaseType {
    /**
     * 前端的组件名称
     */
-   public componentName = 'textarea'
+   public componentName = 'string-textarea'
 
    /**
     * 前端组件的参数
