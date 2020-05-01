@@ -27,11 +27,6 @@ export default class EditStringColorType extends EditBaseType {
 
    constructor (
       config: EditBaseTypeConfig & {
-         /**
-       * 颜色格式
-       */
-      colorFormat?: 'hsl' | 'hsv' | 'hex' | 'rgb';
-
       /**
        * 是否支持选择透明度
        */

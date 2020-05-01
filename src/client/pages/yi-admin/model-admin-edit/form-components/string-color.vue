@@ -1,12 +1,20 @@
 <template>
-   <el-color-picker
-      :value="value"
-      :show-alpha="config.showAlpha"
-      :predefine="config.predefine"
-      size="medium"
-      class="component-el-string-color"
-      @active-change="handleInput"
-   />
+   <div class="component-el-string-color">
+      <el-color-picker
+         :value="value"
+         :show-alpha="config.showAlpha"
+         :predefine="config.predefine"
+         size="medium"
+         class="component-el-string-color"
+         @active-change="handleInput"
+      />
+      <el-button
+         type="text"
+         @click="handleInput('')"
+      >
+         清空颜色
+      </el-button>
+   </div>
 </template>
 
 <script>
@@ -38,6 +46,11 @@ export default {
 
 <style lang="stylus">
 .component-el-string-color {
-   // max-width 20em
+   >.el-color-picker__trigger {
+      vertical-align middle
+   }
+   >.el-button {
+      vertical-align middle
+   }
 }
 </style>

@@ -1,7 +1,8 @@
 import {
    Model, Document, SchemaTypeOpts, SchemaType,
 } from 'mongoose';
-import ModelAdminBase, { ModelAdminBaseParams } from './model-admin-base';
+import { Context } from 'koa';
+import ModelAdminBase, { ModelAdminBaseParams, ModelDataItem } from './model-admin-base';
 import EditBaseType from './edit-types/edit-base-type';
 import EditStringType from './edit-types/edit-string-type';
 import EditStringEnumType from './edit-types/edit-string-enum-type';
@@ -9,6 +10,7 @@ import EditNumberType from './edit-types/edit-number-type';
 import EditNumberEnumType from './edit-types/edit-number-enum-type';
 import EditBooleanType from './edit-types/edit-boolean-type';
 import EditDateTimeType from './edit-types/edit-date-time-type';
+import ListBaseType from './list-types/list-base-type';
 
 /**
  * 映射mongoose的默认类型的图
@@ -68,6 +70,34 @@ const INSTANCE_EDIT_TYPE_MAP: {
    },
 };
 
+/**
+ * 列表编辑项
+ */
+const INSTANCE_LIST_TYPE_MAP: {
+   [type: string]: (schemaTypeOpts: SchemaTypeOpts<{}>) => ListBaseType;
+} = {
+   Base (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
+      return new ListBaseType({
+         fieldNameAlias: schemaTypeOpts.name,
+      });
+   },
+   ObjectID (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
+      return this.Base(schemaTypeOpts);
+   },
+   String (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return this.Base(schemaTypeOpts);
+   },
+   Number (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return this.Base(schemaTypeOpts);
+   },
+   Date (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return this.Base(schemaTypeOpts);
+   },
+   Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return this.Base(schemaTypeOpts);
+   },
+};
+
 export default class MongooseModelAdmin extends ModelAdminBase {
    public model: Model<Document, {}>;
 
@@ -117,5 +147,103 @@ export default class MongooseModelAdmin extends ModelAdminBase {
       });
 
       return fields;
+   }
+
+   /**
+    * edit-form中拉取数据的函数
+    */
+   public async getEditData (id: string, ctx: Context): Promise<ModelDataItem> {
+      let item: Document = null;
+
+      if (id) {
+         item = await this.model.findById(id);
+         if (!item) throw new Error('未找到该编辑项');
+      } else {
+         // eslint-disable-next-line new-cap
+         item = new (this.model)();
+      }
+
+      return {
+         id: item.id,
+         values: {
+            ...item.toObject(),
+            _id: undefined,
+            __v: undefined,
+         },
+      };
+   }
+
+   public async formSubmit (id: string, formData: object, ctx: Context): Promise<ModelDataItem> {
+      let item: Document = null;
+      if (id) {
+         item = await this.model.findById(id);
+         if (!item) throw new Error('未找到该编辑项');
+      } else {
+         // eslint-disable-next-line new-cap
+         item = new (this.model)(formData);
+      }
+      await item.save();
+      return {
+         id: item.id,
+         values: {
+            ...item.toObject(),
+            _id: undefined,
+            __v: undefined,
+         },
+      };
+   }
+
+   /**
+    * 获取列表页字段列表
+    */
+   public getDataListFields (): ListBaseType[] {
+      const fields: ListBaseType[] = [];
+
+      const { schema } = this.model;
+      const pathsKeys = Object.keys(schema.paths);
+      pathsKeys.forEach((key) => {
+         // 卧槽，这个mongoose的这里的类型声明不正确
+         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+         // @ts-ignore
+         const schemaPath: SchemaType & {
+               instance: string;
+               path: string;
+               options: SchemaTypeOpts<{}>;
+            } = schema.paths[key];
+
+         if (key === '_id' || key === '__v') return;
+         const { instance } = schemaPath;
+
+         let typeInstance: ListBaseType = null;
+
+         if (schemaPath.options.listType && schemaPath.options.listType instanceof ListBaseType) {
+            typeInstance = schemaPath.options.listType;
+         } else if (INSTANCE_LIST_TYPE_MAP[instance]) {
+            typeInstance = INSTANCE_LIST_TYPE_MAP[instance](schemaPath.options);
+         }
+
+         if (typeInstance) {
+            typeInstance.fieldName = schemaPath.path;
+            if (typeInstance.fieldNameAlias === null) {
+               typeInstance.fieldNameAlias = schemaPath.options.name || '';
+            }
+            fields.push(typeInstance);
+         }
+      });
+
+      return fields;
+   }
+
+   /**
+    * data-list中拉取数据的函数
+    */
+   // public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+   //    throw new Error('请在子类中实现getDataList函数');
+   // }
+
+   public async removeItem (id: string, ctx: Context): Promise<void> {
+      const item = await this.model.findById(id);
+      if (!item) throw new Error('未找到该编辑项');
+      await item.remove();
    }
 }

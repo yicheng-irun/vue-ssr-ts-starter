@@ -1,22 +1,23 @@
 import Vuex from 'vuex';
 
-import { get } from '../../../lib/ajax';
+import { get, post } from '../../../lib/ajax';
 
 export default function () {
    const store = new Vuex.Store({
       state: {
-         sayHi: '',
          editId: '',
          editFormFields: [],
          editFormData: {},
+         loading: false,
       },
 
       mutations: {
          setEditFormFields (state, { data }) {
             state.editFormFields = data;
          },
-         setData (state, { sayHi }) {
-            state.sayHi = sayHi;
+
+         setLoading (state, value) {
+            state.loading = !!value;
          },
       },
 
@@ -27,11 +28,12 @@ export default function () {
             await this.commit('setEditFormFields', result);
          },
 
-         async fetchData ({ commit }) {
-            // 这里可以请求 后台cgi 数据
-            const rsp = await get('/api/demo', { sayHi: 'hi server! -from index page' });
-            const result = rsp.data;
-            commit('setData', result.data);
+         async formSubmit ({ state }) {
+            const rsp = await post('submit/', {
+               editId: state.editId,
+               formData: state.editFormData,
+            });
+            return rsp.data;
          },
       },
    });

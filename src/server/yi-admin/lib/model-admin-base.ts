@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable class-methods-use-this */
 import { Context } from 'koa';
 import EditBaseType from './edit-types/edit-base-type';
+import ListBaseType from './list-types/list-base-type';
 
 export interface ModelAdminBaseParams {
    /**
@@ -18,8 +21,9 @@ export interface ModelDataItem {
     * id 是必须项
     */
    id: string;
-
-   [key: string]: any;
+   values: {
+      [key: string]: any;
+   };
 }
 
 export interface DataListRequestBody {
@@ -76,44 +80,48 @@ export default class ModelAdminBase {
    }
 
    /**
-    * 获取列表页字段列表
-    */
-   // eslint-disable-next-line class-methods-use-this
-   public getDataListFields (): {
-      [key: string]: EditBaseType;
-      } {
-      throw new Error('请在子类中实现getDataListFields函数');
-   }
-
-   /**
     * 获取表单编辑页的字段列表
     */
-   // eslint-disable-next-line class-methods-use-this
    public getEditFormFields (): EditBaseType[] {
       throw new Error('请在子类中实现getEditFormFields函数');
    }
 
    /**
-    * data-list中拉取数据的函数
-    */
-   // eslint-disable-next-line class-methods-use-this
-   public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
-      throw new Error('请在子类中实现getDataList函数');
-   }
-
-   /**
     * edit-form中拉取数据的函数
     */
-   // eslint-disable-next-line class-methods-use-this
    public getEditData (id: string, ctx: Context): Promise<ModelDataItem> {
       throw new Error('请在子类中实现getEditData函数');
    }
 
    /**
-    * 移除某一项
+    * 用户提交数据时，编辑时id是非空，新建时id是空的
+    * @param id
+    * @param forData
+    * @param ctx
     */
-   // eslint-disable-next-line class-methods-use-this
-   public removeItem (id: string, ctx: Context): Promise<boolean> {
+   public formSubmit (id: string, forData: object, ctx: Context): Promise<ModelDataItem> {
+      throw new Error('请在子类中实现removeItem函数');
+   }
+
+
+   /**
+    * 获取列表页字段列表
+    */
+   public getDataListFields (): ListBaseType[] {
+      throw new Error('请在子类中实现getDataListFields函数');
+   }
+
+   /**
+    * data-list中拉取数据的函数
+    */
+   public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+      throw new Error('请在子类中实现getDataList函数');
+   }
+
+   /**
+    * 删除除某一项
+    */
+   public removeItem (id: string, ctx: Context): Promise<void> {
       throw new Error('请在子类中实现removeItem函数');
    }
 }

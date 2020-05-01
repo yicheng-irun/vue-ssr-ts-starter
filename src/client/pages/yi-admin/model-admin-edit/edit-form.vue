@@ -1,5 +1,8 @@
 <template>
-   <div class="edit-form">
+   <div
+      v-loading="state.loading"
+      class="edit-form"
+   >
       <el-form
          ref="form"
          :model="editFormData"
@@ -13,6 +16,7 @@
             :key="index"
             :label="`${item.fieldNameAlias || item.fieldName}:`"
             :prop="item.fieldName"
+            :required="item.componentConfig.required"
          >
             <component
                :is="getComponent(item.componentName)"
@@ -66,6 +70,9 @@ export default {
    },
 
    computed: {
+      state () {
+         return this.$store.state;
+      },
       formRules () {
          return {};
       },
@@ -78,7 +85,29 @@ export default {
          }
          return FormComponents.string;
       },
-      submit () {},
+      async submit () {
+         if (this.state.loading) return;
+         this.$store.commit('setLoading', true);
+         // await new Promise((resolve) => setTimeout(resolve, 1000));
+         try {
+            const data = await this.$store.dispatch('formSubmit');
+            if (data?.success) {
+               this.$notify.success({
+                  title: '保存成功',
+                  message: '保存成功',
+               });
+            } else {
+               throw new Error(data?.message || '保存失败');
+            }
+         } catch (e) {
+            this.$notify.error({
+               title: '提交出错了',
+               message: e?.message || `${e}`,
+            });
+         }
+
+         this.$store.commit('setLoading', false);
+      },
       reset () {},
    },
 };
@@ -88,6 +117,9 @@ export default {
 .edit-form {
    padding 2em 0em
    margin 0 1em
+   >.el-loading-mask {
+      background #fffa
+   }
 
    .el-form-item__label {
       font-size 0.8em

@@ -12,6 +12,10 @@ export function createAxios () {
          },
 
          baseURL: runtime.baseUrl,
+         validateStatus (status) {
+            if ([200, 500].indexOf(status) >= 0) return true;
+            return false;
+         },
       });
       instance.interceptors.request.use((reqConfig) => {
          // 使服务端也能像在前端一样使用相对路径
@@ -34,7 +38,12 @@ export function createAxios () {
       }, (error) => Promise.reject(error));
       return instance;
    }
-   return axios.create();
+   return axios.create({
+      validateStatus (status) {
+         if ([200, 500].indexOf(status) >= 0) return true;
+         return false;
+      },
+   });
 }
 
 export function get (url, params) {

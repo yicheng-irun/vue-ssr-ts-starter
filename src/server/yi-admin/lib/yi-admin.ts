@@ -82,6 +82,7 @@ export default class YiAdmin {
          };
       });
 
+      // 表单组件的请求
       modelRouter.post('/edit/component-action/', async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
@@ -110,6 +111,28 @@ export default class YiAdmin {
          };
       });
 
+      modelRouter.post('/edit/submit/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const { editId = '', formData = {} } = ctx.request.body;
+         const value = await this.modelAdminsMap[modelName].formSubmit(editId, formData, ctx);
+         ctx.body = {
+            success: true,
+            data: value,
+         };
+      });
+
+      modelRouter.get('/list/fields/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const fields = this.modelAdminsMap[modelName].getDataListFields();
+         ctx.body = {
+            success: true,
+            data: fields,
+         };
+      });
+
+      /**
+       * 挂载统一路由
+       */
       this.koaRouter.use('/model-admin/:modelName', async (ctx: Context, next: Next) => {
          const { modelName } = ctx.params;
          if (Object.prototype.hasOwnProperty.call(this.modelAdminsMap, modelName)) {
