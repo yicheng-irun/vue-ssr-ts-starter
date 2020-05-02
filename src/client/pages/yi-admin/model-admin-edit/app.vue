@@ -38,6 +38,9 @@ export default {
 </script>
 
 <style lang="stylus">
+body {
+   background: #f5f6f7;
+}
 #app {
    >pre {
       font-size 12px;

@@ -5,27 +5,41 @@ import { get } from '../../../lib/ajax';
 export default function () {
    const store = new Vuex.Store({
       state: {
-         listFormFields: [],
-         editFormData: {},
          loading: false,
+         listFields: [],
+         listData: [],
+         pageIndex: 1,
+         pageSize: 20,
+         total: 0,
       },
 
       mutations: {
-         setListFormFields (state, { data }) {
-            state.editFormFields = data;
-         },
          setLoading (state, value) {
             state.loading = !!value;
+         },
+         setListFields (state, { data }) {
+            state.listFields = data;
+         },
+         setListData (state, { data }) {
+            state.listData = data;
          },
       },
 
       actions: {
-         async fetchListFormFields () {
+         async fetchListFields () {
             const rsp = await get('list/fields/', { });
             const result = rsp.data;
-            await this.commit('setListFormFields', result);
+            this.commit('setListFields', result);
          },
 
+         async fetchListData ({ state }) {
+            const rsp = await get('list/data/', {
+               pageIndex: state.pageIndex,
+               pageSize: state.pageSize,
+            });
+            const result = rsp.data;
+            this.commit('setListData', result);
+         },
       },
    });
 
