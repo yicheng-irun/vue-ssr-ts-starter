@@ -82,6 +82,16 @@ export default class YiAdmin {
          };
       });
 
+      modelRouter.get('/edit/values/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const { id } = ctx.query;
+         const values = await this.modelAdminsMap[modelName].getEditData(id, ctx);
+         ctx.body = {
+            success: true,
+            data: values,
+         };
+      });
+
       // 表单组件的请求
       modelRouter.post('/edit/component-action/', async (ctx: Context) => {
          const { modelName } = ctx.params;
@@ -121,12 +131,36 @@ export default class YiAdmin {
          };
       });
 
+      /**
+       * 拉取列表页的字段信息
+       */
       modelRouter.get('/list/fields/', async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getDataListFields();
          ctx.body = {
             success: true,
             data: fields,
+         };
+      });
+
+      /**
+       * 拉取列表页的数据
+       */
+      modelRouter.get('/list/data/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const { pageIndex = '1', pageSize = '10' } = ctx.query;
+         const pageIndexNumber = Number.parseInt(pageIndex, 10);
+         const pageSizeNumber = Number.parseInt(pageSize, 10);
+         if (typeof pageIndexNumber !== 'number' || pageIndexNumber < 1) throw new Error('pageIndex必须是>=1的整数');
+         if (typeof pageSizeNumber !== 'number' || pageSizeNumber < 1) throw new Error('pageSize必须是>=1的整数');
+
+         const datas = await this.modelAdminsMap[modelName].getDataList({
+            pageIndex: pageIndexNumber,
+            pageSize: pageSizeNumber,
+         }, ctx);
+         ctx.body = {
+            success: true,
+            data: datas,
          };
       });
 

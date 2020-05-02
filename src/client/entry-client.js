@@ -23,6 +23,9 @@ async function start () {
       store.replaceState(state);
    }
 
+   // 挂在在body下的第一个div
+   app.$mount('body>div');
+
    const { query: { _static } = {} } = runtime;
    if (_static === '1' && typeof App.fetchData === 'function') {
       await App.fetchData({
@@ -31,8 +34,7 @@ async function start () {
          runtime,
       });
    }
-   // 挂在在body下的第一个div
-   app.$mount('body>div');
+
    return app;
 }
 

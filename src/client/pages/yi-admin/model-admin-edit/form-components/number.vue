@@ -5,7 +5,7 @@
       :min="config.min"
       :max="config.max"
       :step="config.step"
-      class="ya-component-input-number"
+      class="form-component-input-number"
       @input="handleInput"
    />
 </template>
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ya-component-input-number {
+.form-component-input-number {
    .el-input-number__decrease, .el-input-number__increase {
       user-select none
    }

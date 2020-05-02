@@ -7,7 +7,7 @@
       remote
       :remote-method="remoteMethod"
       :loading="loading"
-      class="component-el-number-remote-select"
+      class="form-component-el-number-remote-select"
       @change="handleInput"
    >
       <el-option
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-number-remote-select {
+.form-component-el-number-remote-select {
    // max-width 20em
 }
 </style>

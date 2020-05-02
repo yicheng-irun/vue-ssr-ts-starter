@@ -2,7 +2,9 @@ import {
    Model, Document, SchemaTypeOpts, SchemaType,
 } from 'mongoose';
 import { Context } from 'koa';
-import ModelAdminBase, { ModelAdminBaseParams, ModelDataItem } from './model-admin-base';
+import ModelAdminBase, {
+   ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody,
+} from './model-admin-base';
 import EditBaseType from './edit-types/edit-base-type';
 import EditStringType from './edit-types/edit-string-type';
 import EditStringEnumType from './edit-types/edit-string-enum-type';
@@ -173,11 +175,16 @@ export default class MongooseModelAdmin extends ModelAdminBase {
       };
    }
 
-   public async formSubmit (id: string, formData: object, ctx: Context): Promise<ModelDataItem> {
+   public async formSubmit (id: string, formData: {[key: string]: any}, ctx: Context): Promise<ModelDataItem> {
       let item: Document = null;
       if (id) {
          item = await this.model.findById(id);
          if (!item) throw new Error('未找到该编辑项');
+         const formFields = this.getEditFormFields();
+         formFields.forEach((field) => {
+            const path = field.fieldName;
+            item.set(path, formData[path]);
+         });
       } else {
          // eslint-disable-next-line new-cap
          item = new (this.model)(formData);
@@ -237,9 +244,23 @@ export default class MongooseModelAdmin extends ModelAdminBase {
    /**
     * data-list中拉取数据的函数
     */
-   // public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
-   //    throw new Error('请在子类中实现getDataList函数');
-   // }
+   public async getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+      const datasPromise = this.model.find().limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize).exec();
+      const count = await this.model.find().countDocuments().exec();
+      const datas = await datasPromise;
+      const modelItems: ModelDataItem[] = datas.map((item) => ({
+         id: item.id,
+         values: {
+            ...item.toObject(),
+            _id: undefined,
+            __v: undefined,
+         },
+      }));
+      return {
+         total: count,
+         dataList: modelItems,
+      };
+   }
 
    public async removeItem (id: string, ctx: Context): Promise<void> {
       const item = await this.model.findById(id);

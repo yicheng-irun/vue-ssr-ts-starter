@@ -6,7 +6,7 @@
       :minlength="config.minLength"
       :maxlength="config.maxLength"
       :autosize="{ minRows: 2}"
-      class="component-el-input"
+      class="form-component-el-textarea"
       @input="handleInput"
    />
 </template>
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-input.el-textarea {
+.form-component-el-textarea.el-textarea {
    max-width 40em
 }
 </style>

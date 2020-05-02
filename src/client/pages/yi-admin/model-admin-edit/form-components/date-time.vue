@@ -4,7 +4,7 @@
       :placeholder="config.placeholder == null ? '请选择' : config.placeholder"
       :format="config.format || 'yyyy-MM-dd HH:mm:ss'"
       type="datetime"
-      class="component-el-date-time"
+      class="form-component-el-date-time"
       @change="handleChange"
    />
 </template>
@@ -45,6 +45,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-date-time {
+.form-component-el-date-time {
 }
 </style>

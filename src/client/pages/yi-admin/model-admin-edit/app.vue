@@ -24,7 +24,7 @@ export default {
    async fetchData (context) {
       await Promise.all([
          context.store.dispatch('fetchEditFormFields'),
-         context.store.dispatch('fetchData'),
+         context.store.dispatch('fetchEditData'),
       ]);
    },
 

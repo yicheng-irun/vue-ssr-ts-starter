@@ -4,7 +4,7 @@
       :placeholder="config.placeholder || ''"
       :minlength="config.minLength"
       :maxlength="config.maxLength"
-      class="component-el-input"
+      class="form-component-el-string"
       @input="handleInput"
    />
 </template>
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-input.el-input {
+.form-component-el-string.el-input {
    max-width 20em
 }
 </style>

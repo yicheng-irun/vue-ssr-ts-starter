@@ -1,6 +1,6 @@
 <template>
    <span
-      class="form-components-base"
+      class="list-components-base"
       v-text="value"
    />
 </template>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.form-components-base {
+.list-components-base {
    color #606266
 }
 </style>

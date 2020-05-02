@@ -3,7 +3,7 @@
       :value="value"
       :placeholder="config.placeholder == null ? '请选择' : config.placeholder"
       :clearable="config.required ? false : true"
-      class="component-el-string-enum"
+      class="form-component-el-string-enum"
       @change="handleInput"
    >
       <el-option
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-string-enum.el-input {
+.form-component-el-string-enum.el-input {
    // max-width 20em
 }
 </style>

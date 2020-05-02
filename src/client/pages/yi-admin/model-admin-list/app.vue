@@ -1,8 +1,6 @@
 <template>
    <div id="app">
-      <div class="table-wrapper">
-         <TableView />
-      </div>
+      <TableView />
       <pre v-text="JSON.stringify(state, null, '  ')" />
    </div>
 </template>
@@ -20,6 +18,7 @@ export default {
    async fetchData (context) {
       await Promise.all([
          context.store.dispatch('fetchListFields'),
+         context.store.dispatch('fetchListData'),
       ]);
    },
    computed: {
@@ -33,14 +32,12 @@ export default {
 
 <style lang="stylus">
 body {
-   background: #f5f6f7;
+   background: #f6f6f6
 }
 #app {
-   >.table-wrapper {
-      margin 0 1em;
-   }
+   padding 1em 0 2em
    >pre {
-      font-size 12px;
+      font-size 12px
    }
 }
 </style>

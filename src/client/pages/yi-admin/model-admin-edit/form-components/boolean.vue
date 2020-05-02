@@ -1,5 +1,5 @@
 <template>
-   <div class="component-boolean">
+   <div class="form-component-boolean">
       <el-switch
          :value="value"
          @change="handleChange"
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-boolean {
+.form-component-boolean {
    >span {
       margin 0 0.8em;
       font-size 0.8em;

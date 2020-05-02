@@ -18,6 +18,7 @@ export class YiAdminDemo {
       maxlength: 20,
       minlength: 3,
       name: '字符串strField',
+      default: 'defaultValue',
       placeholder: '请输入xxx',
    })
    public strField?: string;

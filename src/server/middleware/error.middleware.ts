@@ -3,7 +3,6 @@ import settings from '../settings';
 
 const ErrorMiddleware: Middleware = async (ctx: Context, next: Next) => {
    try {
-      console.log(ctx.accepts());
       await next();
       if (ctx.status === 404) {
          await ctx.render('site/404');

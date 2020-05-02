@@ -5,7 +5,7 @@
          :show-alpha="config.showAlpha"
          :predefine="config.predefine"
          size="medium"
-         class="component-el-string-color"
+         class="form-component-el-string-color"
          @active-change="handleInput"
       />
       <el-button
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.component-el-string-color {
+.form-component-el-string-color {
    >.el-color-picker__trigger {
       vertical-align middle
    }
