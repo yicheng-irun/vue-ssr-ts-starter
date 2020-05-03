@@ -13,7 +13,7 @@ export default {
    },
    props: {
       value: {
-         type: String,
+         type: [String, Number],
          default: '',
       },
       config: {
@@ -28,6 +28,5 @@ export default {
 
 <style lang="stylus">
 .list-components-base {
-   color #606266
 }
 </style>

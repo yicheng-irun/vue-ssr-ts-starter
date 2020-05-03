@@ -51,7 +51,6 @@ export default function () {
          async fetchListData ({ state }, {
             pageIndex = state.pageIndex,
          } = {}) {
-            console.log(pageIndex);
             if (state.loading) return;
             this.commit('setLoading', true);
             try {

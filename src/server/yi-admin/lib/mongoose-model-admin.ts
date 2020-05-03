@@ -13,6 +13,7 @@ import EditNumberEnumType from './edit-types/edit-number-enum-type';
 import EditBooleanType from './edit-types/edit-boolean-type';
 import EditDateTimeType from './edit-types/edit-date-time-type';
 import ListBaseType from './list-types/list-base-type';
+import ListBooleanType from './list-types/list-boolean-type';
 
 /**
  * 映射mongoose的默认类型的图
@@ -86,17 +87,19 @@ const INSTANCE_LIST_TYPE_MAP: {
    ObjectID (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
       return this.Base(schemaTypeOpts);
    },
-   String (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   String (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
       return this.Base(schemaTypeOpts);
    },
-   Number (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Number (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
       return this.Base(schemaTypeOpts);
    },
-   Date (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Date (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
       return this.Base(schemaTypeOpts);
    },
-   Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
-      return this.Base(schemaTypeOpts);
+   Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
+      return new ListBooleanType({
+         fieldNameAlias: schemaTypeOpts.name,
+      });
    },
 };
 

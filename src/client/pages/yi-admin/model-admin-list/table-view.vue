@@ -37,7 +37,16 @@
                      v-for="(fieldItem, fieldIndex) in listFields"
                      :key="fieldIndex"
                   >
-                     <div>{{ item.values[fieldItem.fieldName] }}</div>
+                     <div>
+                        <component
+                           :is="getComponent(fieldItem.componentName)"
+                           :id="item.id"
+                           :config="item.componentConfig"
+                           :field-name="item.fieldName"
+                           :values="item.values"
+                           :value="item.values[fieldItem.fieldName]"
+                        />
+                     </div>
                   </td>
                </tr>
             </tbody>
@@ -58,6 +67,8 @@
 </template>
 
 <script>
+import ListComponents from './list-components';
+
 export default {
    data () {
       return {
@@ -92,6 +103,12 @@ export default {
       },
    },
    methods: {
+      getComponent (componentName) {
+         if (Object.prototype.hasOwnProperty.call(ListComponents, componentName)) {
+            return ListComponents[componentName];
+         }
+         return ListComponents.base;
+      },
       handelCheckAll () {
          let v = true;
          if (this.allChecked) {

@@ -42,7 +42,7 @@ export default function createBuildConfig ({
       distPath: path.resolve(projectPath, './dist/client'),
       distBundlePath: path.resolve(projectPath, './dist/client-bundle'),
       srcPath,
-      devServerPort: 20000,
+      devServerPort: Number.parseInt(process.env.DEV_SERVER_PORT || '20000', 10),
       devNodeServerPort,
       getAllPageTemplates (): string[] {
          const pages = glob.sync(`${srcPath}/pages/**/template.html`).map((page) => page.replace(/^.*src\/client\/pages\/(.*)\/template.html$/, '$1'));
