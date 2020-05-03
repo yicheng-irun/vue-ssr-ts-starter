@@ -1,9 +1,10 @@
 import Vuex from 'vuex';
-import runtime from '../../../lib/runtime';
-import { get, post } from '../../../lib/ajax';
 
 
-export default function () {
+export default function ({
+   runtime,
+   ajax: { get, post },
+}) {
    const store = new Vuex.Store({
       state: {
          editId: runtime.query.id || '',

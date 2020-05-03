@@ -1,8 +1,8 @@
 import Vuex from 'vuex';
 
-import { get } from '../../../lib/ajax';
-
-export default function () {
+export default function ({
+   ajax: { get },
+}) {
    const store = new Vuex.Store({
       state: {
          loading: false,

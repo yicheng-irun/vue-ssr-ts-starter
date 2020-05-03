@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import createApp from './get-app';
 import runtime from './lib/runtime';
+import ajax from './lib/ajax';
 
 export default async (context) => {
    runtime.setServerContext(context);
@@ -11,7 +12,10 @@ export default async (context) => {
    const App = await createApp();
    let store = null;
    if (typeof App.createStore === 'function') {
-      store = App.createStore();
+      store = App.createStore({
+         runtime,
+         ajax,
+      });
    }
 
    const app = new Vue({

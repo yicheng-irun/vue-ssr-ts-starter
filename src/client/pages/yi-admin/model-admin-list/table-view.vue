@@ -51,10 +51,17 @@
                </tr>
             </tbody>
          </table>
+         <div
+            v-if="listData.length === 0"
+            class="no-data"
+         >
+            暂时没有数据呦~
+         </div>
       </div>
       <div class="table-view-footer">
          <el-pagination
             :current-page="pageIndex"
+            background
             :page-sizes="[10, 20, 50, 100, 200]"
             :page-size="state.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
@@ -157,7 +164,7 @@ export default {
    >.table-wrapper {
       overflow-x auto;
       >table {
-         min-width 1000px
+         min-width 100%
          background #fff
          border-collapse collapse
          font-size: 12px
@@ -188,6 +195,12 @@ export default {
                }
             }
          }
+      }
+      >.no-data {
+         text-align center
+         line-height 4
+         color #0008
+         font-size 1.3em
       }
    }
    >.table-view-footer {

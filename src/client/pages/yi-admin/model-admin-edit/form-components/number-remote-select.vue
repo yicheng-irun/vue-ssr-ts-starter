@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { post } from '../../../../lib/ajax';
 
 export default {
    model: {
@@ -81,7 +80,7 @@ export default {
          this.loading = true;
          this.lastQuery = query;
          try {
-            const rsp = await post('component-action/', {
+            const rsp = await this.$ajax.post('component-action/', {
                fieldName: this.fieldName,
                actionName: '',
                actionData: query,

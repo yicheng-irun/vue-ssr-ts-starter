@@ -25,7 +25,6 @@ export default {
       state () {
          return this.$store.state;
       },
-
    },
 };
 </script>

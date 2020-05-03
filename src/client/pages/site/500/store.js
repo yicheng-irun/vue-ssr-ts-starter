@@ -1,7 +1,8 @@
 import Vuex from 'vuex';
-import runtime from '../../../lib/runtime';
 
-export default function () {
+export default function ({
+   runtime,
+}) {
    const store = new Vuex.Store({
       state: {
          message: runtime.action.ssrParams?.message || '出错了',

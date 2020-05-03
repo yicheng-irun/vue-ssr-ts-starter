@@ -57,3 +57,9 @@ export function post (url, data, params) {
       params,
    });
 }
+
+
+export default {
+   get,
+   post,
+};
