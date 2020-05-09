@@ -25,6 +25,11 @@ module.exports = {
         
         'import/no-unresolved': 'off',
 
+        "import/extensions": [
+            0,
+            "never",
+        ],
+
         // 允许对参数的属性进行修改
         'no-param-reassign': [
             'error',

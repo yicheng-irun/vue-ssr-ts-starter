@@ -1,8 +1,8 @@
 import KoaRouter from '@koa/router';
+import { vueSSRKowMiddleware } from 'yi-vue-ssr-middleware';
 import { resolve } from 'path';
 import { Context } from 'koa';
 
-import ssrHandler from '../middleware/vue-ssr-handler';
 import settings from '../settings';
 import ErrorMiddleware from '../middleware/error.middleware';
 import apiRouter from '../api';
@@ -11,8 +11,9 @@ import myadmin from './admin';
 const router = new KoaRouter();
 router.all(/.*/); // 使app中的use不再按需进入此路由
 
-router.use(ssrHandler({
-   bundlePath: resolve(__dirname, '../../../dist/client-bundle'),
+router.use(vueSSRKowMiddleware({
+   bundlePath: resolve(__dirname, '../../../dist/server-bundle'),
+   serverOrigin: `http://127.0.0.1:${settings.port}`,
    isCacheRenderer: !settings.isDev,
 }));
 
