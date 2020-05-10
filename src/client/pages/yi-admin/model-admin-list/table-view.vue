@@ -15,6 +15,7 @@
                   </th>
                   <th>#</th>
                   <th>id</th>
+                  <th>操作</th>
                   <th
                      v-for="(item, idx) in listFields"
                      :key="idx"
@@ -32,6 +33,18 @@
                   <td>{{ index + 1 }}</td>
                   <td>
                      <a :href="`edit/?id=${item.id}`">{{ item.id }}</a>
+                  </td>
+                  <td class="actions-td">
+                     <div>
+                        <el-button
+                           v-for="(actionItem, actionIndex) in rowListActions"
+                           :key="actionIndex"
+                           size="mini"
+                           @click="doActions(actionItem, [item.id])"
+                        >
+                           {{ actionItem.actionName }}
+                        </el-button>
+                     </div>
                   </td>
                   <td
                      v-for="(fieldItem, fieldIndex) in listFields"
@@ -92,11 +105,21 @@ export default {
       listFields () {
          return this.state.listFields;
       },
+      listActions () {
+         return this.state.listActions;
+      },
       listData () {
          return this.state.listData;
       },
       listCheckedStatusArray () {
          return this.state.listCheckedStatusArray;
+      },
+
+      betListActions () {
+         return this.listActions.filter((t) => t.isBatchAction);
+      },
+      rowListActions () {
+         return this.listActions.filter((t) => t.isTableRowAction);
       },
       allChecked () {
          let isCheckedAll = true;
@@ -152,6 +175,47 @@ export default {
             }
          });
       },
+
+      async doActions (actionObj, ids = []) {
+         if (this.state.loading) return;
+         if (this.state.loading) return;
+         this.$store.commit('setLoading', true);
+         try {
+            const rsp = await this.$ajax.post('list/action/', {
+               actionName: actionObj.actionName,
+               idList: ids,
+            });
+            const result = rsp.data;
+            if (result.success) {
+               const {
+                  successfulNum = 0,
+                  failedNum = 0,
+               } = result.data || {};
+               this.$notify.success({
+                  title: `${actionObj.actionName} 执行完成`,
+                  message: `${successfulNum} 项执行成功，${failedNum} 项执行失败`,
+               });
+            } else {
+               throw new Error(result?.message || `执行 ${actionObj.actionName} 操作失败了`);
+            }
+         } catch (e) {
+            this.$notify.error({
+               title: `${actionObj.actionName} 未执行完成`,
+               message: e?.message || `执行 ${actionObj.actionName} 操作失败了`,
+            });
+         } finally {
+            this.$store.commit('setLoading', false);
+         }
+
+         try {
+            await this.$store.dispatch('fetchListData');
+         } catch (e) {
+            this.$notify.error({
+               title: '出错了',
+               message: e?.message || '拉取数据出错了',
+            });
+         }
+      },
    },
 };
 </script>
@@ -188,6 +252,12 @@ export default {
                   border-right 1px dotted #0002
                   &:last-child {
                      border-right none;
+                  }
+                  &.actions-td {
+                     .el-button {
+                        padding 0.5em 0.8em
+                        margin 0.3em
+                     }
                   }
                }
                &:nth-child(2n - 1) {

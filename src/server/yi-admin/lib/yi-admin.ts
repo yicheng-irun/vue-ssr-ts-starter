@@ -2,6 +2,7 @@ import Router from '@koa/router';
 import { Context, Next } from 'koa';
 import ModelAdminBase from './model-admin-base';
 import EditBaseType from './edit-types/edit-base-type';
+import ModelAdminListAction from './model-admin-list-action';
 
 /**
  * admin站点
@@ -144,6 +145,18 @@ export default class YiAdmin {
       });
 
       /**
+       * 拉取列表页的字段信息
+       */
+      modelRouter.get('/list/actions/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const actions = this.modelAdminsMap[modelName].listActions;
+         ctx.body = {
+            success: true,
+            data: actions,
+         };
+      });
+
+      /**
        * 拉取列表页的数据
        */
       modelRouter.get('/list/data/', async (ctx: Context) => {
@@ -161,6 +174,38 @@ export default class YiAdmin {
          ctx.body = {
             success: true,
             data: datas,
+         };
+      });
+
+      /**
+       * 执行列表操作
+       */
+      modelRouter.post('/list/action/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const actions = this.modelAdminsMap[modelName].listActions;
+         const {
+            actionName = '',
+            idList = [],
+         } = ctx.request.body;
+
+         let action: ModelAdminListAction = null;
+         for (let i = 0; i < actions.length; i += 1) {
+            if (actions[i].actionName === actionName) {
+               action = actions[i];
+               break;
+            }
+         }
+
+         if (!action) throw new Error('未找到对应的action');
+
+         const result = await action.actionFunc(idList);
+
+         ctx.body = {
+            success: true,
+            data: result || {
+               successfulNum: 0,
+               failedNum: 0,
+            },
          };
       });
 

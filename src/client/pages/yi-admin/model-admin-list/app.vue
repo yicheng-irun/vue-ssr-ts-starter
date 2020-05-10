@@ -18,6 +18,7 @@ export default {
    async fetchData (context) {
       await Promise.all([
          context.store.dispatch('fetchListFields'),
+         context.store.dispatch('fetchListActions'),
          context.store.dispatch('fetchListData'),
       ]);
    },

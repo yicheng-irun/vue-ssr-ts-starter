@@ -3,6 +3,7 @@
 import { Context } from 'koa';
 import EditBaseType from './edit-types/edit-base-type';
 import ListBaseType from './list-types/list-base-type';
+import ModelAdminListAction from './model-admin-list-action';
 
 export interface ModelAdminBaseParams {
    /**
@@ -14,6 +15,11 @@ export interface ModelAdminBaseParams {
     * model的name
     */
    name: string;
+
+   /**
+    * 列表动作
+    */
+   listActions?: ModelAdminListAction[];
 }
 
 export interface ModelDataItem {
@@ -60,7 +66,9 @@ export default class ModelAdminBase {
     */
    private $name: string;
 
-   constructor ({ permission, name }: ModelAdminBaseParams) {
+   public listActions: ModelAdminListAction[] = [];
+
+   constructor ({ permission, name, listActions }: ModelAdminBaseParams) {
       if (permission) {
          this.permission = permission;
       }
@@ -69,6 +77,10 @@ export default class ModelAdminBase {
          this.$name = name;
       } else {
          throw new Error('name的规则必须满足/^[0-9a-z_-]+$/');
+      }
+
+      if (Array.isArray(listActions)) {
+         this.listActions = listActions;
       }
    }
 

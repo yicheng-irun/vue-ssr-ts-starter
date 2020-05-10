@@ -9,7 +9,11 @@ export default function ({
          pageIndex: 1,
          pageSize: 10,
          total: 0,
+         // 字段信息
          listFields: [],
+         // 列表的操作动作信息
+         listActions: [],
+
          listData: [],
          listCheckedStatusArray: [],
       },
@@ -20,6 +24,17 @@ export default function ({
          },
          setListFields (state, { data }) {
             state.listFields = data;
+         },
+         setListActions (state, { data }) {
+            const actions = [];
+            const exist = {};
+            (data || []).forEach((item) => {
+               if (!Object.prototype.hasOwnProperty.call(exist, item.actionName)) {
+                  actions.push(item);
+                  exist[item.actionName] = true;
+               }
+            });
+            state.listActions = actions;
          },
          setListData (state, { dataList, total }) {
             state.total = total;
@@ -44,6 +59,16 @@ export default function ({
                this.commit('setListFields', result);
             } else {
                throw new Error(result?.message || '拉取字段信息出错了');
+            }
+         },
+
+         async fetchListActions () {
+            const rsp = await get('list/actions/', { });
+            const result = rsp.data;
+            if (result.success) {
+               this.commit('setListActions', result);
+            } else {
+               throw new Error(result?.message || '拉取操作信息出错了');
             }
          },
 

@@ -14,6 +14,7 @@ import EditBooleanType from './edit-types/edit-boolean-type';
 import EditDateTimeType from './edit-types/edit-date-time-type';
 import ListBaseType from './list-types/list-base-type';
 import ListBooleanType from './list-types/list-boolean-type';
+import ModelAdminListAction, { ListActionResult } from './model-admin-list-action';
 
 /**
  * 映射mongoose的默认类型的图
@@ -111,6 +112,30 @@ export default class MongooseModelAdmin extends ModelAdminBase {
    }) {
       super(options);
       this.model = options.model;
+      this.appendDeleteListAction();
+   }
+
+   private appendDeleteListAction (): void {
+      /**
+       * 增加一个默认的删除使用的列表action
+       */
+      this.listActions.push(new ModelAdminListAction({
+         actionName: '删除',
+         actionFunc: async (idList): Promise <ListActionResult> => {
+            if (!Array.isArray(idList) || !idList.length) {
+               throw new Error('操作对象idList不能为空');
+            }
+            const result = await this.model.deleteMany({
+               _id: {
+                  $in: idList,
+               },
+            });
+            return {
+               successfulNum: result.deletedCount,
+               failedNum: idList.length - result.deletedCount,
+            };
+         },
+      }));
    }
 
    public getEditFormFields (): EditBaseType[] {
