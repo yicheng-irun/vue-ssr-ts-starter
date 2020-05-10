@@ -73,22 +73,52 @@ export default {
       },
    },
    mounted () {
-      this.remoteMethod('');
+      this.remoteMethod('', true);
    },
    methods: {
-      async remoteMethod (query) {
+      async remoteMethod (query, init = false) {
          this.loading = true;
          this.lastQuery = query;
          try {
-            const rsp = await this.$ajax.post('component-action/', {
+            const rsp1Promise = this.$ajax.post('component-action/', {
                fieldName: this.fieldName,
-               actionName: '',
+               actionName: 'getOptions',
                actionData: query,
             });
-            const result = rsp.data;
+
+            let initValue = null;
+            if (init && this.value) {
+               const { value } = this;
+               const rsp2 = await this.$ajax.post('component-action/', {
+                  fieldName: this.fieldName,
+                  actionName: 'getLabelByValue',
+                  actionData: value,
+               });
+               if (rsp2.data?.success) {
+                  initValue = {
+                     label: rsp2.data.data,
+                     value,
+                  };
+               } else {
+                  throw new Error(rsp2.data?.message || `拉取字段${this.fieldName}初始值失败了`);
+               }
+            }
+
+            const rsp1 = await rsp1Promise;
+            const result = rsp1.data;
             if (this.lastQuery === query) {
                if (result.success) {
-                  this.remoteOptions = result.data;
+                  this.remoteOptions = [...result.data];
+                  if (initValue) {
+                     const v = initValue.value;
+                     let exist = false;
+                     this.options.forEach((t) => {
+                        if (t.value === v) {
+                           exist = true;
+                        }
+                     });
+                     if (!exist) this.remoteOptions.push(initValue);
+                  }
                } else {
                   throw new Error(result.message || '搜索远程数据失败了');
                }

@@ -63,11 +63,17 @@ export class YiAdminDemo {
       helpText: '字符串远程选择类型示例',
       editType: new EditStringRemoteSelectType({
          required: false,
+         async getLabelByValue (value): Promise<string> {
+            return `label:${value}`;
+         },
          async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
             await new Promise((resolve) => setTimeout(resolve, 200));
             const q = String(query).trim();
             return [
-               ...(q ? [q] : []),
+               ...(q ? [{
+                  label: `label:${q}`,
+                  value: q,
+               }] : []),
                '不通过',
                {
                   label: '公开',
