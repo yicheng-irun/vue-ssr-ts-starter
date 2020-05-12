@@ -28,6 +28,11 @@ export default class ModelAdminListAction {
        * 是否在表单的行内显示这个action按钮
        */
       isTableRowAction?: boolean;
+
+      /**
+       * 这个操作是否需要弹窗确认
+       */
+      popConfirm?: boolean;
       /**
        * action的执行函数
        */
@@ -40,6 +45,9 @@ export default class ModelAdminListAction {
       }
       if (typeof config.isTableRowAction === 'boolean') {
          this.isTableRowAction = config.isTableRowAction;
+      }
+      if (typeof config.popConfirm === 'boolean') {
+         this.popConfirm = config.popConfirm;
       }
 
       this.actionFunc = config.actionFunc;
@@ -59,6 +67,11 @@ export default class ModelAdminListAction {
     * 这个操作是否在表格中显示
     */
    public isTableRowAction = true;
+
+   /**
+    * 这个操作是否需要弹窗确认
+    */
+   public popConfirm = true;
 
    /**
     * 执行批量操作的回调函数, 如果执行失败请返回一个错误new Error("错误标题")，错误标题会显示给用户

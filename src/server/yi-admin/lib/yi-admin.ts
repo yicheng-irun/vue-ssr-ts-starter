@@ -196,7 +196,7 @@ export default class YiAdmin {
             }
          }
 
-         if (!action) throw new Error('未找到对应的action');
+         if (!action) throw new Error('未找到对应的操作动作');
 
          const result = await action.actionFunc(idList);
 

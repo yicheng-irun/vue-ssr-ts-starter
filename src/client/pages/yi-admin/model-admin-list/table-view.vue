@@ -3,85 +3,141 @@
       v-loading="state.loading"
       class="table-view"
    >
-      <div class="table-wrapper">
-         <table class="table-view-table">
-            <thead class="table-view-thead">
-               <tr>
-                  <th class="checkbox-all">
-                     <el-checkbox
-                        :value="allChecked"
-                        @change="handelCheckAll"
-                     />
-                  </th>
-                  <th>#</th>
-                  <th>id</th>
-                  <th>操作</th>
-                  <th
-                     v-for="(item, idx) in listFields"
-                     :key="idx"
-                  >
-                     <span v-text="item.fieldNameAlias || item.fieldName" />
-                  </th>
-               </tr>
-            </thead>
-            <tbody class="table-view-tbody">
-               <tr
-                  v-for="(item, index) in listData"
-                  :key="item.id || index"
+      <div class="top-action">
+         <div class="top-action-wrapper">
+            <span class="action-lable">对选中项进行</span>
+            <el-select
+               v-model="batchActionIndex"
+               placeholder="请选择操作"
+               size="mini"
+            >
+               <el-option
+                  v-for="item in batchActionOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+               />
+            </el-select>
+            <template>
+               <el-popconfirm
+                  v-if="selectedBatchAction && selectedBatchAction.popConfirm"
+                  title="这是一段内容确定删除吗？"
+                  @onConfirm="doActions(selectedBatchAction, [])"
                >
-                  <td><el-checkbox v-model="listCheckedStatusArray[index]" /></td>
-                  <td>{{ index + 1 }}</td>
-                  <td>
-                     <a :href="`edit/?id=${item.id}`">{{ item.id }}</a>
-                  </td>
-                  <td class="actions-td">
-                     <div>
-                        <el-button
-                           v-for="(actionItem, actionIndex) in rowListActions"
-                           :key="actionIndex"
-                           size="mini"
-                           @click="doActions(actionItem, [item.id])"
-                        >
-                           {{ actionItem.actionName }}
-                        </el-button>
-                     </div>
-                  </td>
-                  <td
-                     v-for="(fieldItem, fieldIndex) in listFields"
-                     :key="fieldIndex"
+                  <el-button
+                     slot="reference"
+                     size="mini"
                   >
-                     <div>
-                        <component
-                           :is="getComponent(fieldItem.componentName)"
-                           :id="item.id"
-                           :config="item.componentConfig"
-                           :field-name="item.fieldName"
-                           :values="item.values"
-                           :value="item.values[fieldItem.fieldName]"
-                        />
-                     </div>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-         <div
-            v-if="listData.length === 0"
-            class="no-data"
-         >
-            暂时没有数据呦~
+                     执行
+                  </el-button>
+               </el-popconfirm>
+               <el-button
+                  v-else
+                  size="mini"
+                  type="primary"
+                  :disabled="selectedBatchAction == null"
+               >
+                  执行
+               </el-button>
+            </template>
          </div>
       </div>
-      <div class="table-view-footer">
-         <el-pagination
-            :current-page="pageIndex"
-            background
-            :page-sizes="[10, 20, 50, 100, 200]"
-            :page-size="state.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="state.total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-         />
+      <div class="panel-box">
+         <div class="table-wrapper">
+            <table class="table-view-table">
+               <thead class="table-view-thead">
+                  <tr>
+                     <th class="checkbox-all">
+                        <el-checkbox
+                           :value="allChecked"
+                           @change="handelCheckAll"
+                        />
+                     </th>
+                     <th>#</th>
+                     <th>id</th>
+                     <th>操作</th>
+                     <th
+                        v-for="(item, idx) in listFields"
+                        :key="idx"
+                     >
+                        <span v-text="item.fieldNameAlias || item.fieldName" />
+                     </th>
+                  </tr>
+               </thead>
+               <tbody class="table-view-tbody">
+                  <tr
+                     v-for="(item, index) in listData"
+                     :key="item.id || index"
+                  >
+                     <td><el-checkbox v-model="listCheckedStatusArray[index]" /></td>
+                     <td>{{ index + 1 }}</td>
+                     <td>
+                        <a :href="`edit/?id=${item.id}`">{{ item.id }}</a>
+                     </td>
+                     <td class="actions-td">
+                        <template
+                           v-for="(actionItem, actionIndex) in rowListActions"
+                        >
+                           <el-popconfirm
+                              v-if="actionItem.popConfirm"
+                              :key="actionIndex"
+                              title="这是一段内容确定删除吗？"
+                              @onConfirm="doActions(actionItem, [item.id])"
+                           >
+                              <el-button
+                                 slot="reference"
+                                 size="mini"
+                              >
+                                 {{ actionItem.actionName }}
+                              </el-button>
+                           </el-popconfirm>
+                           <el-button
+                              v-else
+                              :key="actionIndex"
+                              size="mini"
+                              @click="doActions(actionItem, [item.id])"
+                           >
+                              {{ actionItem.actionName }}
+                           </el-button>
+                        </template>
+                     </td>
+                     <td
+                        v-for="(fieldItem, fieldIndex) in listFields"
+                        :key="fieldIndex"
+                     >
+                        <div>
+                           <component
+                              :is="getComponent(fieldItem.componentName)"
+                              :id="item.id"
+                              :config="item.componentConfig"
+                              :field-name="item.fieldName"
+                              :values="item.values"
+                              :value="item.values[fieldItem.fieldName]"
+                           />
+                        </div>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <div
+               v-if="listData.length === 0"
+               class="no-data"
+            >
+               暂时没有数据呦~
+            </div>
+         </div>
+         <div class="table-view-footer">
+            <el-pagination
+               :current-page="pageIndex"
+               background
+               :page-sizes="[10, 20, 50, 100, 200]"
+               :page-size="state.pageSize"
+               layout="total, sizes, prev, pager, next, jumper"
+               :total="state.total"
+               @size-change="handleSizeChange"
+               @current-change="handleCurrentChange"
+            />
+         </div>
       </div>
    </div>
 </template>
@@ -93,6 +149,7 @@ export default {
    data () {
       return {
          pageIdx: 0,
+         batchActionIndex: null,
       };
    },
    computed: {
@@ -117,6 +174,24 @@ export default {
 
       betListActions () {
          return this.listActions.filter((t) => t.isBatchAction);
+      },
+      batchActionOptions () { // 批量操作的下拉选择框选项
+         const options = [];
+         const actions = this.betListActions;
+         for (let i = 0; i < actions.length; i += 1) {
+            const element = actions[i];
+            options.push({
+               value: i,
+               label: element.actionName,
+            });
+         }
+         return options;
+      },
+      selectedBatchAction () { // 选中的批量操作action
+         if (typeof this.batchActionIndex === 'number') {
+            return this.betListActions[this.batchActionIndex];
+         }
+         return null;
       },
       rowListActions () {
          return this.listActions.filter((t) => t.isTableRowAction);
@@ -223,62 +298,78 @@ export default {
 <style lang="stylus">
 .table-view {
    font-size 12px
-   box-shadow 0 0 3px #0001
    margin 0 1em
-   >.table-wrapper {
-      overflow-x auto;
-      >table {
-         min-width 100%
-         background #fff
-         border-collapse collapse
-         font-size: 12px
-         >thead {
-            border-bottom 2px dotted #0004
-            line-height 1.2
-            color #000a
-            >tr {
-               >th {
-                  padding 1.2em 0.4em 1em
-               }
-            }
+   >.top-action {
+      >.top-action-wrapper {
+         padding 1em 0
+         >.action-lable {
+            margin 0 0.8em 0 0
          }
-         >tbody {
-            line-height 1.5
-            >tr {
-               >td {
-                  padding 0.8em 0.8em;
-                  font-size: 12px
-                  color #000a
-                  border-right 1px dotted #0002
-                  &:last-child {
-                     border-right none;
-                  }
-                  &.actions-td {
-                     .el-button {
-                        padding 0.5em 0.8em
-                        margin 0.3em
-                     }
-                  }
-               }
-               &:nth-child(2n - 1) {
-                  background #0000000a
-               }
-            }
+         >.el-select {
+            margin 0 0.8em 0 0
          }
-      }
-      >.no-data {
-         text-align center
-         line-height 4
-         color #0008
-         font-size 1.3em
+         >.el-button {
+
+         }
       }
    }
-   >.table-view-footer {
-      border-top 1px dashed #0003
-      line-height 3em
-      background #fff
-      padding 0.7em 1em 0.2em
-      color #000a
+   >.panel-box {
+      box-shadow 0 0 3px #0001
+      >.table-wrapper {
+         overflow-x auto;
+         >table {
+            min-width 100%
+            background #fff
+            border-collapse collapse
+            font-size: 12px
+            >thead {
+               border-bottom 2px dotted #0004
+               line-height 1.2
+               color #000a
+               >tr {
+                  >th {
+                     padding 1.2em 0.4em 1em
+                  }
+               }
+            }
+            >tbody {
+               line-height 1.5
+               >tr {
+                  >td {
+                     padding 0.8em 0.8em;
+                     font-size: 12px
+                     color #000a
+                     border-right 1px dotted #0002
+                     &:last-child {
+                        border-right none;
+                     }
+                     &.actions-td {
+                        .el-button {
+                           padding 0.4em 0.8em
+                           margin 0.3em
+                        }
+                     }
+                  }
+                  &:nth-child(2n - 1) {
+                     background #0000000a
+                  }
+               }
+            }
+         }
+         >.no-data {
+            text-align center
+            line-height 4
+            color #0008
+            font-size 1.3em
+         }
+      }
+      >.table-view-footer {
+         border-top 1px dashed #0003
+         line-height 3em
+         background #fff
+         padding 0.7em 1em 0.2em
+         color #000a
+      }
    }
 }
 </style>
