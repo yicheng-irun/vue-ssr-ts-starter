@@ -30,6 +30,10 @@ export default class YiAdmin {
       title: 'root',
    });
 
+   public modelNavMenu: SiteNavMenu = new SiteNavMenu({
+      title: '数据模型管理',
+   });
+
    constructor ({ permission }: {
       permission?: (ctx: Context, next: Next) => Promise<any>;
    }) {
@@ -39,6 +43,7 @@ export default class YiAdmin {
       if (permission) {
          this.permission = permission;
       }
+      this.siteNavMenu.add(this.modelNavMenu);
 
       this.appendPermissionCheckRouter();
       this.appendSiteHomeRouter();
@@ -59,6 +64,12 @@ export default class YiAdmin {
    private appendSiteHomeRouter (): void {
       this.koaRouter.get('/', async (ctx: Context) => {
          await ctx.render('yi-admin/site', {});
+      });
+      this.koaRouter.get('/site-menu/', async (ctx: Context) => {
+         ctx.body = {
+            success: true,
+            data: this.siteNavMenu,
+         };
       });
    }
 
@@ -228,10 +239,21 @@ export default class YiAdmin {
     * 添加一个modelAdmin到yi-admin实例中
     * @param modelAdmin
     */
-   addModelAdmin (modelAdmin: ModelAdminBase): void {
+   addModelAdmin (modelAdmin: ModelAdminBase, {
+      addToSiteNavMenu = true,
+   }: {
+      addToSiteNavMenu?: boolean;
+   } = {}): void {
       if (this.modelAdminsMap[modelAdmin.name]) {
          throw new Error(`已经存在一个name为${modelAdmin.name}的model-admin实体在本站点中`);
       }
       this.modelAdminsMap[modelAdmin.name] = modelAdmin;
+
+      if (addToSiteNavMenu) {
+         this.modelNavMenu.add(new SiteNavMenu({
+            title: `管理 ${modelAdmin.title || modelAdmin.name}`,
+            link: `model-admin/${modelAdmin.name}/`,
+         }));
+      }
    }
 }

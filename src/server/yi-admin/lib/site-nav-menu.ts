@@ -22,4 +22,9 @@ export default class SiteNavMenu {
       this.title = config.title;
       if (typeof config.link === 'string') { this.link = config.link; }
    }
+
+   public add (menu: SiteNavMenu): SiteNavMenu {
+      this.childrens.push(menu);
+      return this;
+   }
 }

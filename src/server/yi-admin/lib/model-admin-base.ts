@@ -17,6 +17,11 @@ export interface ModelAdminBaseParams {
    name: string;
 
    /**
+    * 标题，通常用于菜单中展示
+    */
+   title?: string;
+
+   /**
     * 列表动作
     */
    listActions?: ModelAdminListAction[];
@@ -68,9 +73,16 @@ export default class ModelAdminBase {
     */
    private $name: string;
 
+   /**
+    * 通常用于菜单中
+    */
+   public title = '';
+
    public listActions: ModelAdminListAction[] = [];
 
-   constructor ({ permission, name, listActions }: ModelAdminBaseParams) {
+   constructor ({
+      permission, name, listActions, title = '',
+   }: ModelAdminBaseParams) {
       if (permission) {
          this.permission = permission;
       }
@@ -80,6 +92,8 @@ export default class ModelAdminBase {
       } else {
          throw new Error('name的规则必须满足/^[0-9a-z_-]+$/');
       }
+
+      this.title = title;
 
       if (Array.isArray(listActions)) {
          this.listActions = listActions;
