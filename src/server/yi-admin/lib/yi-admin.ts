@@ -3,6 +3,7 @@ import { Context, Next } from 'koa';
 import ModelAdminBase from './model-admin-base';
 import EditBaseType from './edit-types/edit-base-type';
 import ModelAdminListAction from './model-admin-list-action';
+import SiteNavMenu from './site-nav-menu';
 
 /**
  * admin站点
@@ -12,7 +13,9 @@ export default class YiAdmin {
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常或者返回false
     */
-   private permission: (ctx: Context) => Promise<boolean> = async () => true
+   private permission: (ctx: Context, next: Next) => Promise<any> = async (ctx, next) => {
+      await next();
+   }
 
 
    /**
@@ -20,8 +23,15 @@ export default class YiAdmin {
     */
    koaRouter: Router;
 
+   /**
+    * 站点导航菜单
+    */
+   public siteNavMenu: SiteNavMenu = new SiteNavMenu({
+      title: 'root',
+   });
+
    constructor ({ permission }: {
-      permission?: (ctx: Context) => Promise<boolean>;
+      permission?: (ctx: Context, next: Next) => Promise<any>;
    }) {
       this.koaRouter = new Router();
       this.koaRouter.all(/.*/); // 使app中的use不再按需进入此路由
@@ -42,13 +52,7 @@ export default class YiAdmin {
             ctx.redirect(ctx.originalUrl.replace(ctx.path, () => `${ctx.path}/`));
             return;
          }
-
-         const permissionResult = await this.permission(ctx);
-         if (permissionResult === true) {
-            await next();
-         } else {
-            throw new Error('no permission');
-         }
+         await this.permission(ctx, next);
       });
    }
 

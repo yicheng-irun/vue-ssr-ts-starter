@@ -135,6 +135,8 @@ export default class MongooseModelAdmin extends ModelAdminBase {
                failedNum: idList.length - result.deletedCount,
             };
          },
+         buttonType: 'danger',
+         buttonIcon: 'el-icon-delete',
       }));
    }
 

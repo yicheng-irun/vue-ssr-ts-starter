@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import { Context } from 'koa';
+import { Context, Next } from 'koa';
 import EditBaseType from './edit-types/edit-base-type';
 import ListBaseType from './list-types/list-base-type';
 import ModelAdminListAction from './model-admin-list-action';
@@ -9,7 +9,7 @@ export interface ModelAdminBaseParams {
    /**
     * 用来判断用户是否有权限
     */
-   permission?: (ctx: Context) => Promise<boolean>;
+   permission?: (ctx: Context, next: Next) => Promise<any>;
 
    /**
     * model的name
@@ -59,7 +59,9 @@ export default class ModelAdminBase {
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常或者返回false
     */
-   public permission: (ctx: Context) => Promise<boolean> = async () => true
+   public permission?: (ctx: Context, next: Next) => Promise<any> = async (ctx, next) => {
+      await next();
+   }
 
    /**
     * model的name，用户路径中，不能重复，且不能更改

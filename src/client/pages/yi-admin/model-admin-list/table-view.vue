@@ -4,12 +4,23 @@
       class="table-view"
    >
       <div class="top-action">
-         <div class="top-action-wrapper">
+         <div class="top-action-row">
+            <el-button
+               class="refresh-btn"
+               size="mini"
+               icon="el-icon-refresh-right"
+               @click="reloadData"
+            >
+               刷新
+            </el-button>
+         </div>
+         <div class="top-action-row">
             <span class="action-lable">对选中项进行</span>
             <el-select
                v-model="batchActionIndex"
                placeholder="请选择操作"
                size="mini"
+               :class="checkedIdList.length === 0 ? 'dashed' : ''"
             >
                <el-option
                   v-for="item in batchActionOptions"
@@ -22,11 +33,13 @@
                <el-popconfirm
                   v-if="selectedBatchAction && selectedBatchAction.popConfirm"
                   title="这是一段内容确定删除吗？"
-                  @onConfirm="doActions(selectedBatchAction, [])"
+                  @onConfirm="doBatchAction(selectedBatchAction)"
                >
                   <el-button
                      slot="reference"
                      size="mini"
+                     :type="selectedBatchAction.buttonType || ''"
+                     :icon="selectedBatchAction.buttonIcon || ''"
                   >
                      执行
                   </el-button>
@@ -34,12 +47,20 @@
                <el-button
                   v-else
                   size="mini"
-                  type="primary"
+                  :type="(selectedBatchAction && selectedBatchAction.buttonType) || ''"
+                  :icon="(selectedBatchAction && selectedBatchAction.buttonIcon) || ''"
                   :disabled="selectedBatchAction == null"
+                  @click="doBatchAction(selectedBatchAction)"
                >
                   执行
                </el-button>
             </template>
+            <span
+               v-if="checkedIdList && checkedIdList.length === 0"
+               class="batch-action-helptext"
+            >
+               当前未勾选任何项目
+            </span>
          </div>
       </div>
       <div class="panel-box">
@@ -87,6 +108,8 @@
                               <el-button
                                  slot="reference"
                                  size="mini"
+                                 :type="actionItem.buttonType || ''"
+                                 :icon="actionItem.buttonIcon || ''"
                               >
                                  {{ actionItem.actionName }}
                               </el-button>
@@ -95,6 +118,8 @@
                               v-else
                               :key="actionIndex"
                               size="mini"
+                              :type="actionItem.buttonType || ''"
+                              :icon="actionItem.buttonIcon || ''"
                               @click="doActions(actionItem, [item.id])"
                            >
                               {{ actionItem.actionName }}
@@ -170,6 +195,20 @@ export default {
       },
       listCheckedStatusArray () {
          return this.state.listCheckedStatusArray;
+      },
+
+      checkedIdList () {
+         const idList = [];
+         const { listData } = this;
+         const { listCheckedStatusArray } = this;
+         for (let i = 0; i < listData.length; i += 1) {
+            const item = listData[i];
+            const status = listCheckedStatusArray[i] === true;
+            if (status) {
+               idList.push(item.id);
+            }
+         }
+         return idList;
       },
 
       betListActions () {
@@ -251,6 +290,28 @@ export default {
          });
       },
 
+      async reloadData () {
+         try {
+            await this.$store.dispatch('fetchListData');
+         } catch (e) {
+            this.$notify.error({
+               title: '出错了',
+               message: e?.message || '拉取数据出错了',
+            });
+         }
+      },
+
+      async doBatchAction (actionObj) {
+         const idList = this.checkedIdList;
+         if (idList.length <= 0) {
+            this.$notify.error({
+               title: '未勾选任何项目',
+            });
+            return;
+         }
+         this.doActions(actionObj, idList);
+      },
+
       async doActions (actionObj, ids = []) {
          if (this.state.loading) return;
          if (this.state.loading) return;
@@ -298,18 +359,32 @@ export default {
 <style lang="stylus">
 .table-view {
    font-size 12px
-   margin 0 1em
+   margin 0 1.5em
    >.top-action {
-      >.top-action-wrapper {
-         padding 1em 0
+      padding 0.8em 0 0.5em
+      >.top-action-row {
+         font-size 0.9em
+         color #000a
+         padding 0.5em 0
+         >.refresh-btn {
+            border-style dashed
+         }
          >.action-lable {
             margin 0 0.8em 0 0
          }
          >.el-select {
             margin 0 0.8em 0 0
+            &.dashed>.el-input>input {
+               border-style dashed
+            }
          }
          >.el-button {
 
+         }
+         >.batch-action-helptext {
+            font-size 12px
+            margin 0 0.3em
+            padding 0 0.3em
          }
       }
    }

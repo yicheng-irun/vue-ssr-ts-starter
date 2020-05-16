@@ -6,7 +6,7 @@ export class RefFieldClass {
     public name: string;
 
     @prop()
-    public name2: string;
+    public title: string;
 }
 
 const RefFieldClassModel = getModelForClass(RefFieldClass);

@@ -2,6 +2,7 @@ import YiAdmin from '../yi-admin';
 import YiAdminDemoModel from '../models/demo.model';
 import MongooseModelAdmin from '../yi-admin/lib/mongoose-model-admin';
 import ModelAdminListAction, { ListActionResult } from '../yi-admin/lib/model-admin-list-action';
+import RefFieldClassModel from '../models/demo.refclass.model';
 
 const myadmin = new YiAdmin({});
 
@@ -25,6 +26,15 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
          },
          isBatchAction: true,
          isTableRowAction: false,
+         buttonType: 'success',
+      }),
+
+      new ModelAdminListAction({
+         actionName: '不需确认操作',
+         actionFunc: async (): Promise<ListActionResult> => null,
+         popConfirm: false,
+         buttonType: 'info',
+         buttonIcon: 'el-icon-message-solid',
       }),
 
       new ModelAdminListAction({
@@ -36,6 +46,11 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
          isTableRowAction: true,
       }),
    ],
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'yi-admin-demo-ref',
+   model: RefFieldClassModel,
 }));
 
 // (async function () {

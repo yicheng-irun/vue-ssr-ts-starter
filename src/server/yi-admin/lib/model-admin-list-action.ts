@@ -11,6 +11,12 @@ export interface ListActionResult {
 }
 
 /**
+ * 按钮类型参考
+ * https://element.eleme.cn/#/zh-CN/component/button
+ */
+export type ButtonType = '' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
+
+/**
  * 列表页的用户动作类
  */
 export default class ModelAdminListAction {
@@ -33,6 +39,23 @@ export default class ModelAdminListAction {
        * 这个操作是否需要弹窗确认
        */
       popConfirm?: boolean;
+
+      /**
+       * 按钮样式
+       * 传递给前端的组件
+       * '' | 'primary' | 'success' | 'info' | 'warning' | 'danger'
+       */
+      buttonType?: ButtonType;
+
+      /**
+       * 按钮上的图标
+       * 传递给前端el-button组件
+       * 按钮图标参考
+       * 此处类型声明暂只声明一部分
+       * https://element.eleme.cn/#/zh-CN/component/icon
+       * 'el-icon-edit' | 'el-icon-share' | 'el-icon-delete' | 'el-icon-search' | 'el-icon-upload'
+       */
+      buttonIcon?: string;
       /**
        * action的执行函数
        */
@@ -48,6 +71,12 @@ export default class ModelAdminListAction {
       }
       if (typeof config.popConfirm === 'boolean') {
          this.popConfirm = config.popConfirm;
+      }
+      if (typeof config.buttonType === 'string') {
+         this.buttonType = config.buttonType;
+      }
+      if (typeof config.buttonIcon === 'string') {
+         this.buttonIcon = config.buttonIcon;
       }
 
       this.actionFunc = config.actionFunc;
@@ -72,6 +101,16 @@ export default class ModelAdminListAction {
     * 这个操作是否需要弹窗确认
     */
    public popConfirm = true;
+
+   /**
+    * 按钮样式
+    */
+   public buttonType: ButtonType = '';
+
+   /**
+    * 按钮的图标
+    */
+   public buttonIcon = '';
 
    /**
     * 执行批量操作的回调函数, 如果执行失败请返回一个错误new Error("错误标题")，错误标题会显示给用户
