@@ -1,7 +1,10 @@
 <template>
-   <div id="app">
+   <div
+      id="app"
+      :style="{ opacity, }"
+   >
       <TableView />
-      <pre v-text="JSON.stringify(state, null, '  ')" />
+      <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
    </div>
 </template>
 
@@ -22,10 +25,18 @@ export default {
          context.store.dispatch('fetchListData'),
       ]);
    },
+   data () {
+      return {
+         opacity: 0,
+      };
+   },
    computed: {
       state () {
          return this.$store.state;
       },
+   },
+   mounted () {
+      this.opacity = 1;
    },
 };
 </script>
@@ -36,6 +47,7 @@ body {
 }
 #app {
    padding 1em 0 2em
+   transition opacity 0.3s
    >pre {
       font-size 12px
    }

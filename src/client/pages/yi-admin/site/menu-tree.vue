@@ -28,7 +28,11 @@
       @click="clickItem"
    >
       <i class="el-icon-document" />
-      <span slot="title">{{ siteMenu.title }}</span>
+      <a
+         slot="title"
+         :href="siteMenu.link"
+         target="main_frame"
+      >{{ siteMenu.title }}</a>
    </el-menu-item>
 </template>
 

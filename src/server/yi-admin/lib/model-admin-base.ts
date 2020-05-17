@@ -46,6 +46,11 @@ export interface DataListRequestBody {
     * 分页
     */
    pageIndex: number;
+
+   /**
+    * '-id', 'name', '-field'
+    */
+   sort?: string;
 }
 
 export interface DataListResponseBody {

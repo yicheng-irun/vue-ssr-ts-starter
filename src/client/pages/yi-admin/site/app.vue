@@ -41,7 +41,7 @@
             :class="isCollapse ? 'collapse-style' : ''"
          >
             <iframe
-               name="main"
+               name="main_frame"
                :src="state.iframeSrc"
             />
             <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
@@ -165,7 +165,7 @@ html, body {
          >.el-menu {
             border-right: none;
             .el-menu {
-               background-color #0000000a
+               background-color #0000000b
             }
             .el-menu-item {
                // padding-right 20px
@@ -175,6 +175,11 @@ html, body {
             }
             &.el-menu--collapse {
                width 60px
+            }
+            a {
+               display inline-block
+               text-decoration none
+               color inherit
             }
          }
       }

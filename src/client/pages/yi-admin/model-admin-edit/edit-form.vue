@@ -12,6 +12,14 @@
          label-width="110px"
       >
          <el-form-item
+            v-if="editId"
+            label="id:"
+         >
+            <div class="edit-id">
+               {{ editId }}
+            </div>
+         </el-form-item>
+         <el-form-item
             v-for="(item, index) in editFormFields"
             :key="index"
             :label="`${item.fieldNameAlias || item.fieldName}:`"
@@ -21,6 +29,7 @@
             <component
                :is="getComponent(item.componentName)"
                v-model="editFormData[item.fieldName]"
+               :edit-form-data="editFormData"
                :name="item.fieldName"
                :config="item.componentConfig"
                :field-name="item.fieldName"
@@ -36,7 +45,7 @@
                type="primary"
                @click="submit"
             >
-               提交
+               {{ editId ? '保存' : '提交' }}
             </el-button>
             <el-button @click="reset">
                重置
@@ -117,6 +126,13 @@ export default {
 .edit-form {
    padding 2em 0em
    margin 0 1em
+   >.el-form {
+      .edit-id {
+         font-size 0.8em
+         color #606266
+      }
+   }
+
    >.el-loading-mask {
       background #fffa
    }
@@ -130,7 +146,7 @@ export default {
    }
    .el-form-item__content {
       >.ya-help-text {
-         margin 0.5em 0 0;
+         margin 0.5em 0 0
          color #0007
          font-size 0.8em
          line-height 1.5

@@ -176,7 +176,7 @@ export default class YiAdmin {
        */
       modelRouter.get('/list/data/', async (ctx: Context) => {
          const { modelName } = ctx.params;
-         const { pageIndex = '1', pageSize = '10' } = ctx.query;
+         const { pageIndex = '1', pageSize = '10', sort = '' } = ctx.query;
          const pageIndexNumber = Number.parseInt(pageIndex, 10);
          const pageSizeNumber = Number.parseInt(pageSize, 10);
          if (typeof pageIndexNumber !== 'number' || pageIndexNumber < 1) throw new Error('pageIndex必须是>=1的整数');
@@ -185,6 +185,7 @@ export default class YiAdmin {
          const datas = await this.modelAdminsMap[modelName].getDataList({
             pageIndex: pageIndexNumber,
             pageSize: pageSizeNumber,
+            sort,
          }, ctx);
          ctx.body = {
             success: true,

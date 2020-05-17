@@ -4,7 +4,16 @@
       class="table-view"
    >
       <div class="top-action">
+         <TableSort class="top-action-row" />
          <div class="top-action-row">
+            <el-button
+               class="create-btn"
+               size="mini"
+               icon="el-icon-plus"
+               @click="createData"
+            >
+               新增
+            </el-button>
             <el-button
                class="refresh-btn"
                size="mini"
@@ -56,10 +65,10 @@
                </el-button>
             </template>
             <span
-               v-if="checkedIdList && checkedIdList.length === 0"
+               v-if="checkedIdList"
                class="batch-action-helptext"
             >
-               当前未勾选任何项目
+               {{ checkedIdList.length === 0 ? '当前未勾选任何项目' : `已选中${checkedIdList.length}条记录` }}
             </span>
          </div>
       </div>
@@ -169,8 +178,12 @@
 
 <script>
 import ListComponents from './list-components';
+import TableSort from './table-sort';
 
 export default {
+   components: {
+      TableSort,
+   },
    data () {
       return {
          pageIdx: 0,
@@ -246,6 +259,13 @@ export default {
          return isCheckedAll;
       },
    },
+   watch: {
+      'state.sortList': function _ () {
+         this.$nextTick(() => {
+            this.reloadData();
+         });
+      },
+   },
    methods: {
       getComponent (componentName) {
          if (Object.prototype.hasOwnProperty.call(ListComponents, componentName)) {
@@ -288,6 +308,10 @@ export default {
                });
             }
          });
+      },
+
+      async createData () {
+         window.location = 'edit/';
       },
 
       async reloadData () {

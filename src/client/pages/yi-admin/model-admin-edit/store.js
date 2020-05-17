@@ -14,6 +14,10 @@ export default function ({
       },
 
       mutations: {
+         setEditId (state, data) {
+            state.editId = data.id;
+         },
+
          setEditFormFields (state, { data }) {
             state.editFormFields = data;
          },
@@ -53,6 +57,11 @@ export default function ({
                editId: state.editId,
                formData: state.editFormData,
             });
+            const result = rsp.data;
+            if (result?.success && result?.data?.id) {
+               this.commit('setEditId', result.data);
+               this.commit('setEditFormData', result.data);
+            }
             return rsp.data;
          },
       },

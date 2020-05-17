@@ -9,6 +9,9 @@ export default function ({
          pageIndex: 1,
          pageSize: 10,
          total: 0,
+
+         sortList: ['-_id'],
+
          // 字段信息
          listFields: [],
          // 列表的操作动作信息
@@ -82,6 +85,7 @@ export default function ({
                const rsp = await get('list/data/', {
                   pageIndex,
                   pageSize: state.pageSize,
+                  sort: state.sortList.join(' '),
                });
                const result = rsp.data;
                if (result.success) {
