@@ -5,6 +5,10 @@ export default function ({
 }) {
    const store = new Vuex.Store({
       state: {
+         modelInfo: {
+
+         },
+
          loading: false,
          pageIndex: 1,
          pageSize: 10,
@@ -26,7 +30,8 @@ export default function ({
             state.loading = !!value;
          },
          setListFields (state, { data }) {
-            state.listFields = data;
+            state.listFields = data.fields;
+            state.modelInfo = data.modelInfo;
          },
          setListActions (state, { data }) {
             const actions = [];

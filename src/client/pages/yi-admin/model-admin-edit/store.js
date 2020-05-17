@@ -7,6 +7,8 @@ export default function ({
 }) {
    const store = new Vuex.Store({
       state: {
+         modelInfo: {},
+
          editId: runtime.query.id || '',
          editFormFields: [],
          editFormData: {},
@@ -19,7 +21,8 @@ export default function ({
          },
 
          setEditFormFields (state, { data }) {
-            state.editFormFields = data;
+            state.editFormFields = data.fields;
+            state.modelInfo = data.modelInfo;
          },
 
          setEditFormData (state, { values }) {

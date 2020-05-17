@@ -2,6 +2,7 @@ import KoaRouter from '@koa/router';
 import { vueSSRKowMiddleware } from 'yi-vue-ssr-middleware';
 import { resolve } from 'path';
 import { Context } from 'koa';
+import koaStatic from 'koa-static';
 
 import settings from '../settings';
 import ErrorMiddleware from '../middleware/error.middleware';
@@ -10,6 +11,8 @@ import myadmin from './admin';
 
 const router = new KoaRouter();
 router.all(/.*/); // 使app中的use不再按需进入此路由
+
+router.use('/assets/', koaStatic(resolve(__dirname, '../../../dist/client'), {}));
 
 router.use(vueSSRKowMiddleware({
    bundlePath: resolve(__dirname, '../../../dist/server-bundle'),

@@ -275,7 +275,6 @@ export default class MongooseModelAdmin extends ModelAdminBase {
     * data-list中拉取数据的函数
     */
    public async getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
-      console.log(req.sort);
       const datasPromise = this.model.find().limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
          .sort(req.sort || '')
          .exec();

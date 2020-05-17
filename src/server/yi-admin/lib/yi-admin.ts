@@ -91,10 +91,17 @@ export default class YiAdmin {
 
       modelRouter.get('/edit/fields/', async (ctx: Context) => {
          const { modelName } = ctx.params;
-         const fields = this.modelAdminsMap[modelName].getEditFormFields();
+         const modelAdmin = this.modelAdminsMap[modelName];
+         const fields = modelAdmin.getEditFormFields();
          ctx.body = {
             success: true,
-            data: fields,
+            data: {
+               fields,
+               modelInfo: {
+                  title: modelAdmin.title,
+                  name: modelAdmin.name,
+               },
+            },
          };
       });
 
@@ -152,10 +159,17 @@ export default class YiAdmin {
        */
       modelRouter.get('/list/fields/', async (ctx: Context) => {
          const { modelName } = ctx.params;
-         const fields = this.modelAdminsMap[modelName].getDataListFields();
+         const modelAdmin = this.modelAdminsMap[modelName];
+         const fields = modelAdmin.getDataListFields();
          ctx.body = {
             success: true,
-            data: fields,
+            data: {
+               fields,
+               modelInfo: {
+                  title: modelAdmin.title,
+                  name: modelAdmin.name,
+               },
+            },
          };
       });
 
