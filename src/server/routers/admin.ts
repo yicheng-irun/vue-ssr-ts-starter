@@ -7,6 +7,7 @@ import SiteNavMenu from '../yi-admin/lib/site-nav-menu';
 import FileImageModel from '../models/file-image.model';
 import StringTestModel from '../models/string-test.model';
 import StringEnumTestModel from '../models/string-enum-test.model';
+import NumberEnumTestModel from '../models/number-enum-test.model';
 
 const myadmin = new YiAdmin({});
 
@@ -35,7 +36,10 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
 
       new ModelAdminListAction({
          actionName: '不需确认操作',
-         actionFunc: async (): Promise<ListActionResult> => null,
+         actionFunc: async (): Promise<ListActionResult> => ({
+            successfulNum: 0,
+            failedNum: 0,
+         }),
          popConfirm: false,
          buttonType: 'info',
          buttonIcon: 'el-icon-message-solid',
@@ -62,6 +66,11 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'file-image',
    title: '文件和图片测试',
    model: FileImageModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'number-enum-test',
+   model: NumberEnumTestModel,
 }));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({

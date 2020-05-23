@@ -1,23 +1,24 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
-import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
 import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type';
 import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
 
-@modelOptions({ schemaOptions: { timestamps: true, collection: 'string-enum-test' } })
+@modelOptions({ schemaOptions: { timestamps: true, collection: 'number-enum-test' } })
 export class NumberEnumTestModelClass {
      @prop({
-        type: String,
-        enum: ['aaa', 'bbb', 'ccc', 'ddd'],
+        type: Number,
+        enum: [0, 10, 20, 30, 40],
      })
-     public strEnumField?: string;
+     public strEnumField?: number;
 
      @prop({
-        type: String,
-        enum: [1, 2, 3, 4],
+        type: Number,
+        enum: [0, 1, 2, 3, 4],
         editType: new EditNumberEnumType({
            required: false,
            enum: [{
+              label: '零',
+              value: 0,
+           }, {
               label: '一',
               value: 1,
            }, {
@@ -32,10 +33,10 @@ export class NumberEnumTestModelClass {
            }],
         }),
      })
-     public strEnumField2?: string;
+     public strEnumField2?: number;
 
      @prop({
-        type: String,
+        type: Number,
         helpText: '字符串远程选择类型示例',
         editType: new EditNumberRemoteSelectType({
            required: false,
@@ -44,12 +45,12 @@ export class NumberEnumTestModelClass {
               return '';
            },
            async getOptions (query: string): Promise<(number| { label: string; value: number })[]> {
-              const q = Number(query);
+              const q = Number.parseFloat(query);
 
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               const distinctData = await NumberEnumTestModel.distinct('strRemoteSelectField3').exec();
               const options: (number| { label: string; value: number })[] = [];
-              if (q && distinctData.indexOf(q) < 0) {
+              if (!Number.isNaN(q) && distinctData.indexOf(q) < 0) {
                  options.push({
                     value: q,
                     label: `value is ${q}`,
@@ -66,7 +67,7 @@ export class NumberEnumTestModelClass {
            },
         }),
      })
-     public strRemoteSelectField3?: string;
+     public strRemoteSelectField3?: number;
 }
 
 const NumberEnumTestModel = getModelForClass(NumberEnumTestModelClass);

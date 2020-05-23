@@ -1,4 +1,6 @@
 import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
+import ListBaseType from '../list-types/list-base-type';
+import ListNumberRemoteSelectType from '../list-types/list-number-remote-select-type';
 
 export default class EditNumberRemoteSelectType extends EditBaseType {
    /**
@@ -76,5 +78,12 @@ export default class EditNumberRemoteSelectType extends EditBaseType {
          return actionData;
       }
       throw new Error(`接收到非法actionName ${actionName}`);
+   }
+
+   public getListType (): ListBaseType {
+      return new ListNumberRemoteSelectType({
+         fieldNameAlias: this.fieldNameAlias,
+         getLabelByValue: this.getLabelByValue,
+      });
    }
 }

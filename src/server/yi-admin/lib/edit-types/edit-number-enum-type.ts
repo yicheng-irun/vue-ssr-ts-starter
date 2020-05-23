@@ -1,4 +1,6 @@
 import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import ListBaseType from '../list-types/list-base-type';
+import ListNumberEnumType from '../list-types/list-number-enum-type';
 
 export default class EditNumberEnumType extends EditBaseType {
    /**
@@ -53,5 +55,12 @@ export default class EditNumberEnumType extends EditBaseType {
             return item;
          });
       }
+   }
+
+   public getListType (): ListBaseType {
+      return new ListNumberEnumType({
+         fieldNameAlias: this.fieldNameAlias,
+         enum: this.componentConfig.enum,
+      });
    }
 }
