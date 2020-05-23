@@ -1,3 +1,4 @@
+import { Context } from 'koa';
 import ListBaseType from '../list-types/list-base-type';
 
 export interface EditBaseTypeConfig {
@@ -57,8 +58,8 @@ export default class EditBaseType {
    }
 
    // eslint-disable-next-line class-methods-use-this
-   public async action (actionName: string, actionData: any): Promise<any> {
-      //
+   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
+      throw new Error(`接收到非法actionName ${actionName}`);
    }
 
    /**

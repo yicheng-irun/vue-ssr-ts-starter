@@ -46,15 +46,17 @@ export function createAxios () {
    });
 }
 
-export function get (url, params) {
+export function get (url, params, axiosConfig = {}) {
    return createAxios().get(url, {
       params,
+      ...axiosConfig,
    });
 }
 
-export function post (url, data, params) {
+export function post (url, data, params, axiosConfig = {}) {
    return createAxios().post(url, data, {
       params,
+      ...axiosConfig,
    });
 }
 

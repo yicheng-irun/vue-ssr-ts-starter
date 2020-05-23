@@ -1,6 +1,4 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
-import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
 import EditStringTextareaType from '../yi-admin/lib/edit-types/edit-string-textarea-type';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'string-test' } })

@@ -8,6 +8,7 @@ const FormComponents = {
    number: () => import('./form-components/number.vue'),
    'string-color': () => import('./form-components/string-color.vue'),
    'string-enum': () => import('./form-components/string-enum.vue'),
+   'string-file': () => import('./form-components/string-file.vue'),
    'string-remote-select': () => import('./form-components/string-remote-select.vue'),
    string: () => import('./form-components/string.vue'),
    'string-textarea': () => import('./form-components/string-textarea.vue'),

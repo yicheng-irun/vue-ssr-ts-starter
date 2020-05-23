@@ -120,7 +120,10 @@ export default class YiAdmin {
       modelRouter.post('/edit/component-action/', async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
-         const { fieldName, actionName, actionData } = ctx.request.body;
+         const { fieldName, actionName, actionData } = {
+            ...ctx.query,
+            ...ctx.request.body,
+         } as Record<string, any>;
 
          let editField: EditBaseType | null = null;
 
@@ -132,7 +135,7 @@ export default class YiAdmin {
          }
 
          if (editField) {
-            const result = await editField.action(actionName, actionData);
+            const result = await editField.action(actionName, actionData, ctx);
             ctx.body = {
                success: true,
                data: result,
@@ -192,7 +195,10 @@ export default class YiAdmin {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getDataListFields();
 
-         const { fieldName, actionName, actionData } = ctx.request.body;
+         const { fieldName, actionName, actionData } = {
+            ...ctx.query,
+            ...ctx.request.body,
+         } as Record<string, any>;
          let listField: ListBaseType | null = null;
 
          for (let i = 0; i < fields.length; i += 1) {

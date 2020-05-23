@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Morgan from 'koa-morgan';
 import session from 'koa-session';
-import bodyParser from 'koa-bodyparser';
+import koaBody from 'koa-body';
 import mongoose from 'mongoose';
 import router from './routers/index';
 import settings from './settings';
@@ -14,8 +14,12 @@ export default async function createApp (): Promise<Koa> {
 
    app.use(Morgan(settings.isDev ? 'dev' : 'combined'));
 
-   app.use(bodyParser({
-      jsonLimit: '1000kb',
+   app.use(koaBody({
+      jsonLimit: '2mb',
+      multipart: true,
+      formidable: {
+         keepExtensions: true,
+      },
    }));
 
    const sessionConfig = {

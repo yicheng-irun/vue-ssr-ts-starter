@@ -5,7 +5,9 @@ const ErrorMiddleware: Middleware = async (ctx: Context, next: Next) => {
    try {
       await next();
       if (ctx.status === 404) {
-         await ctx.render('site/404');
+         if (ctx.render) {
+            await ctx.render('site/404');
+         }
          ctx.status = 404;
       }
    } catch (e) {

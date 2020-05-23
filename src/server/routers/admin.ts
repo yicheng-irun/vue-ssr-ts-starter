@@ -8,6 +8,7 @@ import FileImageModel from '../models/file-image.model';
 import StringTestModel from '../models/string-test.model';
 import StringEnumTestModel from '../models/string-enum-test.model';
 import NumberEnumTestModel from '../models/number-enum-test.model';
+import StringFileTestModel from '../models/string-file.model';
 
 const myadmin = new YiAdmin({});
 
@@ -79,7 +80,12 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
 }));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({
-   name: 'string-test',
+   name: 'string-file',
+   model: StringFileTestModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'string',
    model: StringTestModel,
 }));
 

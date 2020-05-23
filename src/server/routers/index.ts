@@ -1,9 +1,11 @@
 import KoaRouter from '@koa/router';
 import { vueSSRKowMiddleware } from 'yi-vue-ssr-middleware';
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import { Context } from 'koa';
+import koaSend from 'koa-send';
 import koaStatic from 'koa-static';
 
+import { existsSync } from 'fs';
 import settings from '../settings';
 import ErrorMiddleware from '../middleware/error.middleware';
 import apiRouter from '../api';
@@ -13,6 +15,18 @@ const router = new KoaRouter();
 router.all(/.*/); // 使app中的use不再按需进入此路由
 
 router.use('/assets/', koaStatic(resolve(__dirname, '../../../dist/client'), {}));
+
+router.get(/\/uploads\/(.*)/, async (ctx) => {
+   const file = ctx.params['0'];
+   const filePath = join(`${process.cwd()}/uploads/`, file);
+   console.log(filePath);
+   if (existsSync(filePath)) {
+      await koaSend(ctx, `/uploads/${file}`);
+      if (ctx.status === 404) {
+         ctx.body = 'Not found';
+      }
+   }
+});
 
 router.use(vueSSRKowMiddleware({
    bundlePath: resolve(__dirname, '../../../dist/server-bundle'),
