@@ -25,15 +25,19 @@ router.use(ErrorMiddleware);
 router.use('/api', apiRouter.routes());
 
 router.get('/', async (ctx: Context) => {
-   await ctx.render('home', {
-      title: 'home page',
-   });
+   if (ctx.render) {
+      await ctx.render('home', {
+         title: 'home page',
+      });
+   }
 });
 
 router.get('/demo', async (ctx: Context) => {
-   await ctx.render('demo', {
-      title: 'demo page',
-   });
+   if (ctx.render) {
+      await ctx.render('demo', {
+         title: 'demo page',
+      });
+   }
 });
 
 router.get('/error', () => {

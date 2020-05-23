@@ -64,7 +64,7 @@ export default class YiAdmin {
 
    private appendSiteHomeRouter (): void {
       this.koaRouter.get('/', async (ctx: Context) => {
-         await ctx.render('yi-admin/site', {});
+         if (ctx.render) { await ctx.render('yi-admin/site', {}); }
       });
       this.koaRouter.get('/site-menu/', async (ctx: Context) => {
          ctx.body = {
@@ -83,11 +83,11 @@ export default class YiAdmin {
       const modelRouter = new Router();
 
       modelRouter.get('/', async (ctx: Context) => {
-         await ctx.render('yi-admin/model-admin-list', {});
+         if (ctx.render) { await ctx.render('yi-admin/model-admin-list', {}); }
       });
 
       modelRouter.get('/edit/', async (ctx: Context) => {
-         await ctx.render('yi-admin/model-admin-edit', {});
+         if (ctx.render) { await ctx.render('yi-admin/model-admin-edit', {}); }
       });
 
       modelRouter.get('/edit/fields/', async (ctx: Context) => {
@@ -120,15 +120,16 @@ export default class YiAdmin {
       modelRouter.post('/edit/component-action/', async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
-
          const { fieldName, actionName, actionData } = ctx.request.body;
-         let editField: EditBaseType = null;
 
-         fields.forEach((fitem) => {
+         let editField: EditBaseType | null = null;
+
+         for (let i = 0; i < fields.length; i += 1) {
+            const fitem = fields[i];
             if (fitem.fieldName === fieldName) {
                editField = fitem;
             }
-         });
+         }
 
          if (editField) {
             const result = await editField.action(actionName, actionData);
@@ -192,16 +193,17 @@ export default class YiAdmin {
          const fields = this.modelAdminsMap[modelName].getDataListFields();
 
          const { fieldName, actionName, actionData } = ctx.request.body;
-         let editField: ListBaseType = null;
+         let listField: ListBaseType | null = null;
 
-         fields.forEach((fitem) => {
+         for (let i = 0; i < fields.length; i += 1) {
+            const fitem = fields[i];
             if (fitem.fieldName === fieldName) {
-               editField = fitem;
+               listField = fitem;
             }
-         });
+         }
 
-         if (editField) {
-            const result = await editField.action(actionName, actionData);
+         if (listField) {
+            const result = await listField.action(actionName, actionData);
             ctx.body = {
                success: true,
                data: result,
@@ -248,7 +250,7 @@ export default class YiAdmin {
             idList = [],
          } = ctx.request.body;
 
-         let action: ModelAdminListAction = null;
+         let action: ModelAdminListAction | null = null;
          for (let i = 0; i < actions.length; i += 1) {
             if (actions[i].actionName === actionName) {
                action = actions[i];

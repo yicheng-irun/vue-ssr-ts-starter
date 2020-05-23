@@ -37,7 +37,7 @@ export default class EditBaseType {
    /**
     * 字段显示名称，对应表单中的label中的名称
     */
-   public fieldNameAlias: string = null;
+   public fieldNameAlias: string;
 
    /**
     * 前端组件的参数
@@ -45,15 +45,15 @@ export default class EditBaseType {
    public componentConfig: EditBaseComponentConfig = {
       required: false,
 
-      helpText: null,
+      helpText: '',
    }
 
    constructor (
       config: EditBaseTypeConfig,
    ) {
       this.componentConfig.required = config.required || false;
-      this.componentConfig.helpText = config.helpText || null;
-      this.fieldNameAlias = config.fieldNameAlias;
+      this.componentConfig.helpText = config.helpText || '';
+      this.fieldNameAlias = config.fieldNameAlias || '';
    }
 
    // eslint-disable-next-line class-methods-use-this

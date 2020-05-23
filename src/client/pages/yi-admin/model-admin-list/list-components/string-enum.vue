@@ -14,7 +14,7 @@ export default {
    },
    props: {
       value: {
-         type: String,
+         type: [String, Number],
          default: null,
       },
       config: {
@@ -30,7 +30,7 @@ export default {
          if (Array.isArray(enumList)) {
             for (let i = 0; i < enumList.length; i += 1) {
                const e = enumList[i];
-               if (e?.value === this.value) {
+               if (String(e?.value) === String(this.value)) {
                   return e.label || e.value;
                }
             }

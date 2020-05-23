@@ -39,10 +39,10 @@ export default class EditStringColorType extends EditBaseType {
       },
    ) {
       super(config);
-      if ('showAlpha' in config) {
+      if (config.showAlpha !== undefined) {
          this.componentConfig.showAlpha = config.showAlpha;
       }
-      if ('predefine' in config) {
+      if (config.predefine !== undefined) {
          this.componentConfig.predefine = config.predefine;
       }
    }

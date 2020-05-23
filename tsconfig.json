@@ -6,6 +6,8 @@
     "inlineSourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
     "sourceRoot": "src",
     "outDir": "dist"
   },

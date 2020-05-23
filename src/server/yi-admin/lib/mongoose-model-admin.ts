@@ -131,8 +131,8 @@ export default class MongooseModelAdmin extends ModelAdminBase {
                },
             });
             return {
-               successfulNum: result.deletedCount,
-               failedNum: idList.length - result.deletedCount,
+               successfulNum: result.deletedCount || 0,
+               failedNum: idList.length - (result.deletedCount || 0),
             };
          },
          buttonType: 'danger',
@@ -158,7 +158,7 @@ export default class MongooseModelAdmin extends ModelAdminBase {
          if (key === '_id' || key === '__v') return;
          const { instance } = schemaPath;
 
-         let typeInstance: EditBaseType = null;
+         let typeInstance: EditBaseType | null = null;
 
          if (schemaPath.options.editType && schemaPath.options.editType instanceof EditBaseType) {
             typeInstance = schemaPath.options.editType;
@@ -185,7 +185,7 @@ export default class MongooseModelAdmin extends ModelAdminBase {
     * edit-form中拉取数据的函数
     */
    public async getEditData (id: string, ctx: Context): Promise<ModelDataItem> {
-      let item: Document = null;
+      let item: Document | null = null;
 
       if (id) {
          item = await this.model.findById(id);
@@ -206,10 +206,14 @@ export default class MongooseModelAdmin extends ModelAdminBase {
    }
 
    public async formSubmit (id: string, formData: {[key: string]: any}, ctx: Context): Promise<ModelDataItem> {
-      let item: Document = null;
+      let item: Document;
       if (id) {
-         item = await this.model.findById(id);
-         if (!item) throw new Error('未找到该编辑项');
+         const fItem = await this.model.findById(id);
+         if (fItem) {
+            item = fItem;
+         } else {
+            throw new Error('未找到该编辑项');
+         }
          const formFields = this.getEditFormFields();
          formFields.forEach((field) => {
             const path = field.fieldName;
@@ -255,7 +259,7 @@ export default class MongooseModelAdmin extends ModelAdminBase {
 
          const etitInstances = editFormFields.filter((editTypeItem) => editTypeItem.fieldName === path);
 
-         let typeInstance: ListBaseType = null;
+         let typeInstance: ListBaseType | null = null;
 
          if (schemaPath.options.listType && schemaPath.options.listType instanceof ListBaseType) {
             typeInstance = schemaPath.options.listType;

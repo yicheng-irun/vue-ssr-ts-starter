@@ -20,7 +20,7 @@ export default class ListBaseType {
    /**
     * 字段显示名称，对应表单中的label中的名称
     */
-   public fieldNameAlias: string = null;
+   public fieldNameAlias: string;
 
    /**
     * 前端组件的参数
@@ -30,7 +30,7 @@ export default class ListBaseType {
    constructor (
       config: ListBaseTypeConfig,
    ) {
-      this.fieldNameAlias = config.fieldNameAlias;
+      this.fieldNameAlias = config.fieldNameAlias || '';
    }
 
    // eslint-disable-next-line class-methods-use-this

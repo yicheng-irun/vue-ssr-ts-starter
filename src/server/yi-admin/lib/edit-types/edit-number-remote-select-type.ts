@@ -35,7 +35,7 @@ export default class EditNumberRemoteSelectType extends EditBaseType {
       }
    }
 
-   public getLabelByValue?: (value: number) => Promise<string> = null;
+   public getLabelByValue?: (value: number) => Promise<string>;
 
    public getOptions: (search: string) => Promise<(number | {
       /**
@@ -46,7 +46,7 @@ export default class EditNumberRemoteSelectType extends EditBaseType {
        * 显示的标签
        */
       label: string;
-   })[]> = null;
+   })[]>;
 
    public async action (actionName: string, actionData: any): Promise<((number | {
       value: number;

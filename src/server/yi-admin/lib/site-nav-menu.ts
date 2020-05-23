@@ -3,7 +3,7 @@ export default class SiteNavMenu {
    /**
     * 菜单名称
     */
-   public title: string = null
+   public title = ''
 
    /**
     * 链接

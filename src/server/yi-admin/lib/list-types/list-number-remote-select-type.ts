@@ -10,7 +10,7 @@ export default class ListStringRemoteSelectType extends ListBaseType {
       /**
        * 通过value获取label，用户表单初始化时，传了value给组件但是其实应该显示一个对应的名称
        */
-      getLabelByValue?: (value: string) => Promise<string>;
+      getLabelByValue?: (value: number) => Promise<string>;
    }) {
       super(config);
       if (config.getLabelByValue) {
@@ -19,11 +19,12 @@ export default class ListStringRemoteSelectType extends ListBaseType {
       }
    }
 
-   public getLabelByValue?: (value: string) => Promise<string>;
+   public getLabelByValue?: (value: number) => Promise<string>;
 
    public action (actionName: string, actionData: any): Promise<string> {
       if (actionName === 'getLabelByValue') {
-         if (this.getLabelByValue) { return this.getLabelByValue(actionData); }
+         const t = Number(actionData);
+         if (this.getLabelByValue) { return this.getLabelByValue(t); }
          return actionData;
       }
       throw new Error(`接收到非法actionName ${actionName}`);

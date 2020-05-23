@@ -10,13 +10,13 @@ export default class EditNumberType extends EditBaseType {
     * 前端组件的参数
     */
    public componentConfig: EditBaseComponentConfig & {
-      min: number;
-      max: number;
+      min?: number;
+      max?: number;
       step: number;
    } = {
       ...this.componentConfig,
-      min: null,
-      max: null,
+      min: undefined,
+      max: undefined,
       step: 1,
    }
 
@@ -35,8 +35,9 @@ export default class EditNumberType extends EditBaseType {
          this.componentConfig.max = config.max;
       }
       if ('step' in config) {
-         if (config.step <= 0) throw new Error('step 不能小于或等于0');
-         this.componentConfig.step = config.step;
+         const step = config.step || 1;
+         if (step <= 0) throw new Error('step 不能小于或等于0');
+         this.componentConfig.step = step;
       }
    }
 }

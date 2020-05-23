@@ -13,6 +13,8 @@
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
   },
   "include": ["./**/*"],
   "exclude": []

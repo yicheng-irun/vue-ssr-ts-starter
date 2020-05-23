@@ -115,5 +115,5 @@ export default class ModelAdminListAction {
    /**
     * 执行批量操作的回调函数, 如果执行失败请返回一个错误new Error("错误标题")，错误标题会显示给用户
     */
-   public actionFunc: (idList: string[]) => Promise<ListActionResult> = null
+   public actionFunc: (idList: string[]) => Promise<ListActionResult>
 }

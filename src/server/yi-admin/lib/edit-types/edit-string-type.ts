@@ -17,13 +17,13 @@ export default class EditStringType extends EditBaseType {
       /**
        * 最大长度
        */
-      maxLength: number;
+      maxLength?: number;
 
       placeholder: string;
    } = {
       ...this.componentConfig,
       minLength: 0,
-      maxLength: null,
+      maxLength: undefined,
       placeholder: '',
    }
 
@@ -35,8 +35,12 @@ export default class EditStringType extends EditBaseType {
       },
    ) {
       super(config);
-      this.componentConfig.minLength = config.minLength || null;
-      this.componentConfig.maxLength = config.maxLength || null;
+      if (typeof config.minLength === 'number') {
+         this.componentConfig.minLength = config.minLength;
+      }
+      if (typeof config.maxLength === 'number') {
+         this.componentConfig.maxLength = config.maxLength;
+      }
       this.componentConfig.placeholder = config.placeholder || '';
    }
 }
