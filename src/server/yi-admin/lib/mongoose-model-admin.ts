@@ -234,6 +234,8 @@ export default class MongooseModelAdmin extends ModelAdminBase {
     * 获取列表页字段列表
     */
    public getDataListFields (): ListBaseType[] {
+      const editFormFields = this.getEditFormFields();
+
       const fields: ListBaseType[] = [];
 
       const { schema } = this.model;
@@ -249,12 +251,16 @@ export default class MongooseModelAdmin extends ModelAdminBase {
             } = schema.paths[key];
 
          if (key === '_id' || key === '__v') return;
-         const { instance } = schemaPath;
+         const { instance, path } = schemaPath;
+
+         const etitInstances = editFormFields.filter((editTypeItem) => editTypeItem.fieldName === path);
 
          let typeInstance: ListBaseType = null;
 
          if (schemaPath.options.listType && schemaPath.options.listType instanceof ListBaseType) {
             typeInstance = schemaPath.options.listType;
+         } else if (etitInstances.length > 0) {
+            typeInstance = etitInstances[0].getListType();
          } else if (INSTANCE_LIST_TYPE_MAP[instance]) {
             typeInstance = INSTANCE_LIST_TYPE_MAP[instance](schemaPath.options);
          }

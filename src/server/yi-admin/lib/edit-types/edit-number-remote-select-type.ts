@@ -1,4 +1,4 @@
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
 
 export default class EditNumberRemoteSelectType extends EditBaseType {
    /**
@@ -53,7 +53,23 @@ export default class EditNumberRemoteSelectType extends EditBaseType {
       label: string;
    })[]) | string> {
       if (actionName === 'getOptions') {
-         return this.getOptions(actionData);
+         const options = await this.getOptions(actionData);
+         return options.map((item) => {
+            if (typeof item === 'number') {
+               return {
+                  value: item,
+                  label: String(item),
+               };
+            }
+            if (typeof item === 'string') {
+               const t = Number(item);
+               return {
+                  value: t,
+                  label: String(item),
+               };
+            }
+            return item;
+         });
       }
       if (actionName === 'getLabelByValue') {
          if (this.getLabelByValue) { return this.getLabelByValue(actionData); }

@@ -41,6 +41,7 @@
             :class="isCollapse ? 'collapse-style' : ''"
          >
             <iframe
+               ref="iframe"
                name="main_frame"
                :src="state.iframeSrc"
             />

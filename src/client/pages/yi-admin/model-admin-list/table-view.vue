@@ -41,7 +41,7 @@
             <template>
                <el-popconfirm
                   v-if="selectedBatchAction && selectedBatchAction.popConfirm"
-                  title="这是一段内容确定删除吗？"
+                  title="确定执行吗？"
                   @onConfirm="doBatchAction(selectedBatchAction)"
                >
                   <el-button
@@ -100,7 +100,9 @@
                      :key="item.id || index"
                   >
                      <td><el-checkbox v-model="listCheckedStatusArray[index]" /></td>
-                     <td>{{ index + 1 }}</td>
+                     <td class="index-td">
+                        {{ index + 1 }}
+                     </td>
                      <td>
                         <a :href="`edit/?id=${item.id}`">{{ item.id }}</a>
                      </td>
@@ -111,7 +113,7 @@
                            <el-popconfirm
                               v-if="actionItem.popConfirm"
                               :key="actionIndex"
-                              title="这是一段内容确定删除吗？"
+                              title="确定执行吗？"
                               @onConfirm="doActions(actionItem, [item.id])"
                            >
                               <el-button
@@ -143,8 +145,8 @@
                            <component
                               :is="getComponent(fieldItem.componentName)"
                               :id="item.id"
-                              :config="item.componentConfig"
-                              :field-name="item.fieldName"
+                              :config="fieldItem.componentConfig"
+                              :field-name="fieldItem.fieldName"
                               :values="item.values"
                               :value="item.values[fieldItem.fieldName]"
                            />
@@ -440,9 +442,13 @@ export default {
                      color #000a
                      border-right 1px dotted #0002
                      &:last-child {
-                        border-right none;
+                        border-right none
+                     }
+                     &.index-td {
+                        text-align center
                      }
                      &.actions-td {
+                        text-align center
                         .el-button {
                            padding 0.4em 0.8em
                            margin 0.3em

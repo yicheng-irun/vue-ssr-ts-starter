@@ -4,7 +4,7 @@
       :style="{ opacity, }"
    >
       <TableView />
-      <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
+      <pre v-text="JSON.stringify(state, null, '  ')" />
    </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-   <span
+   <div
       class="list-components-base"
       v-text="value"
    />
@@ -28,5 +28,6 @@ export default {
 
 <style lang="stylus">
 .list-components-base {
+   text-align center
 }
 </style>

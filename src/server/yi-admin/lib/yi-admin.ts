@@ -4,6 +4,7 @@ import ModelAdminBase from './model-admin-base';
 import EditBaseType from './edit-types/edit-base-type';
 import ModelAdminListAction from './model-admin-list-action';
 import SiteNavMenu from './site-nav-menu';
+import ListBaseType from './list-types/list-base-type';
 
 /**
  * admin站点
@@ -168,6 +169,35 @@ export default class YiAdmin {
          ctx.body = {
             success: true,
             data: actions,
+         };
+      });
+
+      // 表单组件的请求
+      modelRouter.post('/list/component-action/', async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const fields = this.modelAdminsMap[modelName].getDataListFields();
+
+         const { fieldName, actionName, actionData } = ctx.request.body;
+         let editField: ListBaseType = null;
+
+         fields.forEach((fitem) => {
+            if (fitem.fieldName === fieldName) {
+               editField = fitem;
+            }
+         });
+
+         if (editField) {
+            const result = await editField.action(actionName, actionData);
+            ctx.body = {
+               success: true,
+               data: result,
+            };
+            return;
+         }
+
+         ctx.body = {
+            success: false,
+            message: '未找到该字段对应的组件',
          };
       });
 

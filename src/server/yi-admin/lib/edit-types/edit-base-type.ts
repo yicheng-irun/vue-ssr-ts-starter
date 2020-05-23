@@ -1,3 +1,4 @@
+import ListBaseType from '../list-types/list-base-type';
 
 export interface EditBaseTypeConfig {
    required?: boolean;
@@ -58,5 +59,14 @@ export default class EditBaseType {
    // eslint-disable-next-line class-methods-use-this
    public async action (actionName: string, actionData: any): Promise<any> {
       //
+   }
+
+   /**
+    * 实现 edit-type 生成对应的 list-type
+    */
+   public getListType (): ListBaseType {
+      return new ListBaseType({
+         fieldNameAlias: this.fieldNameAlias,
+      });
    }
 }

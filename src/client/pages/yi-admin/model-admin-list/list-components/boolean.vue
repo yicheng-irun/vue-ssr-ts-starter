@@ -12,6 +12,9 @@
          class="el-icon-error"
       />
    </div>
+   <div v-else>
+      {{ value }}
+   </div>
 </template>
 
 <script>

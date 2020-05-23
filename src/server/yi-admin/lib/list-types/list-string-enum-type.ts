@@ -1,15 +1,15 @@
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import ListBaseType, { ListBaseTypeConfig } from './list-base-type';
 
-export default class EditNumberEnumType extends EditBaseType {
+export default class ListStringEnumType extends ListBaseType {
    /**
     * 前端的组件名称
     */
-   public componentName = 'number-enum'
+   public componentName = 'string-enum'
 
    /**
     * 前端组件的参数
     */
-   public componentConfig: EditBaseComponentConfig & {
+   public componentConfig: ListBaseTypeConfig & {
       /**
        * 枚举值列表, 当require设置为true时，用户必须选择一个enum，require设置为false时，用户可以不选择
        */
@@ -17,7 +17,7 @@ export default class EditNumberEnumType extends EditBaseType {
          /**
           * 值
           */
-         value: number;
+         value: string;
          /**
           * 显示的标签
           */
@@ -28,26 +28,19 @@ export default class EditNumberEnumType extends EditBaseType {
       enum: [],
    }
 
-   constructor (config: EditBaseTypeConfig & {
-      enum?: (number | {
-         value: number;
+   constructor (config: ListBaseTypeConfig & {
+      enum: (string | {
+         value: string;
          label: string;
       })[];
    }) {
       super(config);
       if (config.enum && Array.isArray(config.enum)) {
          this.componentConfig.enum = config.enum.map((item) => {
-            if (typeof item === 'number') {
+            if (typeof item === 'string') {
                return {
                   value: item,
-                  label: String(item),
-               };
-            }
-            if (typeof item === 'string') {
-               const t = Number(item);
-               return {
-                  value: t,
-                  label: String(item),
+                  label: item,
                };
             }
             return item;

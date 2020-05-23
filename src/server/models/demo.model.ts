@@ -64,7 +64,8 @@ export class YiAdminDemo {
       editType: new EditStringRemoteSelectType({
          required: false,
          async getLabelByValue (value): Promise<string> {
-            return `label:${value}`;
+            if (value) { return `label:${value}`; }
+            return '';
          },
          async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
             await new Promise((resolve) => setTimeout(resolve, 200));

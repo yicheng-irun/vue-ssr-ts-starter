@@ -56,9 +56,9 @@ export default {
    },
    methods: {
       clickItem () {
-         if (this.siteMenu.link) {
-            this.$store.state.iframeSrc = this.siteMenu.link;
-         }
+         // if (this.siteMenu.link) {
+         //    this.$store.state.iframeSrc = this.siteMenu.link;
+         // }
       },
    },
 };
