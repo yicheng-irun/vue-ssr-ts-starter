@@ -1,5 +1,24 @@
 <template>
    <div id="app">
+      <div class="breadcrumb">
+         <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '../../' }">
+               <a
+                  href="../../../"
+                  target="_top"
+               >首页</a>
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+               <a
+                  href="../"
+                  target="_top"
+               >
+                  {{ state.modelInfo.title || state.modelInfo.name }} 管理
+               </a>
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>{{ state.modelInfo.title || state.modelInfo.name }} {{ state.editId ? '编辑' : '新增' }}</el-breadcrumb-item>
+         </el-breadcrumb>
+      </div>
       <edit-form
          :edit-id="state.editId"
          :edit-form-fields="state.editFormFields"
