@@ -141,7 +141,7 @@
                         v-for="(fieldItem, fieldIndex) in listFields"
                         :key="fieldIndex"
                      >
-                        <div>
+                        <div class="fields-wrap">
                            <component
                               :is="getComponent(fieldItem.componentName)"
                               :id="item.id"
@@ -453,6 +453,9 @@ export default {
                            padding 0.4em 0.8em
                            margin 0.3em
                         }
+                     }
+                     >.fields-wrap {
+                        text-align center
                      }
                   }
                   &:nth-child(2n - 1) {

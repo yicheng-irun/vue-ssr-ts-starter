@@ -1,11 +1,16 @@
 <template>
-   <div class="form-component-string-file">
+   <div class="form-component-string-image">
       <a
          v-if="value"
          :href="value"
-         class="file-link"
+         class="image-block"
          target="_blank"
-      >{{ value }}</a>
+      >
+         <img
+            :src="value"
+            :alt="value"
+         >
+      </a>
       <el-button
          v-if="value"
          type="danger"
@@ -18,7 +23,7 @@
          type="primary"
          @click="selectFile"
       >
-         {{ value ? '重新选择' : '选择文件' }}
+         {{ value ? '重新选择' : '选择图片' }}
       </el-button>
    </div>
 </template>
@@ -58,7 +63,7 @@ export default {
       const fileInput = document.createElement('input');
       this.fileInput = fileInput;
       fileInput.type = 'file';
-      fileInput.accept = this.config.mimeType || '*';
+      fileInput.accept = this.config.mimeType || 'image/*';
       fileInput.onchange = () => {
          const file = fileInput.files[0];
          this.doUploadAction(file);
@@ -120,10 +125,21 @@ export default {
 </script>
 
 <style lang="stylus">
-.form-component-string-file {
-   >.file-link {
+.form-component-string-image {
+   >.image-block {
+      display inline-block
+      width 10em
       margin 0 0.5em 0 0
       font-size 12px
+      vertical-align bottom
+      text-align center
+      >img {
+         vertical-align top
+         max-width 100%
+         max-height 10em
+         border 1px solid #fff
+         box-shadow 0 0 6px #0003
+      }
    }
    >.el-button {
       padding 0.2em 0.5em

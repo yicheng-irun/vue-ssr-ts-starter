@@ -117,7 +117,20 @@ export default {
 
          this.$store.commit('setLoading', false);
       },
-      reset () {},
+      reset () {
+         try {
+            this.$store.commit('resetEditFormData');
+            this.$notify.success({
+               title: '重置好了',
+               message: '重置好了',
+            });
+         } catch (e) {
+            this.$notify.error({
+               title: '重置出错了',
+               message: e?.message || `${e}`,
+            });
+         }
+      },
    },
 };
 </script>

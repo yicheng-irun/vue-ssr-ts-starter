@@ -18,7 +18,7 @@ export default async function createApp (): Promise<Koa> {
       jsonLimit: '2mb',
       multipart: true,
       formidable: {
-         keepExtensions: true,
+         // keepExtensions: true,
       },
    }));
 

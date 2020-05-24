@@ -14,6 +14,10 @@ export default class EditStringFileType extends EditBaseType {
    public componentConfig: EditBaseComponentConfig & {
       placeholder: string;
       maxFileSize: number;
+      /**
+       * https://www.w3school.com.cn/media/media_mimeref.asp
+       */
+      mimeType: string;
    } = {
       ...this.componentConfig,
       placeholder: '',
@@ -21,6 +25,8 @@ export default class EditStringFileType extends EditBaseType {
        * 注意，文件大小限制除了这里进行了限制，同时也受到koa-body这个库的限制
        */
       maxFileSize: 10 * 1000 * 1000,
+
+      mimeType: '*',
    }
 
    constructor (
@@ -29,6 +35,11 @@ export default class EditStringFileType extends EditBaseType {
          maxLength?: number;
          placeholder?: string;
          maxFileSize?: number;
+
+         /**
+          * https://www.w3school.com.cn/media/media_mimeref.asp
+          */
+         mimeType?: string;
 
          /**
           * 文件上传，使用koa-body，此函数调用完毕后会自动清理掉暂存文件
@@ -48,6 +59,8 @@ export default class EditStringFileType extends EditBaseType {
       super(config);
       this.componentConfig.placeholder = config.placeholder || '';
       if (config.maxFileSize !== undefined) { this.componentConfig.maxFileSize = config.maxFileSize; }
+      if (config.mimeType !== undefined) { this.componentConfig.mimeType = config.mimeType; }
+
       if (typeof config.writeFile !== 'function') throw new Error('writeFile 必须是一个合适的函数');
       this.writeFile = config.writeFile;
    }

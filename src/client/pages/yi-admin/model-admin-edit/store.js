@@ -12,6 +12,7 @@ export default function ({
          editId: runtime.query.id || '',
          editFormFields: [],
          editFormData: {},
+         editFormDataResetJson: '{}',
          loading: false,
       },
 
@@ -25,7 +26,12 @@ export default function ({
             state.modelInfo = data.modelInfo;
          },
 
+         resetEditFormData (state) {
+            state.editFormData = JSON.parse(state.editFormDataResetJson);
+         },
+
          setEditFormData (state, { values }) {
+            state.editFormDataResetJson = JSON.stringify(values);
             state.editFormData = values;
          },
 

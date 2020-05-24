@@ -41,7 +41,6 @@ export default {
 <style lang="stylus">
 .list-components-boolean {
    font-size 1.5em
-   text-align center
    >.el-icon-success {
       color #67c23a
    }
