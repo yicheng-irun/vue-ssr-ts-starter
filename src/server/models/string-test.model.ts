@@ -1,5 +1,5 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditStringTextareaType from '../yi-admin/lib/edit-types/edit-string-textarea-type';
+import { EditTypes } from 'yi-admin';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'string-test' } })
 export class StringTestModelClass {
@@ -24,7 +24,7 @@ export class StringTestModelClass {
 
      @prop({
         type: String,
-        editType: new EditStringTextareaType({
+        editType: new EditTypes.EditStringTextareaType({
            required: false,
            maxLength: 100,
            placeholder: '请输入XXX',

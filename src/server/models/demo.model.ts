@@ -2,14 +2,8 @@ import {
    prop, modelOptions, getModelForClass, Ref,
 } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
+import { EditTypes } from 'yi-admin';
 import { RefFieldClass } from './demo.refclass.model';
-import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
-import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type';
-import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
-import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
-import EditStringTextareaType from '../yi-admin/lib/edit-types/edit-string-textarea-type';
-import EditStringColorType from '../yi-admin/lib/edit-types/edit-string-color-type';
-
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
 export class YiAdminDemo {
@@ -42,7 +36,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       enum: ['1', '2', '3', '4'],
-      editType: new EditStringEnumType({
+      editType: new EditTypes.EditStringEnumType({
          required: false,
          enum: [{
             label: '啊啊1',
@@ -61,7 +55,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       helpText: '字符串远程选择类型示例',
-      editType: new EditStringRemoteSelectType({
+      editType: new EditTypes.EditStringRemoteSelectType({
          required: false,
          async getLabelByValue (value): Promise<string> {
             if (value) { return `label:${value}`; }
@@ -96,7 +90,7 @@ export class YiAdminDemo {
 
    @prop({
       type: String,
-      editType: new EditStringTextareaType({
+      editType: new EditTypes.EditStringTextareaType({
          required: false,
          maxLength: 100,
          placeholder: '请输入XXX',
@@ -107,7 +101,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       name: '颜色',
-      editType: new EditStringColorType({
+      editType: new EditTypes.EditStringColorType({
          required: false,
       }),
    })
@@ -130,7 +124,7 @@ export class YiAdminDemo {
 
    @prop({
       type: Number,
-      editType: new EditNumberEnumType({
+      editType: new EditTypes.EditNumberEnumType({
          enum: [{
             label: '啊啊啊',
             value: 1,
@@ -148,7 +142,7 @@ export class YiAdminDemo {
    @prop({
       type: Number,
       name: '数字远程选择',
-      editType: new EditNumberRemoteSelectType({
+      editType: new EditTypes.EditNumberRemoteSelectType({
          async getOptions (): Promise<(number | { label: string; value: number})[]> {
             return [
                1,

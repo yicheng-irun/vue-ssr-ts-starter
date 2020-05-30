@@ -1,14 +1,13 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditStringFileType from '../yi-admin/lib/edit-types/edit-string-file';
-import { writeFile, getFileWriter } from '../tools/write-file';
+import { EditTypes } from 'yi-admin';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'string-file-test' } })
 export class StringFileTestModelClass {
    @prop({
       type: String,
       name: '文件1',
-      editType: new EditStringFileType({
-         writeFile,
+      editType: new EditTypes.EditStringFileType({
+         writeFile: EditTypes.EditStringFileType.getFileWriter(),
       }),
    })
    public file1?: string;
@@ -16,9 +15,11 @@ export class StringFileTestModelClass {
    @prop({
       type: String,
       name: '文件2',
-      editType: new EditStringFileType({
+      editType: new EditTypes.EditStringFileType({
          maxFileSize: 50 * 1000,
-         writeFile: getFileWriter('file2'),
+         writeFile: EditTypes.EditStringFileType.getFileWriter({
+            folder: 'file2',
+         }),
       }),
    })
    public file2?: string;

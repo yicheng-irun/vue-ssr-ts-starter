@@ -1,6 +1,5 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditStringEnumType from '../yi-admin/lib/edit-types/edit-string-enum-type';
-import EditStringRemoteSelectType from '../yi-admin/lib/edit-types/edit-string-remote-select-type';
+import { EditTypes } from 'yi-admin';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'string-enum-test' } })
 export class StringEnumTestModelClass {
@@ -13,7 +12,7 @@ export class StringEnumTestModelClass {
      @prop({
         type: String,
         enum: ['1', '2', '3', '4'],
-        editType: new EditStringEnumType({
+        editType: new EditTypes.EditStringEnumType({
            required: false,
            enum: [{
               label: '一',
@@ -35,7 +34,7 @@ export class StringEnumTestModelClass {
      @prop({
         type: String,
         helpText: '字符串远程选择类型示例',
-        editType: new EditStringRemoteSelectType({
+        editType: new EditTypes.EditStringRemoteSelectType({
            required: false,
            async getLabelByValue (value): Promise<string> {
               if (value) { return `label:${value}`; }

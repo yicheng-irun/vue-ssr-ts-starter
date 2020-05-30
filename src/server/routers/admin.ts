@@ -1,17 +1,19 @@
-import YiAdmin from '../yi-admin';
+import YiAdmin, {
+   MongooseModelAdmin, SiteNavMenu, ModelAdminListAction, ListActionResult,
+} from 'yi-admin';
 import YiAdminDemoModel from '../models/demo.model';
-import MongooseModelAdmin from '../yi-admin/lib/mongoose-model-admin';
-import ModelAdminListAction, { ListActionResult } from '../yi-admin/lib/model-admin-list-action';
 import RefFieldClassModel from '../models/demo.refclass.model';
-import SiteNavMenu from '../yi-admin/lib/site-nav-menu';
 import FileImageModel from '../models/file-image.model';
 import StringTestModel from '../models/string-test.model';
 import StringEnumTestModel from '../models/string-enum-test.model';
 import NumberEnumTestModel from '../models/number-enum-test.model';
 import StringFileTestModel from '../models/string-file.model';
 import StringImageTestModel from '../models/string-image.model';
+import settings from '../settings';
 
-const myadmin = new YiAdmin({});
+const myadmin = new YiAdmin({
+   serverOrigin: `http://127.0.0.1:${settings.port}`,
+});
 
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'yi-admin-demo',

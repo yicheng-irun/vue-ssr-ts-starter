@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:client": "yi-vue-ssr-build",
+    "dev:client": "yi-vue-ssr-build serve",
     "dev:server": "ts-node-dev --no-notify --respawn --transpile-only --ignore-watch node_modules --clear --watch src/server,.env -r dotenv/config ./src/server/index.ts",
     "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
-    "build:client": "yi-vue-ssr-build --production",
+    "build:client": "yi-vue-ssr-build build",
     "build:server": "tsc -p ./src/server",
     "build": "npm run build:client && npm run build:server",
     "start": "node ./index.js"
@@ -37,7 +37,8 @@
     "mongoose": "^5.9.9",
     "vue": "^2.6.11",
     "vuex": "^3.1.0",
-    "yi-vue-ssr-middleware": "0.0.2"
+    "yi-vue-ssr-middleware": "0.0.2",
+    "yi-admin": "0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
@@ -70,6 +71,6 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.5.3",
     "vue-template-compiler": "^2.6.11",
-    "yi-vue-ssr-build": "0.0.4"
+    "yi-vue-ssr-build": "0.0.5"
   }
 }

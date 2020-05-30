@@ -1,6 +1,5 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import EditNumberEnumType from '../yi-admin/lib/edit-types/edit-number-enum-type';
-import EditNumberRemoteSelectType from '../yi-admin/lib/edit-types/edit-number-remote-select-type';
+import { EditTypes } from 'yi-admin';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'number-enum-test' } })
 export class NumberEnumTestModelClass {
@@ -13,7 +12,7 @@ export class NumberEnumTestModelClass {
      @prop({
         type: Number,
         enum: [0, 1, 2, 3, 4],
-        editType: new EditNumberEnumType({
+        editType: new EditTypes.EditNumberEnumType({
            required: false,
            enum: [{
               label: '零',
@@ -38,7 +37,7 @@ export class NumberEnumTestModelClass {
      @prop({
         type: Number,
         helpText: '字符串远程选择类型示例',
-        editType: new EditNumberRemoteSelectType({
+        editType: new EditTypes.EditNumberRemoteSelectType({
            required: false,
            async getLabelByValue (value): Promise<string> {
               if (value) { return `label:${value}`; }

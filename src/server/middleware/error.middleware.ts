@@ -11,7 +11,7 @@ const ErrorMiddleware: Middleware = async (ctx: Context, next: Next) => {
          ctx.status = 404;
       }
    } catch (e) {
-      console.error(e);
+      console.error(e, 11111111);
       const accepts = ctx.accepts();
       if (Array.isArray(accepts)) {
          if (accepts.includes('text/html')) {

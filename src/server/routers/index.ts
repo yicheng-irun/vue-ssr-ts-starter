@@ -11,7 +11,10 @@ import ErrorMiddleware from '../middleware/error.middleware';
 import apiRouter from '../api';
 import myadmin from './admin';
 
-const router = new KoaRouter();
+const router = new KoaRouter<{}, Context>();
+
+router.use('/myadmin', myadmin.koaRouter.routes(), myadmin.koaRouter.allowedMethods());
+
 router.all(/.*/); // 使app中的use不再按需进入此路由
 
 router.use('/assets/', koaStatic(resolve(__dirname, '../../../dist/client'), {}));
@@ -58,7 +61,5 @@ router.get('/error', () => {
    throw new Error('特地为您准备的一个错误');
 });
 
-
-router.use('/myadmin', myadmin.koaRouter.routes(), myadmin.koaRouter.allowedMethods());
 
 export default router;

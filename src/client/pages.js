@@ -1,5 +1,3 @@
-import yiAdminPages from './pages/yi-admin/pages';
-
 const pages = {
    demo: () => import('./pages/demo/app.vue'),
 
@@ -7,8 +5,6 @@ const pages = {
 
    'site/404': () => import(/* webpackChunkName: "site/404" */'./pages/site/404/app.vue'),
    'site/500': () => import(/* webpackChunkName: "site/500" */'./pages/site/500/app.vue'),
-
-   ...yiAdminPages,
 };
 
 export default pages;

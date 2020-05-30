@@ -1,14 +1,13 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import { writeFile, getFileWriter } from '../tools/write-file';
-import EditStringImageType from '../yi-admin/lib/edit-types/edit-string-image';
+import { EditTypes } from 'yi-admin';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'string-image-test' } })
 export class StringImageTestModelClass {
    @prop({
       type: String,
       name: '图片1',
-      editType: new EditStringImageType({
-         writeFile,
+      editType: new EditTypes.EditStringImageType({
+         writeFile: EditTypes.EditStringImageType.getFileWriter(),
       }),
    })
    public image1?: string;
@@ -16,9 +15,11 @@ export class StringImageTestModelClass {
    @prop({
       type: String,
       name: '图片2',
-      editType: new EditStringImageType({
+      editType: new EditTypes.EditStringImageType({
          maxFileSize: 80 * 1000,
-         writeFile: getFileWriter('image/2'),
+         writeFile: EditTypes.EditStringImageType.getFileWriter({
+            folder: 'image2',
+         }),
       }),
    })
    public image2?: string;
