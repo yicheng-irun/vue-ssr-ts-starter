@@ -14,6 +14,7 @@ import StringJoditEditorModel from '../models/string-jodit-editor.model';
 import StringUEditorModel from '../models/string-ueditor.model';
 import ArrayTestModel from '../models/array-test.model';
 import ArrayImageModel from '../models/array-image.model';
+import ArrayStringEnumModel from '../models/array-string-enum.model';
 
 const myadmin = new YiAdmin({
    serverOrigin: `http://127.0.0.1:${settings.port}`,
@@ -22,6 +23,11 @@ const myadmin = new YiAdmin({
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'array-image',
    model: ArrayImageModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'array-string-enum',
+   model: ArrayStringEnumModel,
 }));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({

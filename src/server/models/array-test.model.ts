@@ -1,34 +1,54 @@
 import {
-   prop, modelOptions, getModelForClass, arrayProp,
+   modelOptions, getModelForClass, arrayProp, prop,
 } from '@typegoose/typegoose';
 import { EditTypes } from 'yi-admin';
-import { EditStringType } from 'yi-admin/lib/server/lib/edit-types/edit-string-type';
-import { EditNumberType } from 'yi-admin/lib/server/lib/edit-types/edit-number-type';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'array-test' } })
 export class ArrayModelClass {
    @arrayProp({
       type: String,
-      editType: new EditTypes.EditArrayType({
-         childrenType: new EditStringType({
-            helpText: '呃呃呃',
+      outerOptions: {
+         name: '鹅鹅鹅',
+         editType: new EditTypes.EditArrayType({
+            childrenType: new EditTypes.EditStringType({
+               helpText: '呃呃呃',
+            }),
          }),
-      }),
+      },
    })
    public arrayField?: string[];
 
    @arrayProp({
       type: Number,
-      editType: new EditTypes.EditArrayType({
-         childrenType: new EditNumberType({}),
-      }),
+      outerOptions: {
+         editType: new EditTypes.EditArrayType({
+            childrenType: new EditTypes.EditNumberType({}),
+         }),
+      },
    })
    public arrayField2?: number[];
 
-   @prop({
-      type: Array,
+   @arrayProp({
+      type: Boolean,
+      outerOptions: {
+         editType: new EditTypes.EditArrayType({
+            childrenType: new EditTypes.EditBooleanType({}),
+         }),
+      },
    })
-   public arrayField3?: string[];
+   public arrayField3?: boolean[];
+
+
+   @arrayProp({
+      type: Boolean,
+      outerOptions: {
+         editType: new EditTypes.EditArrayType({
+            childrenType: new EditTypes.EditBooleanType({}),
+         }),
+         name: '布尔数组',
+      },
+   })
+   public arrayField4?: boolean[];
 }
 
 const ArrayTestModel = getModelForClass(ArrayModelClass);

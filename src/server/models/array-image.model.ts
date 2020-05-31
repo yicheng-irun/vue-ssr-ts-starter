@@ -14,10 +14,26 @@ export class ArrayImageModelClass {
             writeFile: EditStringImageType.getFileWriter({
                folder: 'array-images',
             }),
+            listStyleMaxHeight: '3em',
          }),
+         listStyleInline: true,
       }),
    })
    public images1?: string[];
+
+   @arrayProp({
+      type: String,
+      editType: new EditTypes.EditArrayType({
+         childrenType: new EditStringImageType({
+            helpText: '图片列表',
+            writeFile: EditStringImageType.getFileWriter({
+               folder: 'array-images2',
+            }),
+            listStyleMaxHeight: '5em',
+         }),
+      }),
+   })
+   public images2?: string[];
 }
 
 const ArrayImageModel = getModelForClass(ArrayImageModelClass);
