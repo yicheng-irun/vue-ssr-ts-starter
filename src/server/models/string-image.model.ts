@@ -8,6 +8,8 @@ export class StringImageTestModelClass {
       name: '图片1',
       editType: new EditTypes.EditStringImageType({
          writeFile: EditTypes.EditStringImageType.getFileWriter(),
+         listStyleMaxWidth: '5em',
+         listStyleMaxHeight: '3em',
       }),
    })
    public image1?: string;

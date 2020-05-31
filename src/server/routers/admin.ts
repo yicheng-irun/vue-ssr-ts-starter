@@ -10,10 +10,24 @@ import NumberEnumTestModel from '../models/number-enum-test.model';
 import StringFileTestModel from '../models/string-file.model';
 import StringImageTestModel from '../models/string-image.model';
 import settings from '../settings';
+import StringJoditEditorModel from '../models/string-jodit-editor.model';
+import StringUEditorModel from '../models/string-ueditor.model';
+import ArrayTestModel from '../models/array-test.model';
+import ArrayImageModel from '../models/array-image.model';
 
 const myadmin = new YiAdmin({
    serverOrigin: `http://127.0.0.1:${settings.port}`,
 });
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'array-image',
+   model: ArrayImageModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'array',
+   model: ArrayTestModel,
+}));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'yi-admin-demo',
@@ -93,8 +107,18 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
 }));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'string-jodit-editor',
+   model: StringJoditEditorModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'string',
    model: StringTestModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'string-ueditor',
+   model: StringUEditorModel,
 }));
 
 
