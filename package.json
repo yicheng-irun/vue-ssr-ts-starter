@@ -38,7 +38,7 @@
     "vue": "^2.6.11",
     "vuex": "^3.1.0",
     "yi-vue-ssr-middleware": "0.0.2",
-    "yi-admin": "0.0.0-alpha.0"
+    "yi-admin": "0.0.0-alpha.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",

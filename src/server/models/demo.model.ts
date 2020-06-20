@@ -2,7 +2,7 @@ import {
    prop, modelOptions, getModelForClass, Ref,
 } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
-import { EditTypes } from 'yi-admin';
+import { EditTypes, MongooseModelAdmin } from 'yi-admin';
 import { RefFieldClass } from './demo.refclass.model';
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
@@ -20,6 +20,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       required: true,
+      filterType: new MongooseModelAdmin.FilterTypes.FilterStringSearchType(),
    })
    public strField2?: string;
 
@@ -30,6 +31,9 @@ export class YiAdminDemo {
    @prop({
       type: String,
       enum: ['哈哈哈', '嘿嘿嘿', '额额额', 'jjj'],
+      filterType: new MongooseModelAdmin.FilterTypes.FilterRemoteSelectType({
+         multiSelect: true,
+      }),
    })
    public strEnumField?: string;
 
@@ -61,7 +65,7 @@ export class YiAdminDemo {
             if (value) { return `label:${value}`; }
             return '';
          },
-         async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
+         async getOptions (query: string): Promise<({ label: string; value: string })[]> {
             await new Promise((resolve) => setTimeout(resolve, 200));
             const q = String(query).trim();
             return [
@@ -69,7 +73,10 @@ export class YiAdminDemo {
                   label: `label:${q}`,
                   value: q,
                }] : []),
-               '不通过',
+               {
+                  label: '不通过',
+                  value: '不通过',
+               },
                {
                   label: '公开',
                   value: '通过',
@@ -97,15 +104,6 @@ export class YiAdminDemo {
       }),
    })
    public textField3?: string;
-
-   @prop({
-      type: String,
-      name: '颜色',
-      editType: new EditTypes.EditStringColorType({
-         required: false,
-      }),
-   })
-   public stringColor: string;
 
    @prop({
       type: Number,
@@ -170,6 +168,7 @@ export class YiAdminDemo {
    @prop({
       type: Boolean,
       default: false,
+      filterType: new MongooseModelAdmin.FilterTypes.FilterBooleanType(),
    })
    public boolField?: boolean;
 
