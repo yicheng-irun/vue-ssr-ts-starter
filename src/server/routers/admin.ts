@@ -55,7 +55,6 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
          },
          isBatchAction: true,
          isTableRowAction: false,
-         buttonType: 'success',
       }),
 
       new ModelAdminListAction({
@@ -65,8 +64,7 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
             failedNum: 0,
          }),
          popConfirm: false,
-         buttonType: 'info',
-         buttonIcon: 'el-icon-message-solid',
+         buttonType: 'danger',
       }),
 
       new ModelAdminListAction({
