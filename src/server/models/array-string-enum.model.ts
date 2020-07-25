@@ -2,7 +2,7 @@ import {
    modelOptions, getModelForClass, arrayProp,
 } from '@typegoose/typegoose';
 import { EditTypes } from 'yi-admin';
-import { EditStringImageType } from 'yi-admin/lib/server/lib/edit-types/edit-string-image';
+// import { EditStringImageType } from 'yi-admin/lib/server/lib/edit-types/edit-string-image';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'array-string-enum' } })
 export class ArrayStringEnumModelClass {
@@ -15,7 +15,7 @@ export class ArrayStringEnumModelClass {
                if (value) { return `${value}`; }
                return '';
             },
-            async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
+            async getOptions (query: string): Promise<({ label: string; value: string })[]> {
                const q = String(query).trim();
 
                // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -50,7 +50,7 @@ export class ArrayStringEnumModelClass {
                if (value) { return `${value}`; }
                return '';
             },
-            async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
+            async getOptions (query: string): Promise<({ label: string; value: string })[]> {
                const q = String(query).trim();
 
                // eslint-disable-next-line @typescript-eslint/no-use-before-define

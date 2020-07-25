@@ -40,7 +40,7 @@ export class StringEnumTestModelClass {
               if (value) { return `label:${value}`; }
               return '';
            },
-           async getOptions (query: string): Promise<(string| { label: string; value: string })[]> {
+           async getOptions (query: string): Promise<({ label: string; value: string })[]> {
               const q = String(query).trim();
 
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
