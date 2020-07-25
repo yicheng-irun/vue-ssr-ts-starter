@@ -2,7 +2,7 @@ import {
    prop, modelOptions, getModelForClass, Ref,
 } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
-import { EditTypes } from 'yi-admin';
+import { EditTypes, MongooseModelAdmin } from 'yi-admin';
 import { RefFieldClass } from './demo.refclass.model';
 
 @modelOptions({ schemaOptions: { collection: 'yi_admin_demo', timestamps: true } })
@@ -20,6 +20,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       required: true,
+      filterType: new MongooseModelAdmin.FilterTypes.FilterStringSearchType(),
    })
    public strField2?: string;
 
@@ -30,6 +31,9 @@ export class YiAdminDemo {
    @prop({
       type: String,
       enum: ['哈哈哈', '嘿嘿嘿', '额额额', 'jjj'],
+      filterType: new MongooseModelAdmin.FilterTypes.FilterRemoteSelectType({
+         multiSelect: true,
+      }),
    })
    public strEnumField?: string;
 
@@ -164,6 +168,7 @@ export class YiAdminDemo {
    @prop({
       type: Boolean,
       default: false,
+      filterType: new MongooseModelAdmin.FilterTypes.FilterBooleanType(),
    })
    public boolField?: boolean;
 
